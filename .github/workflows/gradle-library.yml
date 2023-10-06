@@ -38,7 +38,7 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
           ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
-        run: ./gradlew ${{ inputs.gradle-tasks }}
+        run: ./gradlew dependencies --write-locks ${{ inputs.gradle-tasks }}
 
       #
       # Security scans
