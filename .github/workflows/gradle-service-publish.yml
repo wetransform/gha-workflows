@@ -111,6 +111,12 @@ jobs:
           require_tests: true
           fail_on_failure: true # required for slack notification if only tests fail
 
+          # Workaround for check that is additionally created being associated
+          # to the wrong workflow/run. Instead not additional check is created.
+          # See https://github.com/mikepenz/action-junit-report/issues/40
+          annotate_only: true
+          detailed_summary: true
+
       #
       # Report build failure to Slack
       #

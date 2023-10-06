@@ -109,3 +109,10 @@ jobs:
         with:
           report_paths: 'build/test-results/**.xml'
           require_tests: true
+
+          # Workaround for check that is additionally created being associated
+          # to the wrong workflow/run. Instead not additional check is created.
+          # See https://github.com/mikepenz/action-junit-report/issues/40
+          annotate_only: true
+          detailed_summary: true
+          fail_on_failure: true # in case of critical security vulnerabilities
