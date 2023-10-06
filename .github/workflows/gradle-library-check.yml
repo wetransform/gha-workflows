@@ -17,4 +17,5 @@ jobs:
     with:
       gradle-tasks: 'clean check'
       java-version: ${{ inputs.java-version }}
+      notify-failure: false
     secrets: inherit

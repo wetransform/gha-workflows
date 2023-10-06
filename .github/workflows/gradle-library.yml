@@ -9,6 +9,9 @@ on:
         description: Java version to use for build
         required: true
         type: string
+      notify-failure:
+        default: true
+        type: boolean
     secrets:
       GH_PAT:
         required: true
@@ -115,3 +118,18 @@ jobs:
           annotate_only: true
           detailed_summary: true
           fail_on_failure: true # in case of critical security vulnerabilities
+
+      #
+      # Report build failure to Slack
+      #
+
+        # https://github.com/marketplace/actions/slack-notify-build
+      - name: Notify slack fail
+        if: ${{ inputs.notify-failure && failure() }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: build-failures
+          status: FAILED
+          color: danger
