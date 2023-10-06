@@ -1,0 +1,22 @@
+name: Check
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        description: Java version to use for build
+        required: true
+        type: string
+    secrets:
+      GH_PAT:
+        required: true
+      WETF_ARTIFACTORY_USER:
+      WETF_ARTIFACTORY_PASSWORD:
+
+jobs:
+  check:
+    uses: ./.github/workflows/gradle-library.yml
+    with:
+      gradle-tasks: 'clean check'
+      java-version: ${{ inputs.java-version }}
+    secrets: inherit
