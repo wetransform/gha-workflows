@@ -10,7 +10,12 @@ on:
         required: true
         type: string
       notify-failure:
+        description: Notify on build failure to Slack
         default: true
+        type: boolean
+      skip-build:
+        description: Skip build and only scan vulnerabilities
+        default: false
         type: boolean
     secrets:
       # GH_PAT:
@@ -44,6 +49,7 @@ jobs:
         run: ./gradlew dependencies --write-locks
 
       - name: Build and test with Gradle
+        if: ${{ !inputs.skip-build }}
         env:
           ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
           ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
@@ -111,7 +117,7 @@ jobs:
         if: always() # always run even if the previous step fails
         with:
           report_paths: 'build/test-results/**/*.xml'
-          require_tests: true
+          require_tests: ${{ !inputs.skip-build }}
 
           # Workaround for check that is additionally created being associated
           # to the wrong workflow/run. Instead not additional check is created.
