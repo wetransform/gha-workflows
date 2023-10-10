@@ -17,6 +17,14 @@ on:
         description: Skip build and only scan vulnerabilities
         default: false
         type: boolean
+      expect-tests:
+        description: If JUnit test results are expected
+        default: true
+        type: boolean
+      submodules:
+        # see https://github.com/actions/checkout
+        default: 'false'
+        type: string
     secrets:
       # GH_PAT:
       #   required: true
@@ -29,6 +37,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: ${{ inputs.submodules }}
 
       #
       # Build, test and create Docker image
@@ -75,7 +85,7 @@ jobs:
         if: always() # always run even if the previous step fails
         with:
           report_paths: 'build/test-results/**/*.xml'
-          require_tests: ${{ !inputs.skip-build }}
+          require_tests: ${{ !inputs.skip-build && inputs.expect-tests }}
 
           # Workaround for check that is additionally created being associated
           # to the wrong workflow/run. Instead not additional check is created.
