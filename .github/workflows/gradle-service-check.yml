@@ -53,49 +53,12 @@ jobs:
       # Security scans
       #
 
-        # https://github.com/aquasecurity/trivy-action
-      - name: Scan Docker image for critical vulnerabilities
-        uses: aquasecurity/trivy-action@0.12.0
+      - name: Vulnerability scan
+        uses: wetransform/gha-trivy@master
         with:
           image-ref: 'docker.io/${{ inputs.image-tag }}'
-          format: 'template'
-          template: '@/contrib/junit.tpl'
-          output: 'build/test-results/trivy.xml' # added to unit test report
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: CRITICAL # 'CRITICAL,HIGH'
-
-      - name: Create vulnerability report as HTML
-        uses: aquasecurity/trivy-action@0.12.0
-        with:
-          image-ref: 'docker.io/${{ inputs.image-tag }}'
-          format: 'template'
-          template: '@/contrib/html.tpl'
-          output: 'trivy.html'
-      - name: Upload vulnerability report
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: Vulnerability report (HTML)
-          path: trivy.html
-          retention-days: 14 # lower retention than default for PRs
-
-      - name: Download vulnerability summary template
-        # env:
-        #   TOKEN: ${{ secrets.GH_PAT }}
-        # -H "Authorization: token ${TOKEN}"
-        run: |
-          curl -o summary.tpl https://raw.githubusercontent.com/wetransform/gha-workflows/master/trivy/summary.tpl
-      - name: Create summary on vulnerabilities
-        uses: aquasecurity/trivy-action@0.12.0
-        with:
-          image-ref: 'docker.io/${{ inputs.image-tag }}'
-          format: 'template'
-          template: '@summary.tpl'
-          output: 'trivy.md'
-      - name: Add to job summary
-        run: |
-          cat trivy.md >> $GITHUB_STEP_SUMMARY
+          junit-test-output: 'build/test-results/trivy.xml' # added to unit test report
+          report-retention-days: 14
 
       #
       # Report on unit tests and critical vulnerabilities
