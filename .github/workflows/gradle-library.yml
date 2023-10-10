@@ -29,6 +29,10 @@ on:
         description: Custom command to run before the build
         type: string
         default: ''
+      java-options:
+        description: Custom JAVA_TOOL_OPTIONS
+        type: string
+        default: ''
     secrets:
       # GH_PAT:
       #   required: true
@@ -60,6 +64,7 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
           ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
+          JAVA_TOOL_OPTIONS: ${{ inputs.java-options }}
         run: ./gradlew dependencies --write-locks
 
       - name: Run custom command
@@ -71,6 +76,7 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
           ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
+          JAVA_TOOL_OPTIONS: ${{ inputs.java-options }}
         run: ./gradlew ${{ inputs.gradle-tasks }}
 
       #
