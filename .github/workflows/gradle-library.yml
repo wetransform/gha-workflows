@@ -13,8 +13,8 @@ on:
         default: true
         type: boolean
     secrets:
-      GH_PAT:
-        required: true
+      # GH_PAT:
+      #   required: true
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
 
@@ -84,10 +84,11 @@ jobs:
           retention-days: 30
 
       - name: Download vulnerability summary template
-        env:
-          TOKEN: ${{ secrets.GH_PAT }}
+        # env:
+        #   TOKEN: ${{ secrets.GH_PAT }}
+        # -H "Authorization: token ${TOKEN}"
         run: |
-          curl -H "Authorization: token ${TOKEN}" -o summary.tpl https://raw.githubusercontent.com/wetransform/gha-workflows/master/trivy/summary.tpl
+          curl -o summary.tpl https://raw.githubusercontent.com/wetransform/gha-workflows/master/trivy/summary.tpl
       - name: Create summary on vulnerabilities
         uses: aquasecurity/trivy-action@0.12.0
         with:
