@@ -25,6 +25,10 @@ on:
         # see https://github.com/actions/checkout
         default: 'false'
         type: string
+      pre-build-command:
+        description: Custom command to run before the build
+        type: string
+        default: ''
     secrets:
       # GH_PAT:
       #   required: true
@@ -58,6 +62,10 @@ jobs:
           ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
         run: ./gradlew dependencies --write-locks
 
+      - name: Run custom command
+        if: ${{ inputs.pre-build-command != '' }}
+        run: ${{ inputs.pre-build-command }}
+
       - name: Build and test with Gradle
         if: ${{ !inputs.skip-build }}
         env:
@@ -68,6 +76,9 @@ jobs:
       #
       # Security scans
       #
+
+      - name: Make sure test-results folder exists
+        run: mkdir -p build/test-results
 
       - name: Vulnerability scan
         uses: wetransform/gha-trivy@master
