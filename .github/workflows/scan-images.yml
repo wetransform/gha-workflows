@@ -30,6 +30,11 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
+      - name: Pull image
+        shell: bash
+        run: |
+          docker pull ${{ matrix.image }}
+
       - name: Vulnerability scan
         uses: wetransform/gha-trivy@master
         with:
