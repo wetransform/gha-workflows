@@ -2,9 +2,18 @@ on:
   workflow_call:
     inputs:
       images:
-        description: Image tag to scan (Json array)
+        description: Image tags to scan (Json array)
         required: true
         type: string
+      pull:
+        description: If the images should be pulled
+        required: false
+        type: boolean
+        default: false
+      report-retention-days:
+        description: Number of days to retain HTML reports
+        type: string
+        default: 30
     secrets:
       # GH_PAT:
       #   required: true
@@ -19,6 +28,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false # scan all images
       matrix:
         image: ${{ fromJson(inputs.images) }}
 
@@ -31,6 +41,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Pull image
+        if: ${{ inputs.pull }}
         shell: bash
         run: |
           docker pull ${{ matrix.image }}
@@ -41,4 +52,4 @@ jobs:
           image-ref: ${{ matrix.image }}
           create-test-report: true
           report-tag: ${{ matrix.image }}
-          report-retention-days: 30
+          report-retention-days: ${{ inputs.report-retention-days }}
