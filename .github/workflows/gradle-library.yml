@@ -38,6 +38,9 @@ on:
       #   required: true
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
+      DOCKER_HUB_USERNAME:
+      DOCKER_HUB_PASSWORD:
+      DOCKER_HUB_EMAIL:
 
 jobs:
   run:
@@ -77,6 +80,12 @@ jobs:
           ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
           ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
           JAVA_TOOL_OPTIONS: ${{ inputs.java-options }}
+
+          # e.g. for pulling images for testcontainers
+          ORG_GRADLE_PROJECT_dockerHubUsername: ${{ secrets.DOCKER_HUB_USERNAME }}
+          ORG_GRADLE_PROJECT_dockerHubPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          ORG_GRADLE_PROJECT_dockerHubEmail: ${{ secrets.DOCKER_HUB_EMAIL }}
+          ORG_GRADLE_PROJECT_dockerHost: "unix:///var/run/docker.sock"
         run: ./gradlew ${{ inputs.gradle-tasks }}
 
       #
