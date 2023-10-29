@@ -88,6 +88,13 @@ jobs:
           ORG_GRADLE_PROJECT_dockerHost: "unix:///var/run/docker.sock"
         run: ./gradlew ${{ inputs.gradle-tasks }}
 
+      - uses: actions/upload-artifact@v3
+        if: ${{ !inputs.skip-build && always() }}
+        with:
+          name: Gradle test reports
+          path: |
+            build/reports/tests
+
       #
       # Security scans
       #
