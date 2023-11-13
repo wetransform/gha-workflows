@@ -8,6 +8,7 @@ on:
     secrets:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
+      SLACK_NOTIFICATIONS_BOT_TOKEN:
 
 jobs:
   publish:
