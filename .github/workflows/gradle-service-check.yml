@@ -23,62 +23,15 @@ on:
       DOCKER_HUB_EMAIL:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
+      ENV_VARS: # secret for passing on additional env variables based on https://github.com/orgs/community/discussions/26671#discussioncomment-6776498
 
 jobs:
   check:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      #
-      # Build, test and create Docker image
-      #
-
-      - uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: ${{ inputs.java-version }}
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-
-      - name: Build and test with Gradle
-        env:
-          ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
-          ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
-          ORG_GRADLE_PROJECT_dockerHubUsername: ${{ secrets.DOCKER_HUB_USERNAME }}
-          ORG_GRADLE_PROJECT_dockerHubPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          ORG_GRADLE_PROJECT_dockerHubEmail: ${{ secrets.DOCKER_HUB_EMAIL }}
-          ORG_GRADLE_PROJECT_dockerHost: "unix:///var/run/docker.sock"
-        run: ./gradlew clean check dockerTagLatest
-
-      #
-      # Security scans
-      #
-
-      - name: Vulnerability scan
-        uses: wetransform/gha-trivy@master
-        with:
-          image-ref: 'docker.io/${{ inputs.image-tag }}'
-          junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report
-          report-retention-days: 14
-
-      #
-      # Report on unit tests and critical vulnerabilities
-      #
-
-        # https://github.com/marketplace/actions/junit-report-action
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3
-        if: always() # always run even if the previous step fails
-        with:
-          report_paths: "${{ inputs.multi-module && '*/test-results/**/*.xml' || 'build/test-results/**/*.xml' }}"
-          require_tests: true
-
-          # Workaround for check that is additionally created being associated
-          # to the wrong workflow/run. Instead not additional check is created.
-          # See https://github.com/mikepenz/action-junit-report/issues/40
-          annotate_only: true
-          detailed_summary: true
-          fail_on_failure: true # in case of critical security vulnerabilities
+    uses: ./.github/workflows/gradle-service.yml
+    with:
+      gradle-tasks: 'clean check dockerTagLatest'
+      java-version: ${{ inputs.java-version }}
+      image-tag: ${{ inputs.image-tag }}
+      multi-module: ${{ inputs.multi-module }}
+      notify-failure: false
+    secrets: inherit
