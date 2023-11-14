@@ -9,6 +9,10 @@ on:
         description: Image tag to scan after build
         required: true
         type: string
+      multi-module:
+        description: If this is a multi-module project
+        type: boolean
+        default: false
     secrets:
       # GH_PAT:
       #   required: true
@@ -57,7 +61,7 @@ jobs:
         uses: wetransform/gha-trivy@master
         with:
           image-ref: 'docker.io/${{ inputs.image-tag }}'
-          junit-test-output: 'build/test-results/trivy.xml' # added to unit test report
+          junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit
           report-retention-days: 90 # default retention
 
       #
@@ -69,7 +73,7 @@ jobs:
         uses: mikepenz/action-junit-report@v3
         if: always() # always run even if the previous step fails
         with:
-          report_paths: 'build/test-results/**/*.xml'
+          report_paths: "${{ inputs.multi-module && '*/test-results/**/*.xml' || 'build/test-results/**/*.xml' }}"
           require_tests: true
           fail_on_failure: true # required for slack notification if only tests fail
 
