@@ -21,6 +21,14 @@ on:
         description: Image tag to scan after build
         required: true
         type: string
+      image-tag-2:
+        description: Additional image tag to scan after build
+        type: string
+        default: ''
+      image-tag-3:
+        description: Additional image tag to scan after build
+        type: string
+        default: ''
       multi-module:
         description: If this is a multi-module project
         type: boolean
@@ -108,6 +116,25 @@ jobs:
           image-ref: 'docker.io/${{ inputs.image-tag }}'
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report
           report-retention-days: 30
+          report-tag: ${{ inputs.image-tag }}
+
+      - name: Vulnerability scan (Image 2)
+        uses: wetransform/gha-trivy@master
+        if: ${{ inputs.image-tag-2 != '' }}
+        with:
+          image-ref: 'docker.io/${{ inputs.image-tag-2 }}'
+          junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy-2.xml' || 'build/test-results/trivy-2.xml' }}" # added to unit test report
+          report-retention-days: 30
+          report-tag: ${{ inputs.image-tag-2 }}
+
+      - name: Vulnerability scan (Image 3)
+        uses: wetransform/gha-trivy@master
+        if: ${{ inputs.image-tag-3 != '' }}
+        with:
+          image-ref: 'docker.io/${{ inputs.image-tag-3 }}'
+          junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy-3.xml' || 'build/test-results/trivy-3.xml' }}" # added to unit test report
+          report-retention-days: 30
+          report-tag: ${{ inputs.image-tag-3 }}
 
       #
       # Report on unit tests and critical vulnerabilities

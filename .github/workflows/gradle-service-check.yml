@@ -9,6 +9,14 @@ on:
         description: Image tag to scan after build
         required: true
         type: string
+      image-tag-2:
+        description: Additional image tag to scan after build
+        type: string
+        default: ''
+      image-tag-3:
+        description: Additional image tag to scan after build
+        type: string
+        default: ''
       multi-module:
         description: If this is a multi-module project
         type: boolean
@@ -32,6 +40,8 @@ jobs:
       gradle-tasks: 'clean check dockerTagLatest'
       java-version: ${{ inputs.java-version }}
       image-tag: ${{ inputs.image-tag }}
+      image-tag-2: ${{ inputs.image-tag-2 }}
+      image-tag-3: ${{ inputs.image-tag-3 }}
       multi-module: ${{ inputs.multi-module }}
       notify-failure: false
     secrets: inherit
