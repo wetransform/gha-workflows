@@ -47,7 +47,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: true
+          push: ${{ inputs.push }}
           tags: "${{ inputs.image }}:${{ inputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
 
