@@ -1,0 +1,28 @@
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: Image name
+        required: true
+        type: string
+      tag:
+        description: Image tag to build
+        required: true
+        type: string
+    secrets:
+      DOCKER_HUB_USERNAME:
+        required: true
+      DOCKER_HUB_PASSWORD:
+        required: true
+      SLACK_NOTIFICATIONS_BOT_TOKEN:
+        required: true
+
+jobs:
+  publish:
+    uses: ./.github/workflows/dockerfile.yml
+    with:
+      image: ${{ inputs.image }}
+      tag: ${{ inputs.tag }}
+      push: true
+      notify-failure: true
+    secrets: inherit
