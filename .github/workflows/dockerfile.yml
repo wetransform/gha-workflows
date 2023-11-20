@@ -35,10 +35,14 @@ jobs:
           images: ${{ inputs.image }}
 
       - name: Login to DockerHub
+        if: env.DOCKER_HUB_USERNAME
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
