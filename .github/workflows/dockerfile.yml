@@ -17,6 +17,10 @@ on:
         description: If the image should be pushed
         type: boolean
         default: false
+      context:
+        description: Docker build context
+        type: string
+        default: .
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
@@ -46,7 +50,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ${{ inputs.context }}
           push: ${{ inputs.push }}
           tags: "${{ inputs.image }}:${{ inputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}

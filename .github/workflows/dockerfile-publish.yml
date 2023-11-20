@@ -9,6 +9,10 @@ on:
         description: Image tag to build
         required: true
         type: string
+      context:
+        description: Docker build context
+        type: string
+        default: .
     secrets:
       DOCKER_HUB_USERNAME:
         required: true
@@ -23,6 +27,7 @@ jobs:
     with:
       image: ${{ inputs.image }}
       tag: ${{ inputs.tag }}
+      context: ${{ inputs.context }}
       push: true
       notify-failure: true
     secrets: inherit
