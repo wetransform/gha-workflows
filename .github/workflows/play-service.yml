@@ -1,0 +1,131 @@
+on:
+  workflow_call:
+    inputs:
+      command:
+        description: Custom command to run
+        required: true
+        type: string
+      java-version:
+        description: Java version to use for build
+        required: true
+        type: string
+      notify-failure:
+        description: Notify on build failure to Slack
+        default: true
+        type: boolean
+      junit-test-folder:
+        description: Location where JUnit tests are stored, if any
+        default: 'play/target/test-reports'
+        type: string
+      expect-tests:
+        description: If JUnit test results are expected
+        default: true
+        type: boolean
+      image-tag:
+        description: Image tag to scan after build
+        required: true
+        type: string
+      push-image:
+        description: If the configure image should be pushed
+        required: false
+        default: false
+    secrets:
+      DOCKER_HUB_USERNAME:
+        required: true
+      DOCKER_HUB_PASSWORD:
+        required: true
+      DOCKER_HUB_EMAIL:
+      WETF_ARTIFACTORY_USER:
+      WETF_ARTIFACTORY_PASSWORD:
+      SLACK_NOTIFICATIONS_BOT_TOKEN:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.java-version }}
+          cache: sbt
+
+      - name: Set up artifactory credentials
+        if: env.WETF_ARTIFACTORY_USER
+        env:
+          WETF_ARTIFACTORY_USER: ${{ secrets.WETF_ARTIFACTORY_USER }}
+          WETF_ARTIFACTORY_PASSWORD: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
+        run: |
+          cat <<EOF > ~/.wetfArtifactory
+          realm=Artifactory Realm
+          host=artifactory.wetransform.to
+          user=$WETF_ARTIFACTORY_USER
+          password=$WETF_ARTIFACTORY_PASSWORD
+          EOF
+
+      - name: Login to DockerHub
+        if: env.DOCKER_HUB_USERNAME
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+
+      - name: Run command
+        run: ${{ inputs.command }}
+
+      - name: Push image
+        if: ${{ inputs.push-image }}
+        run: docker push ${{ inputs.image-tag }}
+
+      #
+      # Security scans
+      #
+
+      - name: Make sure test-results folder exists
+        run: mkdir -p ${{ inputs.junit-test-folder }}
+
+      - name: Vulnerability scan
+        uses: wetransform/gha-trivy@master
+        with:
+          image-ref: 'docker.io/${{ inputs.image-tag }}'
+          junit-test-output: "${{ inputs.junit-test-folder }}/trivy.xml" # added to unit test report
+          report-retention-days: 30
+          report-tag: ${{ inputs.image-tag }}
+
+      #
+      # Report on unit tests and critical vulnerabilities
+      #
+
+        # https://github.com/marketplace/actions/junit-report-action
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: "${{ inputs.junit-test-folder }}/*.xml"
+          require_tests: ${{ inputs.expect-tests }}
+
+          # Workaround for check that is additionally created being associated
+          # to the wrong workflow/run. Instead not additional check is created.
+          # See https://github.com/mikepenz/action-junit-report/issues/40
+          annotate_only: true
+          detailed_summary: true
+          fail_on_failure: true # in case of critical security vulnerabilities, also required for Slack notification if only tests fail
+
+      #
+      # Report build failure to Slack
+      #
+
+        # https://github.com/marketplace/actions/slack-notify-build
+      - name: Notify slack fail
+        if: ${{ inputs.notify-failure && failure() }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: build-failures
+          status: FAILED
+          color: danger

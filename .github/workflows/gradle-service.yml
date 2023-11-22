@@ -43,6 +43,7 @@ on:
       DOCKER_HUB_EMAIL:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
+      SLACK_NOTIFICATIONS_BOT_TOKEN:
       ENV_VARS: # secret for passing on additional env variables based on https://github.com/orgs/community/discussions/26671#discussioncomment-6776498
 
 jobs:
