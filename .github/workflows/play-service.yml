@@ -2,9 +2,13 @@ on:
   workflow_call:
     inputs:
       command:
-        description: Custom command to run
+        description: Custom command to run for the build
         required: true
         type: string
+      pre-build-command:
+        description: Custom command to run before the build
+        type: string
+        default: ''
       java-version:
         description: Java version to use for build
         required: true
@@ -74,6 +78,10 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+
+      - name: Run custom pre-build command
+        if: ${{ inputs.pre-build-command != '' }}
+        run: ${{ inputs.pre-build-command }}
 
       - name: Run command
         run: ${{ inputs.command }}
