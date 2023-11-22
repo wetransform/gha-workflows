@@ -5,6 +5,7 @@ on:
         description: Custom command to run
         default: ''
         required: false
+        type: string
       java-version:
         description: Java version to use for build
         required: true

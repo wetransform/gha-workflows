@@ -29,6 +29,7 @@ on:
         description: If the configure image should be pushed
         required: false
         default: false
+        type: boolean
     secrets:
       DOCKER_HUB_USERNAME:
         required: true
