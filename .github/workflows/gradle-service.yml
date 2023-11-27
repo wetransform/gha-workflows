@@ -105,11 +105,18 @@ jobs:
             ${{ inputs.multi-module && '*/build/reports/tests' || 'build/reports/tests' }}
 
       #
-      # Security scans
+      # Docker image check & security scans
       #
 
       - name: Make sure test-results folder exists
         run: mkdir -p ${{ inputs.multi-module && 'trivy-gha-scan/build/test-results' || 'build/test-results' }}
+
+      - name: Check Docker image user
+        uses: wetransform/gha-docker-nonroot@master
+        with:
+          image-ref: ${{ inputs.image-tag }}
+          fail-for-root: false # rather use JUnit report
+          junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/docker-user-check.xml' || 'build/test-results/docker-user-check.xml' }}"
 
       - name: Vulnerability scan
         uses: wetransform/gha-trivy@master
