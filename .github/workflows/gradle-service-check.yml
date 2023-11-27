@@ -1,6 +1,11 @@
 on:
   workflow_call:
     inputs:
+      gradle-tasks:
+        description: Custom Gradle tasks to run
+        required: false
+        type: string
+        default: ''
       java-version:
         description: Java version to use for build
         required: true
@@ -37,7 +42,7 @@ jobs:
   check:
     uses: ./.github/workflows/gradle-service.yml
     with:
-      gradle-tasks: 'clean check dockerTagLatest'
+      gradle-tasks: ${{ inputs.gradle-tasks != '' && inputs.gradle-tasks || 'clean check dockerTagLatest' }}
       java-version: ${{ inputs.java-version }}
       image-tag: ${{ inputs.image-tag }}
       image-tag-2: ${{ inputs.image-tag-2 }}
