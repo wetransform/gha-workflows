@@ -21,6 +21,10 @@ on:
         description: If JUnit test results are expected
         default: true
         type: boolean
+      fail-on-test-failure:
+        description: If the job should fail if tests fail
+        default: true
+        type: boolean
       submodules:
         # see https://github.com/actions/checkout
         default: 'false'
@@ -136,7 +140,7 @@ jobs:
           # See https://github.com/mikepenz/action-junit-report/issues/40
           annotate_only: true
           detailed_summary: true
-          fail_on_failure: true # in case of critical security vulnerabilities
+          fail_on_failure: ${{ inputs.fail-on-test-failure }} # e.g. in case of critical security vulnerabilities
 
       #
       # Upload artifact
