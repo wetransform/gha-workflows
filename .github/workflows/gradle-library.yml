@@ -33,6 +33,14 @@ on:
         description: Custom JAVA_TOOL_OPTIONS
         type: string
         default: ''
+      upload-artifact-path:
+        description: Path for artifact to upload (to reuse in another job)
+        type: string
+        default: ''
+      upload-artifact-name:
+        description: Name for artifact to upload (to reuse in another job)
+        type: string
+        default: build-artifact
     secrets:
       # GH_PAT:
       #   required: true
@@ -129,6 +137,17 @@ jobs:
           annotate_only: true
           detailed_summary: true
           fail_on_failure: true # in case of critical security vulnerabilities
+
+      #
+      # Upload artifact
+      #
+      - name: Upload artifact
+        if: ${{ inputs.upload-artifact-path != '' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.upload-artifact-name }}
+          path: ${{ inputs.upload-artifact-path }}
+          retention-days: 7
 
       #
       # Report build failure to Slack
