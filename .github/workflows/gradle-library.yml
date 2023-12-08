@@ -87,6 +87,24 @@ jobs:
           JAVA_TOOL_OPTIONS: ${{ inputs.java-options }}
         run: ./gradlew dependencies --write-locks
 
+      - name: Write dependency lockfile for security scan (submodules)
+        if: ${{ inputs.multi-module }}
+        env:
+          ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
+          ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
+          JAVA_TOOL_OPTIONS: ${{ inputs.java-options }}
+        shell: bash
+        run: |
+          # Find all subfolders containing build.gradle or build.gradle.kts files
+          folders=$(find . -type f \( -name "build.gradle" -o -name "build.gradle.kts" \) -exec dirname {} \; | grep -oP '(?<=^\./).*' | sort -u)
+
+          # Loop over the identified subfolders
+          for folder in $folders; do
+            echo "Processing subproject: $folder"
+
+            ./gradlew ":${folder}:dependencies" --write-locks
+          done
+
       - name: Run custom command
         if: ${{ inputs.pre-build-command != '' }}
         run: ${{ inputs.pre-build-command }}
