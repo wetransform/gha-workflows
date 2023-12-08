@@ -45,6 +45,10 @@ on:
         description: Name for artifact to upload (to reuse in another job)
         type: string
         default: build-artifact
+      multi-module:
+        description: If this is a multi-module project
+        type: boolean
+        default: false
     secrets:
       # GH_PAT:
       #   required: true
@@ -107,20 +111,19 @@ jobs:
         with:
           name: Gradle test reports
           retention-days: 7
-          path: |
-            build/reports/tests
+          path: ${{ inputs.multi-module && '*/build/reports/tests' || 'build/reports/tests' }}
 
       #
       # Security scans
       #
 
       - name: Make sure test-results folder exists
-        run: mkdir -p build/test-results
+        run: mkdir -p ${{ inputs.multi-module && 'trivy-gha-scan/build/test-results' || 'build/test-results' }}
 
       - name: Vulnerability scan
         uses: wetransform/gha-trivy@master
         with:
-          junit-test-output: 'build/test-results/trivy.xml' # added to unit test report
+          junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report
           report-retention-days: 30
 
       #
@@ -132,7 +135,7 @@ jobs:
         uses: mikepenz/action-junit-report@v3
         if: always() # always run even if the previous step fails
         with:
-          report_paths: 'build/test-results/**/*.xml'
+          report_paths: "${{ inputs.multi-module && '*/build/test-results/**/*.xml' || 'build/test-results/**/*.xml' }}"
           require_tests: ${{ !inputs.skip-build && inputs.expect-tests }}
 
           # Workaround for check that is additionally created being associated

@@ -5,6 +5,15 @@ on:
         description: Java version to use for build
         required: true
         type: string
+      multi-module:
+        description: If this is a multi-module project
+        type: boolean
+        default: false
+      gradle-tasks:
+        description: Custom Gradle tasks to run
+        required: false
+        type: string
+        default: ''
     secrets:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
@@ -13,7 +22,8 @@ jobs:
   check:
     uses: ./.github/workflows/gradle-library.yml
     with:
-      gradle-tasks: 'clean check'
+      gradle-tasks: ${{ inputs.gradle-tasks != '' && inputs.gradle-tasks || 'clean check' }}
       java-version: ${{ inputs.java-version }}
+      multi-module: ${{ inputs.multi-module }}
       notify-failure: false
     secrets: inherit
