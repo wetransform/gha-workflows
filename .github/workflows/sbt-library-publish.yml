@@ -1,0 +1,38 @@
+on:
+  workflow_call:
+    inputs:
+      commmand:
+        description: Custom command to run for the build
+        default: ''
+        required: false
+        type: string
+      pre-build-command:
+        description: Custom command to run before the build
+        type: string
+        default: ''
+      java-version:
+        description: Java version to use for build
+        required: true
+        type: string
+      expect-tests:
+        description: If JUnit test results are expected
+        default: true
+        type: boolean
+    secrets:
+      WETF_ARTIFACTORY_USER:
+        required: true
+      WETF_ARTIFACTORY_PASSWORD:
+        required: true
+      SLACK_NOTIFICATIONS_BOT_TOKEN:
+        required: true
+
+jobs:
+  publish:
+    uses: ./.github/workflows/play-service.yml
+    with:
+      command: ${{ inputs.command != '' && inputs.command || './sbt clean update test publish +publish' }}
+      pre-build-command: ${{ inputs.pre-build-command }}
+      java-version: ${{ inputs.java-version }}
+      expect-tests: ${{ inputs.expect-tests }}
+      notify-failure: true
+    secrets: inherit
