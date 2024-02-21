@@ -30,7 +30,7 @@ jobs:
   publish:
     uses: ./.github/workflows/play-service.yml
     with:
-      command: ${{ inputs.command != '' && inputs.command || './sbt clean update test publish +publish' }}
+      command: ${{ inputs.command != '' && inputs.command || './sbt clean update test +test publish +publish' }}
       pre-build-command: ${{ inputs.pre-build-command }}
       java-version: ${{ inputs.java-version }}
       expect-tests: ${{ inputs.expect-tests }}

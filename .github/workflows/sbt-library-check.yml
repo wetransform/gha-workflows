@@ -26,7 +26,7 @@ jobs:
   check:
     uses: ./.github/workflows/sbt-library.yml
     with:
-      command: ${{ inputs.command != '' && inputs.command || './sbt clean update test' }}
+      command: ${{ inputs.command != '' && inputs.command || './sbt clean update test +test' }}
       pre-build-command: ${{ inputs.pre-build-command }}
       java-version: ${{ inputs.java-version }}
       expect-tests: ${{ inputs.expect-tests }}
