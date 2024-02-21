@@ -28,7 +28,7 @@ on:
 
 jobs:
   publish:
-    uses: ./.github/workflows/play-service.yml
+    uses: ./.github/workflows/sbt-library.yml
     with:
       command: ${{ inputs.command != '' && inputs.command || './sbt clean update test +test publish +publish' }}
       pre-build-command: ${{ inputs.pre-build-command }}
