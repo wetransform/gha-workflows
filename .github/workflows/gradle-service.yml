@@ -37,9 +37,7 @@ on:
       # GH_PAT:
       #   required: true
       DOCKER_HUB_USERNAME:
-        required: true
       DOCKER_HUB_PASSWORD:
-        required: true
       DOCKER_HUB_EMAIL:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
