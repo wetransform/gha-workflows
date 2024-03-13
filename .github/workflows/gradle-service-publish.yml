@@ -21,6 +21,10 @@ on:
         description: If this is a multi-module project
         type: boolean
         default: false
+      expect-tests:
+        description: If JUnit test results are expected
+        default: true
+        type: boolean
     secrets:
       # GH_PAT:
       #   required: true
@@ -45,4 +49,5 @@ jobs:
       image-tag-2: ${{ inputs.image-tag-2 }}
       image-tag-3: ${{ inputs.image-tag-3 }}
       multi-module: ${{ inputs.multi-module }}
+      expect-tests: ${{ inputs.expect-tests }}
     secrets: inherit
