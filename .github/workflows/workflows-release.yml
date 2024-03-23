@@ -29,10 +29,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        # XXX This was potentially disabled before to fix issues with protected branches,
-        # XXX needed to comment it for semantic-release-github-actions-tags to work
-        # with:
-        #   persist-credentials: false
+        with:
+          token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          # credentials required for semantic-release-github-actions-tags
+          # persist-credentials: false
 
       - name: Release
         id: release
