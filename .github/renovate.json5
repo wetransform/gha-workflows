@@ -8,6 +8,7 @@
     ":disableRateLimiting",
     "group:allNonMajor",
     ":enableVulnerabilityAlertsWithLabel(security)",
+    ":semanticCommitTypeAll(fix)"
   ],
   labels: [
     "renovate",
