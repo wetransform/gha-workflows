@@ -8,7 +8,7 @@
     ":disableRateLimiting",
     "group:allNonMajor",
     ":enableVulnerabilityAlertsWithLabel(security)",
-    ":semanticCommitTypeAll(fix)"
+    // ":semanticCommitTypeAll(fix)"
   ],
   labels: [
     "renovate",
@@ -27,16 +27,19 @@
       matchUpdateTypes: ["minor"],
       schedule: ["* * * * 0"],
     },
-    /*{
+    {
       description: "Reusable workflows use fix commits to trigger a release",
       matchFileNames: [".github/workflows/*.yml"],
       // semanticCommitType: "fix",
-      extends: [":semanticCommitTypeAll(fix)"]
+      extends: [":semanticCommitType(fix)"]
+      // extends: [":semanticCommitTypeAll(fix)"]
     },
+    /*
     {
       description: "Repository workflows use chore commits",
       matchFileNames: [".github/workflows/workflows-*.yml"],
-      semanticCommitType: "chore"
+      // semanticCommitType: "chore"
+      extends: [":semanticCommitType(chore)"]
       // extends: [":semanticCommitTypeAll(chore)"]
     }*/
   ],
