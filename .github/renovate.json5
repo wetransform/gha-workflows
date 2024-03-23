@@ -27,13 +27,13 @@
       matchUpdateTypes: ["minor"],
       schedule: ["* * * * 0"],
     },
-    {
+    /*{
       description: "Reusable workflows use fix commits to trigger a release",
       matchFileNames: [".github/workflows/*.yml"],
       // semanticCommitType: "fix",
       extends: [":semanticCommitTypeAll(fix)"]
     },
-    /*{
+    {
       description: "Repository workflows use chore commits",
       matchFileNames: [".github/workflows/workflows-*.yml"],
       semanticCommitType: "chore"
@@ -78,5 +78,5 @@ semver-coerced\
 {{/if}}"
     }
   ],
-  separateMinorPatch: true,
+  separateMinorPatch: false,
 }
