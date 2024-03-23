@@ -31,7 +31,8 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          # credentials required for semantic-release-github-actions-tags
+          # Note: special permissions for push to protected branch required
+          # Credentials required for semantic-release-github-actions-tags
           # persist-credentials: false
 
       - name: Release
