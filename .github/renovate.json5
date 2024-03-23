@@ -29,12 +29,14 @@
     {
       description: "Reusable workflows use fix commits to trigger a release",
       matchFileNames: [".github/workflows/*.yml"],
-      extends: [":semanticCommitTypeAll(fix)"]
+      semanticCommitType: "fix",
+      // extends: [":semanticCommitTypeAll(fix)"]
     },
     {
       description: "Repository workflows use chore commits",
       matchFileNames: [".github/workflows/workflows-*.yml"],
-      extends: [":semanticCommitTypeAll(chore)"]
+      semanticCommitType: "chore"
+      // extends: [":semanticCommitTypeAll(chore)"]
     }
   ],
   prBodyTemplate: "{{{table}}}{{{notes}}}{{{changelogs}}}",
