@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/wetransform/gha-workflows/compare/v1.1.1...v1.1.2) (2024-03-24)
+
+
+### Bug Fixes
+
+* **deps:** update mikepenz/action-junit-report action to v4 ([4d67cc2](https://github.com/wetransform/gha-workflows/commit/4d67cc25528aa1c50370725e7bc218f70ee70165))
+
 ## [1.1.1](https://github.com/wetransform/gha-workflows/compare/v1.1.0...v1.1.1) (2024-03-24)
 
 
