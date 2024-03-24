@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/wetransform/gha-workflows/compare/v1.1.2...v1.1.3) (2024-03-24)
+
+
+### Bug Fixes
+
+* **deps:** update gradle/actions action to v3.1.0 ([8ea6da0](https://github.com/wetransform/gha-workflows/commit/8ea6da0c4bb6daa4bd0080c3d58ba3e3e3d74dfe))
+
 ## [1.1.2](https://github.com/wetransform/gha-workflows/compare/v1.1.1...v1.1.2) (2024-03-24)
 
 
