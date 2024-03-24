@@ -81,15 +81,6 @@ semantic_version\\s*:\\s*(\"|')?(?<currentValue>.+)(\"|')?\
 semver-coerced\
 {{/if}}"
     },
-    {
-      "fileMatch": ["^\\.github\\/workflows\\/.*\\.ya?ml$"],
-      "matchStrings": [
-        "node-version: '(?<currentValue>.+?)'"
-      ],
-      "depNameTemplate": "node",
-      "datasourceTemplate":"docker",
-      "versioningTemplate": "docker"
-    }
   ],
   separateMinorPatch: false,
 }
