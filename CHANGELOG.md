@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/wetransform/gha-workflows/compare/v1.1.4...v1.1.5) (2024-03-24)
+
+
+### Bug Fixes
+
+* **deps:** update actions/upload-artifact action to v4 ([73b6113](https://github.com/wetransform/gha-workflows/commit/73b611379b2bbe5029784fd19a92c1edc7df7956))
+
 ## [1.1.4](https://github.com/wetransform/gha-workflows/compare/v1.1.3...v1.1.4) (2024-03-24)
 
 
