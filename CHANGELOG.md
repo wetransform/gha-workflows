@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/wetransform/gha-workflows/compare/v1.1.3...v1.1.4) (2024-03-24)
+
+
+### Bug Fixes
+
+* **deps:** update actions/setup-java action to v4 ([2541900](https://github.com/wetransform/gha-workflows/commit/2541900f7add1e70847bae85f6143af2a720a817))
+
 ## [1.1.3](https://github.com/wetransform/gha-workflows/compare/v1.1.2...v1.1.3) (2024-03-24)
 
 
