@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/wetransform/gha-workflows/compare/v1.1.5...v1.1.6) (2024-03-24)
+
+
+### Bug Fixes
+
+* **deps:** update actions/setup-node action to v4.0.2 ([212f385](https://github.com/wetransform/gha-workflows/commit/212f385244784ccf67b68f98bff12e029955c660))
+
 ## [1.1.5](https://github.com/wetransform/gha-workflows/compare/v1.1.4...v1.1.5) (2024-03-24)
 
 
