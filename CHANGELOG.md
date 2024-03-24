@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/wetransform/gha-workflows/compare/v1.1.0...v1.1.1) (2024-03-24)
+
+
+### Bug Fixes
+
+* **deps:** update actions/checkout action to v4 ([fac4bf6](https://github.com/wetransform/gha-workflows/commit/fac4bf608378f7e3d294f63fe1ab5371f0d2e46a))
+
 ## [1.1.0](https://github.com/wetransform/gha-workflows/compare/v1.0.0...v1.1.0) (2024-03-23)
 
 
