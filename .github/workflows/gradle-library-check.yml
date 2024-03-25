@@ -22,7 +22,7 @@ jobs:
   check:
     uses: ./.github/workflows/gradle-library.yml
     with:
-      gradle-tasks: ${{ inputs.gradle-tasks != '' && inputs.gradle-tasks || 'clean check' }}
+      build-tasks: ${{ inputs.gradle-tasks != '' && inputs.gradle-tasks || 'clean check' }}
       java-version: ${{ inputs.java-version }}
       multi-module: ${{ inputs.multi-module }}
       notify-failure: false
