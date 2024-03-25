@@ -9,21 +9,38 @@ on:
         description: If this is a multi-module project
         type: boolean
         default: false
-      gradle-tasks:
-        description: Custom Gradle tasks to run
+      build-tasks:
+        description: Custom Gradle tasks to run for building and verification
         required: false
         type: string
         default: ''
+      publish-tasks:
+        description: Custom Gradle tasks to run for publishing
+        required: false
+        type: string
+        default: ''
+      semantic-release:
+        description: State if a release should be created using semantic-release if applicable
+        default: false
+        type: boolean
+      semantic-release-dryrun:
+        description: If semantic release should do a dryrun
+        default: false
+        type: boolean
     secrets:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
       SLACK_NOTIFICATIONS_BOT_TOKEN:
+      SEMANTIC_RELEASE_GITHUB_TOKEN:
 
 jobs:
   publish:
     uses: ./.github/workflows/gradle-library.yml
     with:
-      gradle-tasks: ${{ inputs.gradle-tasks != '' && inputs.gradle-tasks || 'clean check publishAllPublicationsToMavenRepository' }}
+      build-tasks: ${{ inputs.build-tasks != '' && inputs.build-tasks || 'clean check' }}
+      publish-tasks: ${{ inputs.publish-tasks != '' && inputs.publish-tasks || 'publishAllPublicationsToMavenRepository' }}
       java-version: ${{ inputs.java-version }}
       multi-module: ${{ inputs.multi-module }}
+      semantic-release: ${{ inputs.semantic-release }}
+      semantic-release-dryrun: ${{ inputs.semantic-release-dryrun }}
     secrets: inherit
