@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/wetransform/gha-workflows/compare/v1.1.6...v1.1.7) (2024-04-08)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([6819ce9](https://github.com/wetransform/gha-workflows/commit/6819ce902bfe5697274f687a7eab89723ff1a322))
+
 ## [1.1.6](https://github.com/wetransform/gha-workflows/compare/v1.1.5...v1.1.6) (2024-03-24)
 
 
