@@ -71,7 +71,8 @@ on:
       DOCKER_HUB_PASSWORD:
       DOCKER_HUB_EMAIL:
       SLACK_NOTIFICATIONS_BOT_TOKEN:
-      SEMANTIC_RELEASE_GITHUB_TOKEN:
+      WE_RELEASE_GITHUB_APP_ID:
+      WE_RELEASE_GITHUB_PRIVATE_KEY:
 
 jobs:
   run:
@@ -166,6 +167,13 @@ jobs:
       # even if there are open issues from the scan.
       #
 
+      - name: Determine app token for release
+        uses: actions/create-github-app-token@7bfa3a4717ef143a604ee0a99d859b8886a96d00 # v1.9.3
+        id: app-token
+        with:
+          app-id: ${{ secrets.WE_RELEASE_GITHUB_APP_ID }}
+          private-key: "${{ secrets.WE_RELEASE_GITHUB_PRIVATE_KEY }}"
+
       - name: Publish/release with Gradle
         if: ${{ !inputs.skip-build && inputs.publish-tasks != '' }}
         uses: wetransform/gha-gradle-semantic-release@master
@@ -173,7 +181,7 @@ jobs:
           publish-tasks: ${{ inputs.publish-tasks }}
           release: ${{ inputs.semantic-release }}
           release-dryrun: ${{ inputs.semantic-release-dryrun }}
-          github-token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          github-token: ${{ steps.app-token.outputs.token }}
         env:
           # For Gradle execution
           ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
