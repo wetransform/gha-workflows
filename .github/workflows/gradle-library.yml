@@ -83,6 +83,9 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           submodules: ${{ inputs.submodules }}
+          # do not persist credentials because this clashes with semantic-release action
+          # (because the @semantic-release/git attempts to use them but needs permissions to bypass protection)
+          persist-credentials: false
 
       #
       # Build, test and create Docker image
