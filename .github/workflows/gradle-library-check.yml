@@ -14,6 +14,10 @@ on:
         required: false
         type: string
         default: ''
+      expect-tests:
+        description: If JUnit test results are expected
+        default: true
+        type: boolean
     secrets:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
@@ -25,5 +29,6 @@ jobs:
       build-tasks: ${{ inputs.gradle-tasks != '' && inputs.gradle-tasks || 'clean check' }}
       java-version: ${{ inputs.java-version }}
       multi-module: ${{ inputs.multi-module }}
+      expect-tests: ${{ inputs.expect-tests }}
       notify-failure: false
     secrets: inherit
