@@ -19,6 +19,10 @@ on:
         required: false
         type: string
         default: ''
+      expect-tests:
+        description: If JUnit test results are expected
+        default: true
+        type: boolean
       semantic-release:
         description: State if a release should be created using semantic-release if applicable
         default: false
@@ -42,6 +46,7 @@ jobs:
       publish-tasks: ${{ inputs.publish-tasks != '' && inputs.publish-tasks || 'publishAllPublicationsToMavenRepository' }}
       java-version: ${{ inputs.java-version }}
       multi-module: ${{ inputs.multi-module }}
+      expect-tests: ${{ inputs.expect-tests }}
       semantic-release: ${{ inputs.semantic-release }}
       semantic-release-dryrun: ${{ inputs.semantic-release-dryrun }}
     secrets: inherit
