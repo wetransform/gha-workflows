@@ -1,3 +1,25 @@
+## [2.0.0](https://github.com/wetransform/gha-workflows/compare/v1.1.7...v2.0.0) (2024-04-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* Configuration of Gradle tasks to run now split into two
+different inputs.
+
+### Features
+
+* support expecting no tests for Gradle library workflows ([e4266c0](https://github.com/wetransform/gha-workflows/commit/e4266c0dc958efeccebe387e62a2c8ab27a4713e))
+* support semantic release for Gradle libraries ([a30e8de](https://github.com/wetransform/gha-workflows/commit/a30e8dee7854867573a1a5b96619cdedb6b55083))
+
+
+### Bug Fixes
+
+* **deps:** pin dependencies ([4dee22b](https://github.com/wetransform/gha-workflows/commit/4dee22b66d0ab35ff920501f555c04f9b9856c86))
+* **deps:** update gradle/actions action to v3.3.0 ([be3b722](https://github.com/wetransform/gha-workflows/commit/be3b722ce961dcc838cc8792f30215202a585015))
+* fix incompatibility with semantic-release action ([d2c3be8](https://github.com/wetransform/gha-workflows/commit/d2c3be8ab4e238fda1664c72d566090377203cbc))
+* use app token for release ([063ab9e](https://github.com/wetransform/gha-workflows/commit/063ab9e8a502075d5488e8ccdfb9dfdae219d93b))
+* use concrete versions for all used actions ([fd56f3b](https://github.com/wetransform/gha-workflows/commit/fd56f3bd438cb805a10f35512d6518daa69bf64b))
+
 ## [1.1.7](https://github.com/wetransform/gha-workflows/compare/v1.1.6...v1.1.7) (2024-04-08)
 
 
