@@ -158,7 +158,7 @@ jobs:
         run: mkdir -p ${{ inputs.multi-module && 'trivy-gha-scan/build/test-results' || 'build/test-results' }}
 
       - name: Vulnerability scan
-        uses: wetransform/gha-trivy@v1.1.1
+        uses: wetransform/gha-trivy@760b666e0603bc58978d2830de6e5e6ce8ac5dc0 # v1.1.1
         with:
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report
           report-retention-days: 30
@@ -179,7 +179,7 @@ jobs:
 
       - name: Publish/release with Gradle
         if: ${{ !inputs.skip-build && inputs.publish-tasks != '' }}
-        uses: wetransform/gha-gradle-semantic-release@v1.1.0
+        uses: wetransform/gha-gradle-semantic-release@1a314afbf1bfe748323d66ac36d5634ef63b7481 # v1.1.0
         with:
           publish-tasks: ${{ inputs.publish-tasks }}
           release: ${{ inputs.semantic-release }}
