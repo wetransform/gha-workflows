@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/wetransform/gha-workflows/compare/v2.0.0...v2.0.1) (2024-04-15)
+
+
+### Bug Fixes
+
+* only generate release token if required ([52a47bc](https://github.com/wetransform/gha-workflows/commit/52a47bca3b128d737da2acf69d3e9f1bec3c8f95))
+
 ## [2.0.0](https://github.com/wetransform/gha-workflows/compare/v1.1.7...v2.0.0) (2024-04-12)
 
 
