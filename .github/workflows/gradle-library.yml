@@ -171,6 +171,7 @@ jobs:
       #
 
       - name: Determine app token for release
+        if: ${{ !inputs.skip-build && inputs.publish-tasks != '' && inputs.semantic-release }}
         uses: actions/create-github-app-token@7bfa3a4717ef143a604ee0a99d859b8886a96d00 # v1.9.3
         id: app-token
         with:
