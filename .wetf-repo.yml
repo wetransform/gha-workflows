@@ -3,6 +3,6 @@
 
 # Reference presets that should apply to this repository
 presets:
-  - github-actions
+  - reusable-workflows
   - renovate-config
   - workflows-default
