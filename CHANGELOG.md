@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/wetransform/gha-workflows/compare/v2.0.2...v2.0.3) (2024-04-18)
+
+
+### Bug Fixes
+
+* **deps:** update wetransform/gha-gradle-semantic-release action to v2.0.1 ([0875fc5](https://github.com/wetransform/gha-workflows/commit/0875fc56ea2de593ea3bd201fbd9d14a997206e5))
+
 ## [2.0.2](https://github.com/wetransform/gha-workflows/compare/v2.0.1...v2.0.2) (2024-04-17)
 
 
