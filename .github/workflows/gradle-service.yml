@@ -81,7 +81,7 @@ jobs:
           java-version: ${{ inputs.java-version }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@6cec5d49d4d6d4bb982fbed7047db31ea6d38f11 # v3.3.0
+        uses: gradle/actions/setup-gradle@750cdda3edd6d51b7fdfc069d2e2818cf3c44f4c # v3.3.1
 
       - name: Build and test with Gradle
         env:
@@ -94,7 +94,7 @@ jobs:
         run: ./gradlew ${{ inputs.gradle-tasks }}
 
       - name: Upload Gradle test reports
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # v4.3.2
         if: always()
         with:
           name: Gradle test reports
