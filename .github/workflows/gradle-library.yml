@@ -80,7 +80,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4.1.3
         with:
           submodules: ${{ inputs.submodules }}
           # do not persist credentials because this clashes with semantic-release action
@@ -143,7 +143,7 @@ jobs:
         run: ./gradlew ${{ inputs.build-tasks }}
 
       - name: Upload Gradle test reports
-        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # v4.3.2
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         if: ${{ !inputs.skip-build && always() }}
         with:
           name: Gradle test reports
@@ -223,7 +223,7 @@ jobs:
       #
       - name: Upload artifact
         if: ${{ inputs.upload-artifact-path != '' }}
-        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # v4.3.2
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         with:
           name: ${{ inputs.upload-artifact-name }}
           path: ${{ inputs.upload-artifact-path }}
