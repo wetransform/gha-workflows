@@ -86,6 +86,8 @@ jobs:
           # do not persist credentials because this clashes with semantic-release action
           # (because the @semantic-release/git attempts to use them but needs permissions to bypass protection)
           persist-credentials: false
+          # fetch-depth 0 is required to fetch all tags (and to determine the version based on tags)
+          fetch-depth: ${{ inputs.publish-tasks != '' && 0 || 1 }}
 
       #
       # Build, test and create Docker image
