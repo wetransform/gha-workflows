@@ -1,3 +1,14 @@
+## [2.0.4](https://github.com/wetransform/gha-workflows/compare/v2.0.3...v2.0.4) (2024-04-25)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([715d364](https://github.com/wetransform/gha-workflows/commit/715d364463371b152365ef6f10964b48989a0167))
+* **deps:** update all non-major dependencies ([a4a9d94](https://github.com/wetransform/gha-workflows/commit/a4a9d948506ccbc3964c7203f78b5e9f298780f2))
+* **deps:** update all non-major dependencies ([202e930](https://github.com/wetransform/gha-workflows/commit/202e930625aba73103c109a6162a67d7ef5040e9))
+* **gradle-library:** attempt to fix condition for fetch depth ([602fcf2](https://github.com/wetransform/gha-workflows/commit/602fcf2105eeb6647c1abaf3ea34a80565fc629a))
+* **gradle-library:** fetch all tags for publishing ([9f9eb56](https://github.com/wetransform/gha-workflows/commit/9f9eb56289dae7409d69a513cef5b1a0c21ebb3c))
+
 ## [2.0.3](https://github.com/wetransform/gha-workflows/compare/v2.0.2...v2.0.3) (2024-04-18)
 
 
