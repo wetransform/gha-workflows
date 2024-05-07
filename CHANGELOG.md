@@ -1,3 +1,15 @@
+## [2.1.0](https://github.com/wetransform/gha-workflows/compare/v2.0.4...v2.1.0) (2024-05-07)
+
+
+### Features
+
+* allow to override Gradle tasks for gradle-service-publish ([2a6fc2e](https://github.com/wetransform/gha-workflows/commit/2a6fc2ee6aeac10bafcb841f1be6f780f2b5dac6))
+
+
+### Bug Fixes
+
+* **deps:** update actions/create-github-app-token action to v1.10.0 ([ef7e7ff](https://github.com/wetransform/gha-workflows/commit/ef7e7ff0d5f77914d591c783f3dcf854e3c4e204))
+
 ## [2.0.4](https://github.com/wetransform/gha-workflows/compare/v2.0.3...v2.0.4) (2024-04-25)
 
 
