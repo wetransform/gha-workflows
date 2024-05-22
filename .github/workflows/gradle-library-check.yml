@@ -18,6 +18,10 @@ on:
         description: If JUnit test results are expected
         default: true
         type: boolean
+      checkout-ref:
+        description: Custom ref to check out
+        type: string
+        default: ''
     secrets:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
@@ -30,5 +34,6 @@ jobs:
       java-version: ${{ inputs.java-version }}
       multi-module: ${{ inputs.multi-module }}
       expect-tests: ${{ inputs.expect-tests }}
+      checkout-ref: ${{ inputs.checkout-ref }}
       notify-failure: false
     secrets: inherit
