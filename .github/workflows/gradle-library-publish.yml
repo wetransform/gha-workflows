@@ -31,6 +31,13 @@ on:
         description: If semantic release should do a dryrun
         default: false
         type: boolean
+    outputs:
+      release-published:
+        description: "The first output string"
+        value: ${{ jobs.publish.outputs.release-published }}
+      release-version:
+        description: "The second output string"
+        value: ${{ jobs.publish.outputs.release-version }}
     secrets:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
