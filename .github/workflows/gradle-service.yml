@@ -33,6 +33,10 @@ on:
         description: If this is a multi-module project
         type: boolean
         default: false
+      checkout-ref:
+        description: Custom ref to check out
+        type: string
+        default: ''
     secrets:
       # GH_PAT:
       #   required: true
@@ -50,6 +54,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        with:
+          ref: ${{ inputs.checkout-ref }}
 
       # For each environment variable's key-value pair, mask the value from logs.
       - name: Populate custom environment variables
