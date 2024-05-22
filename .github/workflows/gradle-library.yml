@@ -62,6 +62,13 @@ on:
         description: If this is a multi-module project
         type: boolean
         default: false
+    outputs:
+      release-published:
+        description: If a release was created
+        value: ${{ jobs.run.outputs.release-published }}
+      release-version:
+        description: The release version if a release was created
+        value: ${{ jobs.run.outputs.release-version }}
     secrets:
       # GH_PAT:
       #   required: true
@@ -77,6 +84,10 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
+
+    outputs:
+      release-published: ${{ steps.gradle-release.outputs.release-published }}
+      release-version: ${{ steps.gradle-release.outputs.release-version }}
 
     steps:
       - name: Checkout
@@ -181,6 +192,7 @@ jobs:
           private-key: "${{ secrets.WE_RELEASE_GITHUB_PRIVATE_KEY }}"
 
       - name: Publish/release with Gradle
+        id: gradle-release
         if: ${{ !inputs.skip-build && inputs.publish-tasks != '' }}
         uses: wetransform/gha-gradle-semantic-release@7df5afac738e0cf1ffb38917c17a6c4a5357a5af # v2.1.0
         with:
