@@ -33,6 +33,10 @@ on:
         description: If this is a multi-module project
         type: boolean
         default: false
+      checkout-ref:
+        description: Custom ref to check out
+        type: string
+        default: ''
     secrets:
       # GH_PAT:
       #   required: true
@@ -51,6 +55,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
+          ref: ${{ inputs.checkout-ref }}
           # fetch-depth 0 is required to fetch all tags (and to determine the version based on tags)
           fetch-depth: 0
           # TODO similar to gradle-library:

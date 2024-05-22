@@ -23,6 +23,10 @@ on:
         description: If JUnit test results are expected
         default: true
         type: boolean
+      checkout-ref:
+        description: Custom ref to check out
+        type: string
+        default: ''
       semantic-release:
         description: State if a release should be created using semantic-release if applicable
         default: false
@@ -54,6 +58,7 @@ jobs:
       java-version: ${{ inputs.java-version }}
       multi-module: ${{ inputs.multi-module }}
       expect-tests: ${{ inputs.expect-tests }}
+      checkout-ref: ${{ inputs.checkout-ref }}
       semantic-release: ${{ inputs.semantic-release }}
       semantic-release-dryrun: ${{ inputs.semantic-release-dryrun }}
     secrets: inherit

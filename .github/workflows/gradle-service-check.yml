@@ -30,6 +30,10 @@ on:
         description: If JUnit test results are expected
         default: true
         type: boolean
+      checkout-ref:
+        description: Custom ref to check out
+        type: string
+        default: ''
     secrets:
       # GH_PAT:
       #   required: true
@@ -51,5 +55,6 @@ jobs:
       image-tag-3: ${{ inputs.image-tag-3 }}
       multi-module: ${{ inputs.multi-module }}
       expect-tests: ${{ inputs.expect-tests }}
+      checkout-ref: ${{ inputs.checkout-ref }}
       notify-failure: false
     secrets: inherit
