@@ -51,9 +51,59 @@ jobs:
           docker pull ${{ matrix.image }}
 
       - name: Vulnerability scan
-        uses: wetransform/gha-trivy@760b666e0603bc58978d2830de6e5e6ce8ac5dc0 # v1.1.1
+        uses: wetransform/gha-trivy@v2
         with:
           image-ref: ${{ matrix.image }}
           create-test-report: ${{ inputs.create-test-report }}
           report-tag: ${{ matrix.image }}
           report-retention-days: ${{ inputs.report-retention-days }}
+
+  summary:
+    runs-on: ubuntu-latest
+    needs: [scan]
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: sboms
+          pattern: SBOM (CycloneDX) * # name used by gha-trivy action
+          merge-multiple: true # add files from all matches
+
+      - name: Install CycloneDX CLI # https://github.com/CycloneDX/cyclonedx-cli
+        uses: jaxxstorm/action-install-gh-release@v1.12.0
+        with:
+          repo: CycloneDX/cyclonedx-cli
+          tag: v0.25.1 # optional, otherwise use latest
+
+          # extension-matching: disable # disable extension matching because artifacts are binaries
+
+          # work around action picking wrong artifact (with `musl`) - open issue on specifying artifact manually see https://github.com/jaxxstorm/action-install-gh-release/issues/84
+          extension: -linux-x64
+          platform: cyclone
+          arch: dx
+
+          rename-to: cyclonedx-cli
+          chmod: 0755
+          cache: enable # only works if using specific tag
+      - name: Verify CycloneDX CLI install
+        shell: bash
+        run: cyclonedx-cli --version
+
+      - name: Merge SBOMs
+        shell: bash
+        run: |
+          # Find all JSON files and store them in an array
+          files=($(find "sboms" -name "*.json"))
+
+          # Merge all files
+          cyclonedx-cli merge --input-files "${files[@]}" --output-file sboms/sbom-combined.json
+
+          # Create combined CSV
+          cyclonedx-cli convert --input-file sboms/sbom-combined.json --output-file sboms/sbom-combined.csv --output-format csv
+
+      - name: Upload combined SBOMs
+        uses: actions/upload-artifact@v4
+        with:
+          name: Combined SBOMs (CycloneDX)
+          path: sboms/
+          retention-days: ${{ inputs.report-retention-days }}
