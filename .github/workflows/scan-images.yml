@@ -18,6 +18,10 @@ on:
         description: If a JUnit test report should be created
         type: boolean
         default: true
+      remove-individual-artifacts:
+        description: If individual workflow artifacts should be replaced by merged ones
+        typer: boolean
+        default: true
     secrets:
       # GH_PAT:
       #   required: true
@@ -61,8 +65,17 @@ jobs:
   summary:
     runs-on: ubuntu-latest
     needs: [scan]
+    if: always() # run even if scan fails
     steps:
-      - name: Download all artifacts
+      - name: Merge SBOM artifacts
+        if: ${{ inputs.remove-individual-artifacts }}
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: SBOM (CycloneDX) [all-individual-results]
+          pattern: SBOM (CycloneDX) * # name used by gha-trivy action
+          delete-merged: true
+
+      - name: Download all SBOM artifacts
         uses: actions/download-artifact@v4
         with:
           path: sboms
@@ -92,18 +105,28 @@ jobs:
       - name: Merge SBOMs
         shell: bash
         run: |
+          mkdir -p merged
+
           # Find all JSON files and store them in an array
           files=($(find "sboms" -name "*.json"))
 
           # Merge all files
-          cyclonedx-cli merge --input-files "${files[@]}" --output-file sboms/sbom-combined.json
+          cyclonedx-cli merge --input-files "${files[@]}" --output-file merged/sbom.json
 
           # Create combined CSV
-          cyclonedx-cli convert --input-file sboms/sbom-combined.json --output-file sboms/sbom-combined.csv --output-format csv
+          cyclonedx-cli convert --input-file merged/sbom.json --output-file merged/sbom.csv --output-format csv
 
       - name: Upload combined SBOMs
         uses: actions/upload-artifact@v4
         with:
-          name: Combined SBOMs (CycloneDX)
-          path: sboms/
+          name: Merged SBOMs (CycloneDX)
+          path: merged/
           retention-days: ${{ inputs.report-retention-days }}
+
+      - name: Merge HTML report artifacts
+        if: ${{ inputs.remove-individual-artifacts }}
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: Vulnerability report (HTML)
+          pattern: Vulnerability report (HTML)* # name used by gha-trivy action
+          delete-merged: true
