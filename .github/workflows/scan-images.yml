@@ -20,7 +20,7 @@ on:
         default: true
       remove-individual-artifacts:
         description: If individual workflow artifacts should be replaced by merged ones
-        typer: boolean
+        type: boolean
         default: true
     secrets:
       # GH_PAT:
