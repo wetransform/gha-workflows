@@ -83,7 +83,7 @@ jobs:
           merge-multiple: true # add files from all matches
 
       - name: Install CycloneDX CLI # https://github.com/CycloneDX/cyclonedx-cli
-        uses: jaxxstorm/action-install-gh-release@v1.12.0
+        uses: jaxxstorm/action-install-gh-release@25d5e2dd555cd74f1fab9ac1e6ea117acde2c0c4 # v1.12.0
         with:
           repo: CycloneDX/cyclonedx-cli
           tag: v0.25.1 # optional, otherwise use latest
