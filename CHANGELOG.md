@@ -1,3 +1,25 @@
+## [2.2.0](https://github.com/wetransform/gha-workflows/compare/v2.1.0...v2.2.0) (2024-06-20)
+
+
+### Features
+
+* **deps:** update wetransform/gha-trivy action to v2 ([fffeaac](https://github.com/wetransform/gha-workflows/commit/fffeaac5b4426c4d5b805b7a373d856777a37bb7))
+* **scan-images:** include SBOM of scanned images and merge them ([e001ea3](https://github.com/wetransform/gha-workflows/commit/e001ea3da2147b9db42b49d66bd9e8d12c3fd0a7))
+* **scan-images:** remove individual SBOM and HTML report artifacts ([f804d9f](https://github.com/wetransform/gha-workflows/commit/f804d9fc88501afeb589097060acedc8a6f2d6b7))
+
+
+### Bug Fixes
+
+* **deps:** pin jaxxstorm/action-install-gh-release action to 25d5e2d ([7de1fbc](https://github.com/wetransform/gha-workflows/commit/7de1fbccf719c1a6d519d2d720717aa407e6f16f))
+* **deps:** update actions/checkout action to v4.1.6 ([2e2eaa7](https://github.com/wetransform/gha-workflows/commit/2e2eaa73785b861f4c0f1c946c8c24461027f38d))
+* **deps:** update all non-major dependencies ([7b16a5f](https://github.com/wetransform/gha-workflows/commit/7b16a5f20b20a0867b9f6e2b659ded7991ce6dec))
+* **deps:** update all non-major dependencies ([4345049](https://github.com/wetransform/gha-workflows/commit/4345049c27f65e948b85b6d17bfa31ba38861c77))
+* **deps:** update all non-major dependencies ([7af9039](https://github.com/wetransform/gha-workflows/commit/7af90394a934c92458945ad5f623e75640adf944))
+* **deps:** update docker/build-push-action action to v5.4.0 ([15e42be](https://github.com/wetransform/gha-workflows/commit/15e42be328c667d85bfb45edbf72ed17bb6a0a1c))
+* **deps:** update docker/build-push-action action to v6 ([2622b71](https://github.com/wetransform/gha-workflows/commit/2622b71fc26927526f357d8ed447f27d4b3860db))
+* **deps:** update wetransform/gha-gradle-semantic-release action to v2.1.0 ([8caa0d2](https://github.com/wetransform/gha-workflows/commit/8caa0d29f8f8d38f42e2a21ad185cee7a0ee1c83))
+* **scan-images:** fix typo ([a9c893a](https://github.com/wetransform/gha-workflows/commit/a9c893aab9f19965c3d280669e3435a160149919))
+
 ## [2.1.0](https://github.com/wetransform/gha-workflows/compare/v2.0.4...v2.1.0) (2024-05-07)
 
 
