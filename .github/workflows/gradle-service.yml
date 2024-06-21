@@ -50,6 +50,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          # fetch-depth 0 is required to fetch all tags (and to determine the version based on tags)
+          fetch-depth: 0
+          # TODO similar to gradle-library:
+          # ${{ inputs.publish-tasks != '' && '0' || '1' }}
 
       # For each environment variable's key-value pair, mask the value from logs.
       - name: Populate custom environment variables
