@@ -22,6 +22,10 @@ on:
         description: If individual workflow artifacts should be replaced by merged ones
         type: boolean
         default: true
+      merge-sboms:
+        description: If SBOMs should be merged (can take some time)
+        type: boolean
+        default: true
     secrets:
       # GH_PAT:
       #   required: true
@@ -75,7 +79,16 @@ jobs:
           pattern: SBOM (CycloneDX) * # name used by gha-trivy action
           delete-merged: true
 
+      - name: Merge HTML report artifacts
+        if: ${{ inputs.remove-individual-artifacts }}
+        uses: actions/upload-artifact/merge@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+        with:
+          name: Vulnerability report (HTML)
+          pattern: Vulnerability report (HTML)* # name used by gha-trivy action
+          delete-merged: true
+
       - name: Download all SBOM artifacts
+        if: ${{ inputs.merge-sboms }}
         uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
         with:
           path: sboms
@@ -83,6 +96,7 @@ jobs:
           merge-multiple: true # add files from all matches
 
       - name: Install CycloneDX CLI # https://github.com/CycloneDX/cyclonedx-cli
+        if: ${{ inputs.merge-sboms }}
         uses: jaxxstorm/action-install-gh-release@25d5e2dd555cd74f1fab9ac1e6ea117acde2c0c4 # v1.12.0
         with:
           repo: CycloneDX/cyclonedx-cli
@@ -99,10 +113,12 @@ jobs:
           chmod: 0755
           cache: enable # only works if using specific tag
       - name: Verify CycloneDX CLI install
+        if: ${{ inputs.merge-sboms }}
         shell: bash
         run: cyclonedx-cli --version
 
       - name: Merge SBOMs
+        if: ${{ inputs.merge-sboms }}
         shell: bash
         run: |
           mkdir -p merged
@@ -116,17 +132,26 @@ jobs:
           # Create combined CSV
           cyclonedx-cli convert --input-file merged/sbom.json --output-file merged/sbom.csv --output-format csv
 
+      - name: Remove duplicates from CSV
+        if: ${{ inputs.merge-sboms }}
+        shell: bash
+        run: |
+          awk '!seen[$0]++' merged/sbom.csv > merged/sbom-no-duplicates.csv
+
       - name: Upload combined SBOMs
+        if: ${{ inputs.merge-sboms }}
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         with:
           name: Merged SBOMs (CycloneDX)
           path: merged/
           retention-days: ${{ inputs.report-retention-days }}
 
-      - name: Merge HTML report artifacts
-        if: ${{ inputs.remove-individual-artifacts }}
-        uses: actions/upload-artifact/merge@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+      - name: Scan merged SBOM
+        if: ${{ inputs.merge-sboms }}
+        uses: wetransform/gha-trivy@5364d6c863a77d2716a3668cbd71dd5ee51b53fc
         with:
-          name: Vulnerability report (HTML)
-          pattern: Vulnerability report (HTML)* # name used by gha-trivy action
-          delete-merged: true
+          scan-ref: merged/sbom.json
+          create-test-report: false
+          report-tag: all
+          report-retention-days: ${{ inputs.report-retention-days }}
+          create-summary: true
