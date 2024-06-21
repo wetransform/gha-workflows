@@ -26,6 +26,10 @@ on:
         description: If SBOMs should be merged (can take some time)
         type: boolean
         default: true
+      scan-merged-sbom:
+        description: If the merged SBOM should be scanned to create an aggregated HTML report (prone to failure as trivy does not accept many merged SBOMs)
+        type: boolean
+        default: false
     secrets:
       # GH_PAT:
       #   required: true
@@ -146,9 +150,10 @@ jobs:
           path: merged/
           retention-days: ${{ inputs.report-retention-days }}
 
+      # Scan merged SBOM for an overview, but trivy fails for mixed OS dependencies, so disabled by default
       - name: Scan merged SBOM
-        if: ${{ inputs.merge-sboms }}
-        uses: wetransform/gha-trivy@5364d6c863a77d2716a3668cbd71dd5ee51b53fc
+        if: ${{ inputs.merge-sboms && inputs.scan-merged-sbom }}
+        uses: wetransform/gha-trivy@8915cc9f5106f6683462a6eec9d093649e50a345 # v2.1.0
         with:
           scan-ref: merged/sbom.json
           create-test-report: false
