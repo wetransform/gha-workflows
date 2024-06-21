@@ -1,3 +1,11 @@
+## [2.2.1](https://github.com/wetransform/gha-workflows/compare/v2.2.0...v2.2.1) (2024-06-21)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([5bf2a0f](https://github.com/wetransform/gha-workflows/commit/5bf2a0f30fba55c2643b6f0a5a6b448e29212d21))
+* **gradle-service:** check out all tags ([8b5c150](https://github.com/wetransform/gha-workflows/commit/8b5c15094e1a033b577a216dc3441b523363c51b))
+
 ## [2.2.0](https://github.com/wetransform/gha-workflows/compare/v2.1.0...v2.2.0) (2024-06-20)
 
 
