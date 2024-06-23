@@ -63,7 +63,7 @@ jobs:
           docker pull ${{ matrix.image }}
 
       - name: Vulnerability scan
-        uses: wetransform/gha-trivy@8a8c1ba0444e4f9308ba94f3d004d67aac8cc65f # v2.0.1
+        uses: wetransform/gha-trivy@8915cc9f5106f6683462a6eec9d093649e50a345 # v2.1.0
         with:
           image-ref: ${{ matrix.image }}
           create-test-report: ${{ inputs.create-test-report }}
