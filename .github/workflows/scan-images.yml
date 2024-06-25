@@ -67,10 +67,10 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Login to secondary registry
-        if: inputs.secondaryRegistry != ''
+        if: ${{ vars.SECONDARY_REGISTRY != '' || inputs.secondaryRegistry != '' }}
         uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
         with:
-          registry: ${{ inputs.secondaryRegistry }}
+          registry: ${{ vars.SECONDARY_REGISTRY != '' && vars.SECONDARY_REGISTRY || inputs.secondaryRegistry }}
           username: ${{ secrets.SECONDARY_REGISTRY_USERNAME }}
           password: ${{ secrets.SECONDARY_REGISTRY_PASSWORD }}
 
