@@ -35,6 +35,10 @@ on:
         type: string
         required: false
         default: ''
+      environment:
+        description: 'GitHub repository environment to use (to access variables)'
+        type: string
+        default: ''
     secrets:
       # GH_PAT:
       #   required: true
@@ -52,6 +56,7 @@ on:
 jobs:
   scan:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
 
     strategy:
       fail-fast: false # scan all images
