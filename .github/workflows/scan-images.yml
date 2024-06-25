@@ -30,6 +30,11 @@ on:
         description: If the merged SBOM should be scanned to create an aggregated HTML report (prone to failure as trivy does not accept many merged SBOMs)
         type: boolean
         default: false
+      secondaryRegistry:
+        description: 'Optional secondary registry to login to'
+        type: string
+        required: false
+        default: ''
     secrets:
       # GH_PAT:
       #   required: true
@@ -38,6 +43,11 @@ on:
       DOCKER_HUB_PASSWORD:
         required: true
       DOCKER_HUB_EMAIL:
+        required: false
+      SECONDARY_REGISTRY_PASSWORD:
+        required: false
+      SECONDARY_REGISTRY_USERNAME:
+        required: false
 
 jobs:
   scan:
@@ -55,6 +65,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Login to secondary registry
+        if: inputs.secondaryRegistry != ''
+        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
+        with:
+          registry: ${{ inputs.secondaryRegistry }}
+          username: ${{ secrets.SECONDARY_REGISTRY_USERNAME }}
+          password: ${{ secrets.SECONDARY_REGISTRY_PASSWORD }}
 
       - name: Pull image
         if: ${{ inputs.pull }}
