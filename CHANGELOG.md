@@ -1,3 +1,19 @@
+## [2.3.0](https://github.com/wetransform/gha-workflows/compare/v2.2.1...v2.3.0) (2024-06-28)
+
+
+### Features
+
+* **scan-images:** create combined vulnerability report ([7bb6d66](https://github.com/wetransform/gha-workflows/commit/7bb6d669a338901444964a7e8eb69e0afc4135bc))
+* **scan-images:** support logging in to secondary registry ([5c14dfc](https://github.com/wetransform/gha-workflows/commit/5c14dfc561fd9f1d737a51bd439d6e1075066ba0)), closes [ING-4250](https://wetransform.atlassian.net/browse/ING-4250)
+* **scan-images:** support passing in environment to use ([5de883d](https://github.com/wetransform/gha-workflows/commit/5de883df75ee761ed24ac19e859b643554f4c3b7))
+* **scan-images:** support secondary registry from variable ([e2ca84d](https://github.com/wetransform/gha-workflows/commit/e2ca84d5597123e492230a775de372cf4ba4526f)), closes [ING-4250](https://wetransform.atlassian.net/browse/ING-4250)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([8db3e0b](https://github.com/wetransform/gha-workflows/commit/8db3e0bd8980a5872a80036c30c2ba747296aa77))
+* **scan-images:** disable scanning merged SBOM by default ([378360e](https://github.com/wetransform/gha-workflows/commit/378360e72a4a7feec1054a1463850864aeace8b9))
+
 ## [2.2.1](https://github.com/wetransform/gha-workflows/compare/v2.2.0...v2.2.1) (2024-06-21)
 
 
