@@ -35,6 +35,10 @@ on:
         description: If semantic release should do a dryrun
         default: false
         type: boolean
+      skip-scan:
+        description: If security scan and associated tasks should be skipped (e.g. in case no Gradle lock files are configured to be generated)
+        type: boolean
+        default: false
     outputs:
       release-published:
         description: If a release was created
@@ -59,6 +63,7 @@ jobs:
       multi-module: ${{ inputs.multi-module }}
       expect-tests: ${{ inputs.expect-tests }}
       checkout-ref: ${{ inputs.checkout-ref }}
+      skip-scan: ${{ inputs.skip-scan }}
       semantic-release: ${{ inputs.semantic-release }}
       semantic-release-dryrun: ${{ inputs.semantic-release-dryrun }}
     secrets: inherit

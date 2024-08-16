@@ -62,6 +62,10 @@ on:
         description: If this is a multi-module project
         type: boolean
         default: false
+      skip-scan:
+        description: If security scan and associated tasks should be skipped (e.g. in case no Gradle lock files are configured to be generated)
+        type: boolean
+        default: false
       checkout-ref:
         description: Custom ref to check out
         type: string
@@ -118,6 +122,7 @@ jobs:
         uses: gradle/actions/setup-gradle@d9c87d481d55275bb5441eef3fe0e46805f9ef70 # v3.5.0
 
       - name: Write dependency lockfile for security scan
+        if: ${{ !inputs.skip-scan }}
         env:
           ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
           ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
@@ -125,7 +130,7 @@ jobs:
         run: ./gradlew dependencies --write-locks
 
       - name: Write dependency lockfile for security scan (submodules)
-        if: ${{ inputs.multi-module }}
+        if: ${{ !inputs.skip-scan && inputs.multi-module }}
         env:
           ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
           ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
@@ -173,9 +178,11 @@ jobs:
       #
 
       - name: Make sure test-results folder exists
+        if: ${{ !inputs.skip-scan }}
         run: mkdir -p ${{ inputs.multi-module && 'trivy-gha-scan/build/test-results' || 'build/test-results' }}
 
       - name: Vulnerability scan
+        if: ${{ !inputs.skip-scan }}
         uses: wetransform/gha-trivy@8915cc9f5106f6683462a6eec9d093649e50a345 # v2.1.0
         with:
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report

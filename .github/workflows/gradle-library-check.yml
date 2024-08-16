@@ -22,6 +22,10 @@ on:
         description: Custom ref to check out
         type: string
         default: ''
+      skip-scan:
+        description: If security scan and associated tasks should be skipped (e.g. in case no Gradle lock files are configured to be generated)
+        type: boolean
+        default: false
     secrets:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
@@ -35,5 +39,6 @@ jobs:
       multi-module: ${{ inputs.multi-module }}
       expect-tests: ${{ inputs.expect-tests }}
       checkout-ref: ${{ inputs.checkout-ref }}
+      skip-scan: ${{ inputs.skip-scan }}
       notify-failure: false
     secrets: inherit
