@@ -1,3 +1,22 @@
+## [2.4.0](https://github.com/wetransform/gha-workflows/compare/v2.3.0...v2.4.0) (2024-08-20)
+
+
+### Features
+
+* **gradle-library:** add outputs related to release ([1c0252b](https://github.com/wetransform/gha-workflows/commit/1c0252b47f7ce9ac7751c20bd8057e87bdbb09b1))
+* **gradle-library:** support skipping security scan ([4586a5d](https://github.com/wetransform/gha-workflows/commit/4586a5dbf42262eb8847978c9b6d5800cd22946e))
+* **gradle-library:** supported nested subprojects ([be1659a](https://github.com/wetransform/gha-workflows/commit/be1659a730590584117b3623df2a7ffa6191aa30))
+* **gradle:** support specifying custom Git ref to check out ([4243206](https://github.com/wetransform/gha-workflows/commit/4243206d49cecde1ff3571b25b66e559363bc6cf))
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([6342262](https://github.com/wetransform/gha-workflows/commit/63422626a96d0a07dfcee283b45e9ffa06161751))
+* **deps:** update all non-major dependencies ([03162c8](https://github.com/wetransform/gha-workflows/commit/03162c85d1e5b1623f02af9e007a9ba4f34dcb4b))
+* **deps:** update all non-major dependencies ([75cadd9](https://github.com/wetransform/gha-workflows/commit/75cadd96383dbac8992cb04b296946ef32fb0a4e))
+* **deps:** update all non-major dependencies ([9ca5947](https://github.com/wetransform/gha-workflows/commit/9ca5947893efdfd33a05872881f81bd7d5076fe3))
+* **deps:** update gradle/actions action to v4 ([714271b](https://github.com/wetransform/gha-workflows/commit/714271be278baf135f93ed69e19bcdc252911fb0))
+
 ## [2.3.0](https://github.com/wetransform/gha-workflows/compare/v2.2.1...v2.3.0) (2024-06-28)
 
 
