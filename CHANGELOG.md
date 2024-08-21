@@ -1,3 +1,16 @@
+## [2.5.0](https://github.com/wetransform/gha-workflows/compare/v2.4.0...v2.5.0) (2024-08-21)
+
+
+### Features
+
+* **gradle-library:** attempt artifact upload also on failure ([52e8930](https://github.com/wetransform/gha-workflows/commit/52e893078117417e81560a2801a38dd903e644c8))
+* **gradle-library:** pass on artifact input parameters ([7256ee1](https://github.com/wetransform/gha-workflows/commit/7256ee1b185826f5c5a4fc55e79805085003e5b1))
+
+
+### Bug Fixes
+
+* **gradle-library:** fix artifact upload condition ([82bde79](https://github.com/wetransform/gha-workflows/commit/82bde79f7971feedd31a3e60a631071e10b2ff08))
+
 ## [2.4.0](https://github.com/wetransform/gha-workflows/compare/v2.3.0...v2.4.0) (2024-08-20)
 
 
