@@ -39,6 +39,14 @@ on:
         description: If security scan and associated tasks should be skipped (e.g. in case no Gradle lock files are configured to be generated)
         type: boolean
         default: false
+      upload-artifact-path:
+        description: Path for artifact to upload (to reuse in another job)
+        type: string
+        default: ''
+      upload-artifact-name:
+        description: Name for artifact to upload (to reuse in another job)
+        type: string
+        default: build-artifact
     outputs:
       release-published:
         description: If a release was created
@@ -64,6 +72,8 @@ jobs:
       expect-tests: ${{ inputs.expect-tests }}
       checkout-ref: ${{ inputs.checkout-ref }}
       skip-scan: ${{ inputs.skip-scan }}
+      upload-artifact-path: ${{ inputs.upload-artifact-path }}
+      upload-artifact-name: ${{ inputs.upload-artifact-name }}
       semantic-release: ${{ inputs.semantic-release }}
       semantic-release-dryrun: ${{ inputs.semantic-release-dryrun }}
     secrets: inherit
