@@ -248,7 +248,8 @@ jobs:
       # Upload artifact
       #
       - name: Upload artifact
-        if: ${{ inputs.upload-artifact-path != '' }}
+        if: always() && ${{ inputs.upload-artifact-path != '' }}
+        continue-on-error: true
         uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
         with:
           name: ${{ inputs.upload-artifact-name }}
