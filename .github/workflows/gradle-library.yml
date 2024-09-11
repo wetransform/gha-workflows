@@ -113,7 +113,7 @@ jobs:
       # Build, test and create Docker image
       #
 
-      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4.2.2
+      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4.3.0
         with:
           distribution: temurin
           java-version: ${{ inputs.java-version }}
@@ -206,7 +206,7 @@ jobs:
       - name: Publish/release with Gradle
         id: gradle-release
         if: ${{ !inputs.skip-build && inputs.publish-tasks != '' }}
-        uses: wetransform/gha-gradle-semantic-release@7df5afac738e0cf1ffb38917c17a6c4a5357a5af # v2.1.0
+        uses: wetransform/gha-gradle-semantic-release@065a33533593c9987f59336749538bc8a8626828 # v2.1.1
         with:
           publish-tasks: ${{ inputs.publish-tasks }}
           release: ${{ inputs.semantic-release }}
