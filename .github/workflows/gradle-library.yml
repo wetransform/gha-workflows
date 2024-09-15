@@ -119,7 +119,7 @@ jobs:
           java-version: ${{ inputs.java-version }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@16bf8bc8fe830fa669c3c9f914d3eb147c629707 # v4.0.1
+        uses: gradle/actions/setup-gradle@d156388eb19639ec20ade50009f3d199ce1e2808 # v4.1.0
 
       - name: Write dependency lockfile for security scan
         if: ${{ !inputs.skip-scan }}
@@ -197,7 +197,7 @@ jobs:
 
       - name: Determine app token for release
         if: ${{ !inputs.skip-build && inputs.publish-tasks != '' && inputs.semantic-release }}
-        uses: actions/create-github-app-token@3378cda945da322a8db4b193e19d46352ebe2de5 # v1.10.4
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
         id: app-token
         with:
           app-id: ${{ secrets.WE_RELEASE_GITHUB_APP_ID }}
