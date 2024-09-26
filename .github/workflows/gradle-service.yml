@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
         with:
           ref: ${{ inputs.checkout-ref }}
           # fetch-depth 0 is required to fetch all tags (and to determine the version based on tags)
@@ -85,7 +85,7 @@ jobs:
       # Build, test and create Docker image
       #
 
-      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4.3.0
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4.4.0
         with:
           distribution: temurin
           java-version: ${{ inputs.java-version }}
@@ -120,7 +120,7 @@ jobs:
         run: mkdir -p ${{ inputs.multi-module && 'trivy-gha-scan/build/test-results' || 'build/test-results' }}
 
       - name: Vulnerability scan
-        uses: wetransform/gha-trivy@8915cc9f5106f6683462a6eec9d093649e50a345 # v2.1.0
+        uses: wetransform/gha-trivy@43245e19f1f3debe1caaeb795f6187f36cfa38de # v2.2.0
         with:
           image-ref: 'docker.io/${{ inputs.image-tag }}'
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report
@@ -128,7 +128,7 @@ jobs:
           report-tag: ${{ inputs.image-tag }}
 
       - name: Vulnerability scan (Image 2)
-        uses: wetransform/gha-trivy@8915cc9f5106f6683462a6eec9d093649e50a345 # v2.1.0
+        uses: wetransform/gha-trivy@43245e19f1f3debe1caaeb795f6187f36cfa38de # v2.2.0
         if: ${{ inputs.image-tag-2 != '' }}
         with:
           image-ref: 'docker.io/${{ inputs.image-tag-2 }}'
@@ -137,7 +137,7 @@ jobs:
           report-tag: ${{ inputs.image-tag-2 }}
 
       - name: Vulnerability scan (Image 3)
-        uses: wetransform/gha-trivy@8915cc9f5106f6683462a6eec9d093649e50a345 # v2.1.0
+        uses: wetransform/gha-trivy@43245e19f1f3debe1caaeb795f6187f36cfa38de # v2.2.0
         if: ${{ inputs.image-tag-3 != '' }}
         with:
           image-ref: 'docker.io/${{ inputs.image-tag-3 }}'
