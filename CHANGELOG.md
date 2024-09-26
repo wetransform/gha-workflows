@@ -1,3 +1,13 @@
+## [2.5.1](https://github.com/wetransform/gha-workflows/compare/v2.5.0...v2.5.1) (2024-09-26)
+
+### Bug Fixes
+
+* **deps:** update actions/create-github-app-token action to v1.10.4 ([73e877b](https://github.com/wetransform/gha-workflows/commit/73e877b606232f60e3350c5101d54e5f89dc5a1f))
+* **deps:** update all non-major dependencies ([07bbc00](https://github.com/wetransform/gha-workflows/commit/07bbc00d01184b087273f62b41686d9d68a0d3fe))
+* **deps:** update all non-major dependencies ([2ef3de6](https://github.com/wetransform/gha-workflows/commit/2ef3de66173746db44678c0aaf5be0ce01a4e145))
+* **deps:** update all non-major dependencies ([9894f6b](https://github.com/wetransform/gha-workflows/commit/9894f6bd6be411d26e59619fece34d7ee554410c))
+* **deps:** update all non-major dependencies ([9106618](https://github.com/wetransform/gha-workflows/commit/9106618de40cb6393b8ebca40c439de3de3c516d))
+
 ## [2.5.0](https://github.com/wetransform/gha-workflows/compare/v2.4.0...v2.5.0) (2024-08-21)
 
 
