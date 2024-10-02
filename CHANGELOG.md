@@ -1,3 +1,19 @@
+## [3.0.0](https://github.com/wetransform/gha-workflows/compare/v2.5.1...v3.0.0) (2024-10-02)
+
+### ⚠ BREAKING CHANGES
+
+* **gradle-service:** Gradle task configuration for Gradle services now split
+across two input variables to separate checks from publishing.
+
+### Features
+
+* **gradle-service:** support semantic release ([721629b](https://github.com/wetransform/gha-workflows/commit/721629bd9239f4ec25c407b9960d0855a268a293))
+
+### Bug Fixes
+
+* **deps:** update docker/build-push-action action to v6.8.0 ([d69c9d7](https://github.com/wetransform/gha-workflows/commit/d69c9d7e0c9c3cd53da94033635959a7c4b0e283))
+* **deps:** update docker/build-push-action action to v6.9.0 ([ac3db1a](https://github.com/wetransform/gha-workflows/commit/ac3db1aacec428a72efe71bbe074594d04555546))
+
 ## [2.5.1](https://github.com/wetransform/gha-workflows/compare/v2.5.0...v2.5.1) (2024-09-26)
 
 ### Bug Fixes
