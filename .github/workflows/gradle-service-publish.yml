@@ -1,8 +1,13 @@
 on:
   workflow_call:
     inputs:
-      gradle-tasks:
-        description: Custom Gradle tasks to run
+      build-tasks:
+        description: Custom Gradle tasks to run for building and verification
+        required: false
+        type: string
+        default: ''
+      publish-tasks:
+        description: Custom Gradle tasks to run for publishing
         required: false
         type: string
         default: ''
@@ -34,6 +39,14 @@ on:
         description: Custom ref to check out
         type: string
         default: ''
+      semantic-release:
+        description: State if a release should be created using semantic-release if applicable
+        default: false
+        type: boolean
+      semantic-release-dryrun:
+        description: If semantic release should do a dryrun
+        default: false
+        type: boolean
     secrets:
       # GH_PAT:
       #   required: true
@@ -52,7 +65,8 @@ jobs:
   publish:
     uses: ./.github/workflows/gradle-service.yml
     with:
-      gradle-tasks: ${{ inputs.gradle-tasks != '' && inputs.gradle-tasks || 'clean check dockerPushImage dockerPushLatest' }}
+      build-tasks: ${{ inputs.build-tasks != '' && inputs.build-tasks || 'clean check' }}
+      publish-tasks: ${{ inputs.publish-tasks != '' && inputs.publish-tasks || 'dockerPushImage dockerPushLatest' }}
       java-version: ${{ inputs.java-version }}
       image-tag: ${{ inputs.image-tag }}
       image-tag-2: ${{ inputs.image-tag-2 }}
@@ -60,4 +74,7 @@ jobs:
       multi-module: ${{ inputs.multi-module }}
       expect-tests: ${{ inputs.expect-tests }}
       checkout-ref: ${{ inputs.checkout-ref }}
+      semantic-release: ${{ inputs.semantic-release }}
+      semantic-release-dryrun: ${{ inputs.semantic-release-dryrun }}
+      skip-scan: ${{ inputs.semantic-release-dryrun && inputs.semantic-release }} # dryrun does not produce image, so skip scan
     secrets: inherit

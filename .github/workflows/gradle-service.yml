@@ -1,10 +1,23 @@
 on:
   workflow_call:
     inputs:
-      gradle-tasks:
-        description: Tasks to run
+      build-tasks:
+        description: Gradle tasks to run for building and verifying the project
         required: true
         type: string
+      publish-tasks:
+        description: Gradle tasks to run for publishing the project
+        required: false
+        default: ''
+        type: string
+      semantic-release:
+        description: State if a release should be created using semantic-release if applicable
+        default: false
+        type: boolean
+      semantic-release-dryrun:
+        description: If semantic release should do a dryrun
+        default: false
+        type: boolean
       java-version:
         description: Java version to use for build
         required: true
@@ -17,6 +30,18 @@ on:
         description: If JUnit test results are expected
         default: true
         type: boolean
+      skip-build:
+        description: Skip build/publishing and only scan vulnerabilities
+        default: false
+        type: boolean
+      submodules:
+        # see https://github.com/actions/checkout
+        default: 'false'
+        type: string
+      java-options:
+        description: Custom JAVA_TOOL_OPTIONS
+        type: string
+        default: ''
       image-tag:
         description: Image tag to scan after build
         required: true
@@ -33,10 +58,21 @@ on:
         description: If this is a multi-module project
         type: boolean
         default: false
+      skip-scan:
+        description: If security scan and associated tasks should be skipped (e.g. in case no Gradle lock files are configured to be generated)
+        type: boolean
+        default: false
       checkout-ref:
         description: Custom ref to check out
         type: string
         default: ''
+    outputs:
+      release-published:
+        description: If a release was created
+        value: ${{ jobs.run.outputs.release-published }}
+      release-version:
+        description: The release version if a release was created
+        value: ${{ jobs.run.outputs.release-version }}
     secrets:
       # GH_PAT:
       #   required: true
@@ -46,20 +82,28 @@ on:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
       SLACK_NOTIFICATIONS_BOT_TOKEN:
+      WE_RELEASE_GITHUB_APP_ID:
+      WE_RELEASE_GITHUB_PRIVATE_KEY:
       ENV_VARS: # secret for passing on additional env variables based on https://github.com/orgs/community/discussions/26671#discussioncomment-6776498
 
 jobs:
   run:
     runs-on: ubuntu-latest
 
+    outputs:
+      release-published: ${{ steps.gradle-release.outputs.release-published }}
+      release-version: ${{ steps.gradle-release.outputs.release-version }}
+
     steps:
       - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
         with:
           ref: ${{ inputs.checkout-ref }}
+          submodules: ${{ inputs.submodules }}
+          # do not persist credentials because this clashes with semantic-release action
+          # (because the @semantic-release/git attempts to use them but needs permissions to bypass protection)
+          persist-credentials: false
           # fetch-depth 0 is required to fetch all tags (and to determine the version based on tags)
-          fetch-depth: 0
-          # TODO similar to gradle-library:
-          # ${{ inputs.publish-tasks != '' && '0' || '1' }}
+          fetch-depth: ${{ inputs.publish-tasks != '' && '0' || '1' }}
 
       # For each environment variable's key-value pair, mask the value from logs.
       - name: Populate custom environment variables
@@ -94,6 +138,7 @@ jobs:
         uses: gradle/actions/setup-gradle@d156388eb19639ec20ade50009f3d199ce1e2808 # v4.1.0
 
       - name: Build and test with Gradle
+        if: ${{ !inputs.skip-build }}
         env:
           ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
           ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
@@ -101,11 +146,12 @@ jobs:
           ORG_GRADLE_PROJECT_dockerHubPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
           ORG_GRADLE_PROJECT_dockerHubEmail: ${{ secrets.DOCKER_HUB_EMAIL }}
           ORG_GRADLE_PROJECT_dockerHost: "unix:///var/run/docker.sock"
-        run: ./gradlew ${{ inputs.gradle-tasks }}
+          JAVA_TOOL_OPTIONS: ${{ inputs.java-options }}
+        run: ./gradlew ${{ inputs.build-tasks }}
 
       - name: Upload Gradle test reports
         uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
-        if: always()
+        if: ${{ !inputs.skip-build && always() }}
         with:
           name: Gradle test reports
           retention-days: 7
@@ -113,13 +159,50 @@ jobs:
             ${{ inputs.multi-module && '*/build/reports/tests' || 'build/reports/tests' }}
 
       #
+      # Publish or release
+      #
+      # This is done before the test report because currently we allow publishing
+      # even if there are open issues from the scan.
+      #
+
+      - name: Determine app token for release
+        if: ${{ !inputs.skip-build && inputs.publish-tasks != '' && inputs.semantic-release }}
+        uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
+        id: app-token
+        with:
+          app-id: ${{ secrets.WE_RELEASE_GITHUB_APP_ID }}
+          private-key: "${{ secrets.WE_RELEASE_GITHUB_PRIVATE_KEY }}"
+
+      - name: Publish/release with Gradle
+        id: gradle-release
+        if: ${{ !inputs.skip-build && inputs.publish-tasks != '' }}
+        uses: wetransform/gha-gradle-semantic-release@065a33533593c9987f59336749538bc8a8626828 # v2.1.1
+        with:
+          publish-tasks: ${{ inputs.publish-tasks }}
+          release: ${{ inputs.semantic-release }}
+          release-dryrun: ${{ inputs.semantic-release-dryrun }}
+          github-token: ${{ steps.app-token.outputs.token }}
+        env:
+          # For Gradle execution
+          ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
+          ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
+          JAVA_TOOL_OPTIONS: ${{ inputs.java-options }}
+
+          ORG_GRADLE_PROJECT_dockerHubUsername: ${{ secrets.DOCKER_HUB_USERNAME }}
+          ORG_GRADLE_PROJECT_dockerHubPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          ORG_GRADLE_PROJECT_dockerHubEmail: ${{ secrets.DOCKER_HUB_EMAIL }}
+          ORG_GRADLE_PROJECT_dockerHost: "unix:///var/run/docker.sock"
+
+      #
       # Security scans
       #
 
       - name: Make sure test-results folder exists
+        if: ${{ !inputs.skip-scan }}
         run: mkdir -p ${{ inputs.multi-module && 'trivy-gha-scan/build/test-results' || 'build/test-results' }}
 
       - name: Vulnerability scan
+        if: ${{ !inputs.skip-scan }}
         uses: wetransform/gha-trivy@43245e19f1f3debe1caaeb795f6187f36cfa38de # v2.2.0
         with:
           image-ref: 'docker.io/${{ inputs.image-tag }}'
@@ -129,7 +212,7 @@ jobs:
 
       - name: Vulnerability scan (Image 2)
         uses: wetransform/gha-trivy@43245e19f1f3debe1caaeb795f6187f36cfa38de # v2.2.0
-        if: ${{ inputs.image-tag-2 != '' }}
+        if: ${{ !inputs.skip-scan && inputs.image-tag-2 != '' }}
         with:
           image-ref: 'docker.io/${{ inputs.image-tag-2 }}'
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy-2.xml' || 'build/test-results/trivy-2.xml' }}" # added to unit test report
@@ -138,7 +221,7 @@ jobs:
 
       - name: Vulnerability scan (Image 3)
         uses: wetransform/gha-trivy@43245e19f1f3debe1caaeb795f6187f36cfa38de # v2.2.0
-        if: ${{ inputs.image-tag-3 != '' }}
+        if: ${{ !inputs.skip-scan && inputs.image-tag-3 != '' }}
         with:
           image-ref: 'docker.io/${{ inputs.image-tag-3 }}'
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy-3.xml' || 'build/test-results/trivy-3.xml' }}" # added to unit test report
@@ -155,7 +238,7 @@ jobs:
         if: always() # always run even if the previous step fails
         with:
           report_paths: "${{ inputs.multi-module && '*/build/test-results/**/*.xml' || 'build/test-results/**/*.xml' }}"
-          require_tests: ${{ inputs.expect-tests }}
+          require_tests: ${{ !inputs.skip-build && inputs.expect-tests }}
 
           # Workaround for check that is additionally created being associated
           # to the wrong workflow/run. Instead not additional check is created.

@@ -48,7 +48,7 @@ jobs:
   check:
     uses: ./.github/workflows/gradle-service.yml
     with:
-      gradle-tasks: ${{ inputs.gradle-tasks != '' && inputs.gradle-tasks || 'clean check dockerTagLatest' }}
+      build-tasks: ${{ inputs.gradle-tasks != '' && inputs.gradle-tasks || 'clean check dockerTagLatest' }}
       java-version: ${{ inputs.java-version }}
       image-tag: ${{ inputs.image-tag }}
       image-tag-2: ${{ inputs.image-tag-2 }}
