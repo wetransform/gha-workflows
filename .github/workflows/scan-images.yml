@@ -86,7 +86,7 @@ jobs:
           docker pull ${{ matrix.image }}
 
       - name: Vulnerability scan
-        uses: wetransform/gha-trivy@43245e19f1f3debe1caaeb795f6187f36cfa38de # v2.2.0
+        uses: wetransform/gha-trivy@e06eaae60c4781e82886b303499cf0ea1a0639a4 # v2.2.1
         with:
           image-ref: ${{ matrix.image }}
           create-test-report: ${{ inputs.create-test-report }}
@@ -100,7 +100,7 @@ jobs:
     steps:
       - name: Merge SBOM artifacts
         if: ${{ inputs.remove-individual-artifacts }}
-        uses: actions/upload-artifact/merge@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: SBOM (CycloneDX) [all-individual-results]
           pattern: SBOM (CycloneDX) * # name used by gha-trivy action
@@ -108,7 +108,7 @@ jobs:
 
       - name: Merge HTML report artifacts
         if: ${{ inputs.remove-individual-artifacts }}
-        uses: actions/upload-artifact/merge@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: Vulnerability report (HTML)
           pattern: Vulnerability report (HTML)* # name used by gha-trivy action
@@ -167,7 +167,7 @@ jobs:
 
       - name: Upload combined SBOMs
         if: ${{ inputs.merge-sboms }}
-        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: Merged SBOMs (CycloneDX)
           path: merged/
@@ -176,7 +176,7 @@ jobs:
       # Scan merged SBOM for an overview, but trivy fails for mixed OS dependencies, so disabled by default
       - name: Scan merged SBOM
         if: ${{ inputs.merge-sboms && inputs.scan-merged-sbom }}
-        uses: wetransform/gha-trivy@43245e19f1f3debe1caaeb795f6187f36cfa38de # v2.2.0
+        uses: wetransform/gha-trivy@e06eaae60c4781e82886b303499cf0ea1a0639a4 # v2.2.1
         with:
           scan-ref: merged/sbom.json
           create-test-report: false
