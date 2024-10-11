@@ -110,6 +110,20 @@ jobs:
           fetch-depth: ${{ inputs.publish-tasks != '' && '0' || '1' }}
 
       #
+      # Login to Docker Hub
+      #
+      # May be required for pulling images for testcontainers
+      #
+      - name: Login to DockerHub
+        if: env.DOCKER_HUB_USERNAME
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+
+      #
       # Build, test and create Docker image
       #
 
