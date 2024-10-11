@@ -1,3 +1,9 @@
+## [3.1.0](https://github.com/wetransform/gha-workflows/compare/v3.0.0...v3.1.0) (2024-10-11)
+
+### Features
+
+* **gradle:** login to Docker Hub if credentials are provided ([646fe8e](https://github.com/wetransform/gha-workflows/commit/646fe8eb174bf6b02ad84776113b36c4ff58c8db))
+
 ## [3.0.0](https://github.com/wetransform/gha-workflows/compare/v2.5.1...v3.0.0) (2024-10-02)
 
 ### ⚠ BREAKING CHANGES
