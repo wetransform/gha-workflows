@@ -1,3 +1,14 @@
+## [3.2.0](https://github.com/wetransform/gha-workflows/compare/v3.1.1...v3.2.0) (2024-11-16)
+
+### Features
+
+* **gradle:** support private submodules ([b25037a](https://github.com/wetransform/gha-workflows/commit/b25037a5497625456c666b92d0dd80fe6e37df39))
+
+### Bug Fixes
+
+* **deps:** update actions/setup-java action to v4.5.0 ([7d4f56b](https://github.com/wetransform/gha-workflows/commit/7d4f56b37bfc1a5bbad7a48ea7d2c570f66457dd))
+* **deps:** update all non-major dependencies ([4b90a85](https://github.com/wetransform/gha-workflows/commit/4b90a85493279c480aa466d7962c383a752fe449))
+
 ## [3.1.1](https://github.com/wetransform/gha-workflows/compare/v3.1.0...v3.1.1) (2024-10-24)
 
 ### Bug Fixes
