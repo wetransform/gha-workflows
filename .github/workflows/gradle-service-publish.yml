@@ -35,6 +35,10 @@ on:
         description: If JUnit test results are expected
         default: true
         type: boolean
+      submodules:
+        # see https://github.com/actions/checkout
+        default: 'false'
+        type: string
       checkout-ref:
         description: Custom ref to check out
         type: string
@@ -73,6 +77,7 @@ jobs:
       image-tag-3: ${{ inputs.image-tag-3 }}
       multi-module: ${{ inputs.multi-module }}
       expect-tests: ${{ inputs.expect-tests }}
+      submodules: ${{ inputs.submodules }}
       checkout-ref: ${{ inputs.checkout-ref }}
       semantic-release: ${{ inputs.semantic-release }}
       semantic-release-dryrun: ${{ inputs.semantic-release-dryrun }}
