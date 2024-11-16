@@ -18,6 +18,10 @@ on:
         description: If JUnit test results are expected
         default: true
         type: boolean
+      submodules:
+        # see https://github.com/actions/checkout
+        default: 'false'
+        type: string
       checkout-ref:
         description: Custom ref to check out
         type: string
@@ -46,6 +50,7 @@ jobs:
       java-version: ${{ inputs.java-version }}
       multi-module: ${{ inputs.multi-module }}
       expect-tests: ${{ inputs.expect-tests }}
+      submodules: ${{ inputs.submodules }}
       checkout-ref: ${{ inputs.checkout-ref }}
       skip-scan: ${{ inputs.skip-scan }}
       upload-artifact-path: ${{ inputs.upload-artifact-path }}

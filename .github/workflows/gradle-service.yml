@@ -104,6 +104,8 @@ jobs:
           persist-credentials: false
           # fetch-depth 0 is required to fetch all tags (and to determine the version based on tags)
           fetch-depth: ${{ inputs.publish-tasks != '' && '0' || '1' }}
+          # provide a token in case submodules are enabled and private (secret is expected to be present)
+          token: ${{ inputs.submodules != 'false' && secrets.GH_PAT || github.token }}
 
       # For each environment variable's key-value pair, mask the value from logs.
       - name: Populate custom environment variables
