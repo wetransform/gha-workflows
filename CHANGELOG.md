@@ -1,3 +1,10 @@
+## [3.2.1](https://github.com/wetransform/gha-workflows/compare/v3.2.0...v3.2.1) (2024-11-18)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([85c4f89](https://github.com/wetransform/gha-workflows/commit/85c4f897e25769d9abead1c0bf6435b012e1ab6f))
+* **deps:** update mikepenz/action-junit-report action to v5 ([18440a9](https://github.com/wetransform/gha-workflows/commit/18440a997db3e982aa9ced1f2862bffe40d84322))
+
 ## [3.2.0](https://github.com/wetransform/gha-workflows/compare/v3.1.1...v3.2.0) (2024-11-16)
 
 ### Features
