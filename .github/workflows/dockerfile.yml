@@ -21,6 +21,10 @@ on:
         description: Docker build context
         type: string
         default: .
+      checkout-ref:
+        description: Custom ref to check out
+        type: string
+        default: ''
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
@@ -31,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.checkout-ref }}
 
       - name: Docker meta
         id: meta
