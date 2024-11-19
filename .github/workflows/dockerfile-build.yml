@@ -13,6 +13,10 @@ on:
         description: Docker build context
         type: string
         default: .
+      checkout-ref:
+        description: Custom ref to check out
+        type: string
+        default: ''
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
@@ -24,6 +28,7 @@ jobs:
       image: ${{ inputs.image }}
       tag: ${{ inputs.tag }}
       context: ${{ inputs.context }}
+      checkout-ref: ${{ inputs.checkout-ref }}
       push: false
       notify-failure: false
     secrets: inherit
