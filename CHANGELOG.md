@@ -1,3 +1,9 @@
+## [3.3.0](https://github.com/wetransform/gha-workflows/compare/v3.2.1...v3.3.0) (2024-11-19)
+
+### Features
+
+* **dockerfile:** support passing in custom checkout ref ([6971128](https://github.com/wetransform/gha-workflows/commit/6971128da8796211eb8458263e9d8891267266a1))
+
 ## [3.2.1](https://github.com/wetransform/gha-workflows/compare/v3.2.0...v3.2.1) (2024-11-18)
 
 ### Bug Fixes
