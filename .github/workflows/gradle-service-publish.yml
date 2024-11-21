@@ -63,6 +63,8 @@ on:
       WETF_ARTIFACTORY_PASSWORD:
       SLACK_NOTIFICATIONS_BOT_TOKEN:
         required: true
+      WE_RELEASE_GITHUB_APP_ID:
+      WE_RELEASE_GITHUB_PRIVATE_KEY:
       ENV_VARS: # secret for passing on additional env variables based on https://github.com/orgs/community/discussions/26671#discussioncomment-6776498
 
 jobs:
