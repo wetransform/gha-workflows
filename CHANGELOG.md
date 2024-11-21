@@ -1,3 +1,9 @@
+## [3.3.2](https://github.com/wetransform/gha-workflows/compare/v3.3.1...v3.3.2) (2024-11-21)
+
+### Bug Fixes
+
+* **gradle-service:** add missing secret declaration ([64f333a](https://github.com/wetransform/gha-workflows/commit/64f333a4911bea175d625911e311238fb9acfe46))
+
 ## [3.3.1](https://github.com/wetransform/gha-workflows/compare/v3.3.0...v3.3.1) (2024-11-21)
 
 ### Bug Fixes
