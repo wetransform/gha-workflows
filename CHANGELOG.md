@@ -1,3 +1,13 @@
+## [3.4.0](https://github.com/wetransform/gha-workflows/compare/v3.3.2...v3.4.0) (2024-12-03)
+
+### Features
+
+* support using custom runner based on variable ([2597a86](https://github.com/wetransform/gha-workflows/commit/2597a86d9e7b1d138fa3b00202d311a9e3e686d8))
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([602e4a0](https://github.com/wetransform/gha-workflows/commit/602e4a0db4681f0f50f0d987fe7d549945174902))
+
 ## [3.3.2](https://github.com/wetransform/gha-workflows/compare/v3.3.1...v3.3.2) (2024-11-21)
 
 ### Bug Fixes
