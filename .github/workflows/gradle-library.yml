@@ -199,7 +199,7 @@ jobs:
 
       - name: Vulnerability scan
         if: ${{ !inputs.skip-scan }}
-        uses: wetransform/gha-trivy@b8d2a2bcd7930fd3ce380c930bfd772d8f236112 # v2.3.2
+        uses: wetransform/gha-trivy@8d25c5cf8d4016470d9a8d43d0398b5c9a1c8a09 # v2.3.3
         with:
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report
           report-retention-days: 30
