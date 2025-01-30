@@ -129,7 +129,7 @@ jobs:
       # Build, test and create Docker image
       #
 
-      - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4.6.0
+      - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
         with:
           distribution: temurin
           java-version: ${{ inputs.java-version }}
@@ -247,7 +247,7 @@ jobs:
 
         # https://github.com/marketplace/actions/junit-report-action
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@62516aa379bff6370c95fd5894d5a27fb6619d9b # v5.2.0
+        uses: mikepenz/action-junit-report@ee6b445351cd81e2f73a16a0e52d598aeac2197f # v5.3.0
         if: always() # always run even if the previous step fails
         with:
           report_paths: "${{ inputs.multi-module && '**/build/test-results/**/*.xml' || 'build/test-results/**/*.xml' }}"
