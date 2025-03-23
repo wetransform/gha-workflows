@@ -86,7 +86,7 @@ jobs:
           docker pull ${{ matrix.image }}
 
       - name: Vulnerability scan
-        uses: wetransform/gha-trivy@8d25c5cf8d4016470d9a8d43d0398b5c9a1c8a09 # v2.3.3
+        uses: wetransform/gha-trivy@88e4f6f3203f7c8ce1704772c7c36a77759ef5a8 # v2.3.4
         with:
           image-ref: ${{ matrix.image }}
           create-test-report: ${{ inputs.create-test-report }}
@@ -100,7 +100,7 @@ jobs:
     steps:
       - name: Merge SBOM artifacts
         if: ${{ inputs.remove-individual-artifacts }}
-        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: SBOM (CycloneDX) [all-individual-results]
           pattern: SBOM (CycloneDX) * # name used by gha-trivy action
@@ -108,7 +108,7 @@ jobs:
 
       - name: Merge HTML report artifacts
         if: ${{ inputs.remove-individual-artifacts }}
-        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Vulnerability report (HTML)
           pattern: Vulnerability report (HTML)* # name used by gha-trivy action
@@ -116,7 +116,7 @@ jobs:
 
       - name: Download all SBOM artifacts
         if: ${{ inputs.merge-sboms }}
-        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
         with:
           path: sboms
           pattern: SBOM (CycloneDX) * # name used by gha-trivy action
@@ -167,7 +167,7 @@ jobs:
 
       - name: Upload combined SBOMs
         if: ${{ inputs.merge-sboms }}
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Merged SBOMs (CycloneDX)
           path: merged/
@@ -176,7 +176,7 @@ jobs:
       # Scan merged SBOM for an overview, but trivy fails for mixed OS dependencies, so disabled by default
       - name: Scan merged SBOM
         if: ${{ inputs.merge-sboms && inputs.scan-merged-sbom }}
-        uses: wetransform/gha-trivy@8d25c5cf8d4016470d9a8d43d0398b5c9a1c8a09 # v2.3.3
+        uses: wetransform/gha-trivy@88e4f6f3203f7c8ce1704772c7c36a77759ef5a8 # v2.3.4
         with:
           scan-ref: merged/sbom.json
           create-test-report: false
