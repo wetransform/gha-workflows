@@ -1,3 +1,21 @@
+## [3.4.2](https://github.com/wetransform/gha-workflows/compare/v3.4.1...v3.4.2) (2025-03-24)
+
+### Bug Fixes
+
+* **deps:** update actions/create-github-app-token action to v1.11.1 ([852e666](https://github.com/wetransform/gha-workflows/commit/852e666926a563124f34e7768d64cea57d84503a))
+* **deps:** update actions/create-github-app-token action to v1.11.5 ([368af87](https://github.com/wetransform/gha-workflows/commit/368af875bc3bfef12bf60a5fca62a0bb9f2286e1))
+* **deps:** update actions/create-github-app-token action to v1.11.6 ([cbe2cea](https://github.com/wetransform/gha-workflows/commit/cbe2cea2499eec3b559e1116ab4f2453e1b74e91))
+* **deps:** update actions/upload-artifact action to v4.6.0 ([dd904f9](https://github.com/wetransform/gha-workflows/commit/dd904f9d25dfdfc473b41ada5d8a8583737df7b3))
+* **deps:** update all non-major dependencies ([433f5e5](https://github.com/wetransform/gha-workflows/commit/433f5e54299a210f54c16bd40c6b5ec313ba7e81))
+* **deps:** update all non-major dependencies ([8e8f1e6](https://github.com/wetransform/gha-workflows/commit/8e8f1e695dcd449d015983af680e02e9838075dd))
+* **deps:** update all non-major dependencies ([9e79329](https://github.com/wetransform/gha-workflows/commit/9e79329d1c096874e031b64346220ba483880ab2))
+* **deps:** update all non-major dependencies ([61856ff](https://github.com/wetransform/gha-workflows/commit/61856ff3b7cbb0454c1be26caeb8a11e290d743a))
+* **deps:** update all non-major dependencies ([c1196ae](https://github.com/wetransform/gha-workflows/commit/c1196aeb8fba682bff7ed0768c30d3c9a08020fb))
+* **deps:** update docker/build-push-action action to v6.11.0 ([ed5b02f](https://github.com/wetransform/gha-workflows/commit/ed5b02f3cdc0ccae8ce55735e38fe56725bfab86))
+* **deps:** update docker/build-push-action action to v6.13.0 ([0773125](https://github.com/wetransform/gha-workflows/commit/0773125f8fa0c805617387741ff67bf4230df31a))
+* **deps:** update docker/login-action action to v3.4.0 ([134722e](https://github.com/wetransform/gha-workflows/commit/134722ed264200017131aeaf4810ce6dbd460c71))
+* **deps:** update mikepenz/action-junit-report action to v5.5.0 ([640e4d6](https://github.com/wetransform/gha-workflows/commit/640e4d66422a53e23d0a43337c39c32cf522acb0))
+
 ## [3.4.1](https://github.com/wetransform/gha-workflows/compare/v3.4.0...v3.4.1) (2024-12-18)
 
 ### Bug Fixes
