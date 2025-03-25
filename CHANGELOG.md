@@ -1,3 +1,9 @@
+## [3.4.3](https://github.com/wetransform/gha-workflows/compare/v3.4.2...v3.4.3) (2025-03-25)
+
+### Bug Fixes
+
+* specify and pass on secrets explicitly ([edea881](https://github.com/wetransform/gha-workflows/commit/edea88147a62a5c22da3c4d447c7d2ae1a04bd85))
+
 ## [3.4.2](https://github.com/wetransform/gha-workflows/compare/v3.4.1...v3.4.2) (2025-03-24)
 
 ### Bug Fixes
