@@ -78,7 +78,7 @@ on:
         description: The release version if a release was created
         value: ${{ jobs.run.outputs.release-version }}
     secrets:
-      # GH_PAT:
+      GH_PAT:
       #   required: true
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:

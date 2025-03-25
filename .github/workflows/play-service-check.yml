@@ -35,4 +35,12 @@ jobs:
       image-tag: ${{ inputs.image-tag }}
       notify-failure: false
       push-image: false
-    secrets: inherit
+    # secrets: inherit
+    # passing on secrets via inherit seems to be no longer possible
+    # if this workflow is included from a foreign organisation
+    secrets:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      DOCKER_HUB_EMAIL: ${{ secrets.DOCKER_HUB_EMAIL }}
+      WETF_ARTIFACTORY_USER: ${{ secrets.WETF_ARTIFACTORY_USER }}
+      WETF_ARTIFACTORY_PASSWORD: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}

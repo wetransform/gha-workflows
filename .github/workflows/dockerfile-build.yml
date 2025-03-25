@@ -31,4 +31,9 @@ jobs:
       checkout-ref: ${{ inputs.checkout-ref }}
       push: false
       notify-failure: false
-    secrets: inherit
+    # secrets: inherit
+    # passing on secrets via inherit seems to be no longer possible
+    # if this workflow is included from a foreign organisation
+    secrets:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
