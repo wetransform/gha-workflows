@@ -42,6 +42,11 @@ on:
       WETF_ARTIFACTORY_USER:
       WETF_ARTIFACTORY_PASSWORD:
 
+      GH_PAT:
+      DOCKER_HUB_USERNAME:
+      DOCKER_HUB_PASSWORD:
+      DOCKER_HUB_EMAIL:
+
 jobs:
   check:
     uses: ./.github/workflows/gradle-library.yml
@@ -56,4 +61,13 @@ jobs:
       upload-artifact-path: ${{ inputs.upload-artifact-path }}
       upload-artifact-name: ${{ inputs.upload-artifact-name }}
       notify-failure: false
-    secrets: inherit
+    # secrets: inherit
+    # passing on secrets via inherit seems to be no longer possible
+    # if this workflow is included from a foreign organisation
+    secrets:
+      WETF_ARTIFACTORY_USER: ${{ secrets.WETF_ARTIFACTORY_USER }}
+      WETF_ARTIFACTORY_PASSWORD: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
+      GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      DOCKER_HUB_EMAIL: ${{ secrets.DOCKER_HUB_EMAIL }}

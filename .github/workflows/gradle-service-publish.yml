@@ -52,8 +52,7 @@ on:
         default: false
         type: boolean
     secrets:
-      # GH_PAT:
-      #   required: true
+      GH_PAT:
       DOCKER_HUB_USERNAME:
         required: true
       DOCKER_HUB_PASSWORD:
@@ -84,4 +83,17 @@ jobs:
       semantic-release: ${{ inputs.semantic-release }}
       semantic-release-dryrun: ${{ inputs.semantic-release-dryrun }}
       skip-scan: ${{ inputs.semantic-release-dryrun && inputs.semantic-release }} # dryrun does not produce image, so skip scan
-    secrets: inherit
+    # secrets: inherit
+    # passing on secrets via inherit seems to be no longer possible
+    # if this workflow is included from a foreign organisation
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      DOCKER_HUB_EMAIL: ${{ secrets.DOCKER_HUB_EMAIL }}
+      WETF_ARTIFACTORY_USER: ${{ secrets.WETF_ARTIFACTORY_USER }}
+      WETF_ARTIFACTORY_PASSWORD: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
+      SLACK_NOTIFICATIONS_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+      WE_RELEASE_GITHUB_APP_ID: ${{ secrets.WE_RELEASE_GITHUB_APP_ID }}
+      WE_RELEASE_GITHUB_PRIVATE_KEY: ${{ secrets.WE_RELEASE_GITHUB_PRIVATE_KEY }}
+      ENV_VARS: ${{ secrets.ENV_VARS }}
