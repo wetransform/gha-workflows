@@ -35,6 +35,10 @@ on:
         description: If JUnit test results are expected
         default: true
         type: boolean
+      skip-check:
+        description: Skip build/verification and only publish
+        default: false
+        type: boolean
       submodules:
         # see https://github.com/actions/checkout
         default: "false"
@@ -78,6 +82,7 @@ jobs:
       image-tag-3: ${{ inputs.image-tag-3 }}
       multi-module: ${{ inputs.multi-module }}
       expect-tests: ${{ inputs.expect-tests }}
+      skip-build: ${{ inputs.skip-check }}
       submodules: ${{ inputs.submodules }}
       checkout-ref: ${{ inputs.checkout-ref }}
       semantic-release: ${{ inputs.semantic-release }}
