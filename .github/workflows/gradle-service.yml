@@ -32,7 +32,7 @@ on:
         default: true
         type: boolean
       skip-build:
-        description: Skip build/publishing and only scan vulnerabilities
+        description: Skip build (checks) and only publish and scan vulnerabilities
         default: false
         type: boolean
       submodules:
@@ -200,7 +200,7 @@ jobs:
       #
 
       - name: Determine app token for release
-        if: ${{ !inputs.skip-build && inputs.publish-tasks != '' && inputs.semantic-release }}
+        if: ${{ inputs.publish-tasks != '' && inputs.semantic-release }}
         uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
         id: app-token
         with:
@@ -209,7 +209,7 @@ jobs:
 
       - name: Publish/release with Gradle
         id: gradle-release
-        if: ${{ !inputs.skip-build && inputs.publish-tasks != '' }}
+        if: ${{ inputs.publish-tasks != '' }}
         uses: wetransform/gha-gradle-semantic-release@dac12829d31b006b823e31525ddec19d4de060fd # v2.1.4
         with:
           publish-tasks: ${{ inputs.publish-tasks }}
