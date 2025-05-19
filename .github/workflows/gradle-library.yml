@@ -222,7 +222,7 @@ jobs:
       - name: Publish/release with Gradle
         id: gradle-release
         if: ${{ !inputs.skip-build && inputs.publish-tasks != '' }}
-        uses: wetransform/gha-gradle-semantic-release@065a33533593c9987f59336749538bc8a8626828 # v2.1.1
+        uses: wetransform/gha-gradle-semantic-release@8de25a0dc5423725c03999c687c26fa185368eed # v2.1.2
         with:
           publish-tasks: ${{ inputs.publish-tasks }}
           release: ${{ inputs.semantic-release }}
