@@ -98,7 +98,7 @@ jobs:
         run: mkdir -p ${{ inputs.junit-test-folder }}
 
       - name: Vulnerability scan
-        uses: wetransform/gha-trivy@88e4f6f3203f7c8ce1704772c7c36a77759ef5a8 # v2.3.4
+        uses: wetransform/gha-trivy@051dfb66966286ebd8be8e3c7f026d00fd4bf409 # v2.3.5
         with:
           image-ref: 'docker.io/${{ inputs.image-tag }}'
           junit-test-output: "${{ inputs.junit-test-folder }}/trivy.xml" # added to unit test report

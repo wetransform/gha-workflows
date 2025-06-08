@@ -219,7 +219,7 @@ jobs:
 
       - name: Vulnerability scan
         if: ${{ !inputs.skip-scan }}
-        uses: wetransform/gha-trivy@88e4f6f3203f7c8ce1704772c7c36a77759ef5a8 # v2.3.4
+        uses: wetransform/gha-trivy@051dfb66966286ebd8be8e3c7f026d00fd4bf409 # v2.3.5
         with:
           image-ref: 'docker.io/${{ inputs.image-tag }}'
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report
@@ -227,7 +227,7 @@ jobs:
           report-tag: ${{ inputs.image-tag }}
 
       - name: Vulnerability scan (Image 2)
-        uses: wetransform/gha-trivy@88e4f6f3203f7c8ce1704772c7c36a77759ef5a8 # v2.3.4
+        uses: wetransform/gha-trivy@051dfb66966286ebd8be8e3c7f026d00fd4bf409 # v2.3.5
         if: ${{ !inputs.skip-scan && inputs.image-tag-2 != '' }}
         with:
           image-ref: 'docker.io/${{ inputs.image-tag-2 }}'
@@ -236,7 +236,7 @@ jobs:
           report-tag: ${{ inputs.image-tag-2 }}
 
       - name: Vulnerability scan (Image 3)
-        uses: wetransform/gha-trivy@88e4f6f3203f7c8ce1704772c7c36a77759ef5a8 # v2.3.4
+        uses: wetransform/gha-trivy@051dfb66966286ebd8be8e3c7f026d00fd4bf409 # v2.3.5
         if: ${{ !inputs.skip-scan && inputs.image-tag-3 != '' }}
         with:
           image-ref: 'docker.io/${{ inputs.image-tag-3 }}'
