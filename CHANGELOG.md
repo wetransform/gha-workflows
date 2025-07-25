@@ -1,3 +1,19 @@
+## [3.4.4](https://github.com/wetransform/gha-workflows/compare/v3.4.3...v3.4.4) (2025-07-25)
+
+### Bug Fixes
+
+* **deps:** update actions/create-github-app-token action to v2 ([b6c8970](https://github.com/wetransform/gha-workflows/commit/b6c8970b9f123e7fde363979cbf2498c9ff19e21))
+* **deps:** update actions/create-github-app-token action to v2.0.6 ([9a67cc5](https://github.com/wetransform/gha-workflows/commit/9a67cc5b45c19dea80b4f13c7106fe566bfbf9d2))
+* **deps:** update actions/setup-java action to v4.7.1 ([3ebc69b](https://github.com/wetransform/gha-workflows/commit/3ebc69b2a11a84721486d8c64af862aae6a77f40))
+* **deps:** update all non-major dependencies ([7bb7b32](https://github.com/wetransform/gha-workflows/commit/7bb7b3283e678709818a34dc46e21323ab62372b))
+* **deps:** update all non-major dependencies ([4c85e59](https://github.com/wetransform/gha-workflows/commit/4c85e59d0c2aaf533834ab95264b3b8aa841ff95))
+* **deps:** update all non-major dependencies ([a0b2cde](https://github.com/wetransform/gha-workflows/commit/a0b2cdedfe03fd28ae0dfd44449399cacb2a217e))
+* **deps:** update all non-major dependencies ([8f80081](https://github.com/wetransform/gha-workflows/commit/8f8008105da2bfbb48f5420adb6d2a6c5441dffe))
+* **deps:** update all non-major dependencies ([c527958](https://github.com/wetransform/gha-workflows/commit/c5279586d697b4c6cb3f815259d4b23dff747188))
+* **deps:** update all non-major dependencies ([febcc53](https://github.com/wetransform/gha-workflows/commit/febcc53517ef8ed5fc2e37a43ca691e3dbb2d5f8))
+* **deps:** update wetransform/gha-gradle-semantic-release action to v2.1.2 ([022e53e](https://github.com/wetransform/gha-workflows/commit/022e53ead2b94ba306b1e19dd5ae18a6fa6ddbf3))
+* **deps:** update wetransform/gha-trivy action to v2.3.5 ([d514385](https://github.com/wetransform/gha-workflows/commit/d514385201278927b4e030ad0313cb247f39d7d6))
+
 ## [3.4.3](https://github.com/wetransform/gha-workflows/compare/v3.4.2...v3.4.3) (2025-03-25)
 
 ### Bug Fixes
