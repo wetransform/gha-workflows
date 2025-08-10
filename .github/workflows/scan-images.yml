@@ -66,14 +66,14 @@ jobs:
     steps:
 
       - name: Login to Docker Hub
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Login to secondary registry
         if: ${{ vars.SECONDARY_REGISTRY != '' || inputs.secondaryRegistry != '' }}
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
           registry: ${{ vars.SECONDARY_REGISTRY != '' && vars.SECONDARY_REGISTRY || inputs.secondaryRegistry }}
           username: ${{ secrets.SECONDARY_REGISTRY_USERNAME }}
@@ -127,7 +127,7 @@ jobs:
         uses: jaxxstorm/action-install-gh-release@cd6b2b78ad38bdd294341cda064ec0692b06215b # v1.14.0
         with:
           repo: CycloneDX/cyclonedx-cli
-          tag: v0.25.1 # optional, otherwise use latest
+          tag: v0.29.0 # optional, otherwise use latest
 
           # extension-matching: disable # disable extension matching because artifacts are binaries
 
