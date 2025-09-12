@@ -1,3 +1,14 @@
+## [3.4.5](https://github.com/wetransform/gha-workflows/compare/v3.4.4...v3.4.5) (2025-09-12)
+
+### Bug Fixes
+
+* **deps:** update actions/checkout action to v5 ([6f6f569](https://github.com/wetransform/gha-workflows/commit/6f6f569321860b0584358c15060012c5d11bce05))
+* **deps:** update actions/download-artifact action to v5 ([0a7d28d](https://github.com/wetransform/gha-workflows/commit/0a7d28dace3e3c8de08407277150da5bdb9db475))
+* **deps:** update actions/setup-java action to v5 ([c484f59](https://github.com/wetransform/gha-workflows/commit/c484f59f41b3321d2755107124fa3e6f147db3d7))
+* **deps:** update all non-major dependencies ([16cffe6](https://github.com/wetransform/gha-workflows/commit/16cffe69b9ba891cd07aa5ea3fb70cf1a507b988))
+* **deps:** update all non-major dependencies ([955543d](https://github.com/wetransform/gha-workflows/commit/955543d62012ad4408ce89d522060f47615e4d32))
+* **deps:** update all non-major dependencies ([9294652](https://github.com/wetransform/gha-workflows/commit/929465275707b933a34e833d0818293abb545331))
+
 ## [3.4.4](https://github.com/wetransform/gha-workflows/compare/v3.4.3...v3.4.4) (2025-07-25)
 
 ### Bug Fixes
