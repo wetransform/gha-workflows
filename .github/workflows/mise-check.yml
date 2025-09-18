@@ -1,0 +1,76 @@
+#
+# Mise check workflow
+#
+# Intended to be run for pull requests.
+#
+# Conventions:
+# - workflow uses mise environment "ci"
+# - should have a mise task named "ci:check"
+#
+
+on:
+  workflow_call:
+    inputs:
+      variant:
+        description: Workflow variant to use (leave empty or use one of 'npm')
+        required: true
+        type: string
+      parallel:
+        description: Run mise tasks in parallel (true) or sequentially (false)
+        required: false
+        default: false
+        type: boolean
+    secrets:
+      DOCKER_HUB_USERNAME:
+      DOCKER_HUB_PASSWORD:
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+
+    steps:
+      #
+      # Checkout source code
+      #
+      - uses: actions/checkout@v4
+
+      #
+      # Setup mise & tools
+      #
+      - uses: jdx/mise-action@v2
+
+      #
+      # Optional login to Docker Hub
+      #
+      - name: Login to DockerHub
+        if: env.DOCKER_HUB_USERNAME
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+
+      #
+      # npm: Cache Node.js modules
+      #
+      - name: Cache Node.js modules
+        if: ${{ inputs.variant == 'npm' }}
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Run check task
+        # Run mise tasks in parallel or sequentially based on input
+        run: |
+          if [ "${{ inputs.parallel }}" = "true" ]; then
+            mise run ci:check
+          else
+            mise run --raw ci:check
+          fi
+        env:
+          MISE_ENV: ci
