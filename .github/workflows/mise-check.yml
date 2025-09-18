@@ -37,12 +37,12 @@ jobs:
       #
       # Checkout source code
       #
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       #
       # Setup mise & tools
       #
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@c37c93293d6b742fc901e1406b8f764f6fb19dac # v2
 
       #
       # Optional login to Docker Hub
@@ -61,7 +61,7 @@ jobs:
       #
       - name: Cache Node.js modules
         if: ${{ inputs.variant == 'npm' }}
-        uses: actions/cache@v3
+        uses: actions/cache@2f8e54208210a422b2efd51efaa6bd6d7ca8920f # v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
