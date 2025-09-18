@@ -61,7 +61,7 @@ jobs:
       #
       - name: Cache Node.js modules
         if: ${{ inputs.variant == 'npm' }}
-        uses: actions/cache@v3
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
