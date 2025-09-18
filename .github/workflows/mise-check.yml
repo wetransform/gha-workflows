@@ -6,6 +6,7 @@
 # Conventions:
 # - workflow uses mise environment "ci"
 # - should have a mise task named "ci:check"
+# - if an environment variable IMAGE_NAME is set by mise or the build, a security scan will be performed on the image
 #
 # Variants:
 # - npm: Cache Node.js modules
@@ -23,6 +24,10 @@ on:
         required: false
         default: false
         type: boolean
+      skip-scan:
+        description: If security scan and associated tasks should be skipped
+        type: boolean
+        default: false
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
@@ -37,6 +42,7 @@ jobs:
       variant: ${{ inputs.variant }}
       parallel: ${{ inputs.parallel }}
       notify-failure: false
+      skip-scan: ${{ inputs.skip-scan }}
     # secrets: inherit
     # passing on secrets via inherit seems to be no longer possible
     # if this workflow is included from a foreign organisation

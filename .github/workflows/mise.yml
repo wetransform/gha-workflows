@@ -6,6 +6,7 @@
 # Conventions:
 # - workflow uses mise environment "ci"
 # - runs a specific mise task (run-task input)
+# - if an environment variable IMAGE_NAME is set by mise or the build, a security scan will be performed on the image
 #
 # Variants:
 # - npm: Cache Node.js modules
@@ -46,6 +47,10 @@ on:
         description: Notify on build failure to Slack
         default: true
         type: boolean
+      skip-scan:
+        description: If security scan and associated tasks should be skipped
+        type: boolean
+        default: false
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
@@ -146,6 +151,38 @@ jobs:
           MISE_ENV: ci
           # required for some builds, set if available
           GH_PAT: ${{ secrets.GH_PAT }}
+
+      #
+      # Security scans
+      # Currently only supported for Docker image, env variable IMAGE_NAME must be set by mise or the build
+      #
+      - name: Make sure scan result folder exists
+        if: ${{ !inputs.skip-scan && env.IMAGE_NAME }}
+        run: mkdir -p trivy-gha-scan
+
+      - name: Vulnerability scan
+        if: ${{ !inputs.skip-scan && env.IMAGE_NAME }}
+        uses: wetransform/gha-trivy@647b4e7c5a0b87529d0241afa9f22ca97d8d6a26 # v2.3.7
+        with:
+          image-ref: 'docker.io/${{ env.IMNAGE_NAME }}'
+          junit-test-output: "trivy-gha-scan/trivy.xml" # added to unit test report
+          report-retention-days: 30
+          report-tag: ${{ env.IMAGE_NAME }}
+
+        # https://github.com/marketplace/actions/junit-report-action
+      - name: Publish scan report
+        uses: mikepenz/action-junit-report@3585e9575db828022551b4231f165eb59a0e74e3 # v5.6.2
+        if: ${{ !inputs.skip-scan && env.IMAGE_NAME && always() }} # always run even if the previous step fails
+        with:
+          report_paths: "trivy-gha-scan/trivy.xml"
+          require_tests: true
+
+          # Workaround for check that is additionally created being associated
+          # to the wrong workflow/run. Instead not additional check is created.
+          # See https://github.com/mikepenz/action-junit-report/issues/40
+          annotate_only: true
+          detailed_summary: true
+          fail_on_failure: true # in case of critical security vulnerabilities, also required for Slack notification if only tests fail
 
       #
       # Report build failure to Slack
