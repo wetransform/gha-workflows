@@ -1,0 +1,124 @@
+#
+# Mise publish workflow
+#
+# Intended to be run for branches or version tags (e.g. v1.0.0).
+#
+# Conventions:
+# - workflow uses mise environment "ci"
+# - should have a mise task named "ci:publish"
+# - the task should use the environment variable PUBLISH_VERSION to determine the version to publish
+#
+# Variants:
+# - npm: Cache Node.js modules
+#
+
+on:
+  workflow_call:
+    inputs:
+      variant:
+        description: Workflow variant to use (leave empty or use one of 'npm')
+        required: true
+        type: string
+      parallel:
+        description: Run mise tasks in parallel (true) or sequentially (false)
+        required: false
+        default: false
+        type: boolean
+      default-branch:
+        description: Name of the default branch (e.g. 'main' or 'master')
+        required: true
+        type: string
+      default-version:
+        description: Version string to use for the default branch (e.g. 'latest')
+        required: false
+        default: latest
+        type: string
+    secrets:
+      DOCKER_HUB_USERNAME:
+      DOCKER_HUB_PASSWORD:
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      #
+      # Determine what to check out and version to build
+      #
+      - name: Determine ref to checkout and version
+        id: version
+        run: |
+          DEFAULT_BRANCH="${{ inputs.default-branch }}"
+          DEFAULT_VERSION="${{ inputs.default-version }}"
+
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && -n "${{ github.event.inputs.version }}" ]]; then
+            REF="refs/tags/v${{ github.event.inputs.version }}"
+            VERSION="${{ github.event.inputs.version }}"
+          elif [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            REF="${GITHUB_REF}"
+            VERSION="${GITHUB_REF#refs/tags/v}"
+          elif [[ "${GITHUB_REF}" == refs/heads/* ]]; then
+            BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+            REF="${GITHUB_REF}"
+            if [[ "$BRANCH_NAME" == "$DEFAULT_BRANCH" ]]; then
+              VERSION="$DEFAULT_VERSION"
+            else
+              VERSION="$BRANCH_NAME"
+            fi
+          else
+            # fallback
+            REF="refs/heads/${DEFAULT_BRANCH}"
+            VERSION="$DEFAULT_VERSION"
+          fi
+          echo "ref=$REF" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      #
+      # Checkout source code
+      #
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.version.outputs.ref }}
+
+      #
+      # Setup mise & tools
+      #
+      - uses: jdx/mise-action@v2
+
+      #
+      # Optional login to Docker Hub
+      #
+      - name: Login to DockerHub
+        if: env.DOCKER_HUB_USERNAME
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+
+      #
+      # npm: Cache Node.js modules
+      #
+      - name: Cache Node.js modules
+        if: ${{ inputs.variant == 'npm' }}
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Run publish task
+        # Run mise tasks in parallel or sequentially based on input
+        run: |
+          if [ "${{ inputs.parallel }}" = "true" ]; then
+            mise run ci:publish
+          else
+            mise run --raw ci:publish
+          fi
+        env:
+          MISE_ENV: ci
+          PUBLISH_VERSION: ${{ steps.version.outputs.version }}
