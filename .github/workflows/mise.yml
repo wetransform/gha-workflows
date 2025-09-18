@@ -157,25 +157,33 @@ jobs:
       # Currently only supported for Docker image, env variable IMAGE_NAME must be set by mise or the build
       #
       - name: Make sure scan result folder exists
-        if: ${{ !inputs.skip-scan && env.IMAGE_NAME }}
+        if: ${{ !inputs.skip-scan }}
         run: mkdir -p trivy-gha-scan
 
-      - name: Vulnerability scan
+      - name: Vulnerability scan (repo)
+        if: ${{ !inputs.skip-scan }}
+        uses: wetransform/gha-trivy@647b4e7c5a0b87529d0241afa9f22ca97d8d6a26 # v2.3.7
+        with:
+          junit-test-output: "trivy-gha-scan/repo.xml" # added to unit test report
+          report-retention-days: 30
+          report-tag: repository
+
+      - name: Vulnerability scan (image)
         if: ${{ !inputs.skip-scan && env.IMAGE_NAME }}
         uses: wetransform/gha-trivy@647b4e7c5a0b87529d0241afa9f22ca97d8d6a26 # v2.3.7
         with:
           image-ref: 'docker.io/${{ env.IMAGE_NAME }}'
-          junit-test-output: "trivy-gha-scan/trivy.xml" # added to unit test report
+          junit-test-output: "trivy-gha-scan/image.xml" # added to unit test report
           report-retention-days: 30
           report-tag: ${{ env.IMAGE_NAME }}
 
         # https://github.com/marketplace/actions/junit-report-action
       - name: Publish scan report
         uses: mikepenz/action-junit-report@3585e9575db828022551b4231f165eb59a0e74e3 # v5.6.2
-        if: ${{ !inputs.skip-scan && env.IMAGE_NAME && always() }} # always run even if the previous step fails
+        if: ${{ !inputs.skip-scan && always() }} # always run even if the previous step fails
         with:
-          report_paths: "trivy-gha-scan/trivy.xml"
-          require_tests: true
+          report_paths: "trivy-gha-scan/*.xml"
+          require_tests: false # there may be no vulnerabilities found, then there is no file
 
           # Workaround for check that is additionally created being associated
           # to the wrong workflow/run. Instead not additional check is created.
