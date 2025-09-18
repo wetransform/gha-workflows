@@ -37,91 +37,23 @@ on:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
       GH_PAT:
+      SLACK_NOTIFICATIONS_BOT_TOKEN:
 
 jobs:
   publish:
-    name: Publish
-    runs-on: ubuntu-latest
-
-    steps:
-      #
-      # Determine what to check out and version to build
-      #
-      - name: Determine ref to checkout and version
-        id: version
-        run: |
-          DEFAULT_BRANCH="${{ inputs.default-branch }}"
-          DEFAULT_VERSION="${{ inputs.default-version }}"
-
-          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && -n "${{ github.event.inputs.version }}" ]]; then
-            REF="refs/tags/v${{ github.event.inputs.version }}"
-            VERSION="${{ github.event.inputs.version }}"
-          elif [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-            REF="${GITHUB_REF}"
-            VERSION="${GITHUB_REF#refs/tags/v}"
-          elif [[ "${GITHUB_REF}" == refs/heads/* ]]; then
-            BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-            REF="${GITHUB_REF}"
-            if [[ "$BRANCH_NAME" == "$DEFAULT_BRANCH" ]]; then
-              VERSION="$DEFAULT_VERSION"
-            else
-              VERSION="$BRANCH_NAME"
-            fi
-          else
-            # fallback
-            REF="refs/heads/${DEFAULT_BRANCH}"
-            VERSION="$DEFAULT_VERSION"
-          fi
-          echo "ref=$REF" >> $GITHUB_OUTPUT
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      #
-      # Checkout source code
-      #
-      - name: Checkout code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          ref: ${{ steps.version.outputs.ref }}
-
-      #
-      # Setup mise & tools
-      #
-      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3.2.0
-
-      #
-      # Optional login to Docker Hub
-      #
-      - name: Login to DockerHub
-        if: env.DOCKER_HUB_USERNAME
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-
-      #
-      # npm: Cache Node.js modules
-      #
-      - name: Cache Node.js modules
-        if: ${{ inputs.variant == 'npm' }}
-        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Run publish task
-        # Run mise tasks in parallel or sequentially based on input
-        run: |
-          if [ "${{ inputs.parallel }}" = "true" ]; then
-            mise run ci:publish
-          else
-            mise run --raw ci:publish
-          fi
-        env:
-          MISE_ENV: ci
-          PUBLISH_VERSION: ${{ steps.version.outputs.version }}
-          # required for some builds, set if available
-          GH_PAT: ${{ secrets.GH_PAT }}
+    uses: ./.github/workflows/mise.yml
+    with:
+      run-task: ci:publish
+      publish: true
+      variant: ${{ inputs.variant }}
+      parallel: ${{ inputs.parallel }}
+      default-branch: ${{ inputs.default-branch }}
+      notify-failure: true
+    # secrets: inherit
+    # passing on secrets via inherit seems to be no longer possible
+    # if this workflow is included from a foreign organisation
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      SLACK_NOTIFICATIONS_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
