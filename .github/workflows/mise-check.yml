@@ -7,6 +7,9 @@
 # - workflow uses mise environment "ci"
 # - should have a mise task named "ci:check"
 #
+# Variants:
+# - npm: Cache Node.js modules
+#
 
 on:
   workflow_call:
