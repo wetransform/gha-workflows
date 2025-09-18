@@ -28,6 +28,10 @@ on:
         description: If security scan and associated tasks should be skipped
         type: boolean
         default: false
+      submodules:
+        # see https://github.com/actions/checkout
+        default: 'false'
+        type: string
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
@@ -43,6 +47,7 @@ jobs:
       parallel: ${{ inputs.parallel }}
       notify-failure: false
       skip-scan: ${{ inputs.skip-scan }}
+      submodules: ${{ inputs.submodules }}
     # secrets: inherit
     # passing on secrets via inherit seems to be no longer possible
     # if this workflow is included from a foreign organisation

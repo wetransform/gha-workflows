@@ -51,6 +51,10 @@ on:
         description: If security scan and associated tasks should be skipped
         type: boolean
         default: false
+      submodules:
+        # see https://github.com/actions/checkout
+        default: 'false'
+        type: string
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
@@ -104,9 +108,12 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           ref: ${{ steps.version.outputs.ref }}
+          submodules: ${{ inputs.submodules }}
       - name: Checkout code
         if: ${{ !inputs.publish }}
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          submodules: ${{ inputs.submodules }}
 
       #
       # Setup mise & tools
