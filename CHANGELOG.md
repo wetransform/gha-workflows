@@ -1,3 +1,26 @@
+## [3.5.0](https://github.com/wetransform/gha-workflows/compare/v3.4.5...v3.5.0) (2025-09-18)
+
+### Features
+
+* **mise:** do repository vulnerability scan ([8a8c8bf](https://github.com/wetransform/gha-workflows/commit/8a8c8bfeb79d33c6fbead93093b9d2535db6b39d)), closes [ING-4956](https://wetransform.atlassian.net/browse/ING-4956)
+* **mise:** first version of mise check workflow ([a4a3a52](https://github.com/wetransform/gha-workflows/commit/a4a3a52179b937dbcb20d4e8fd6049e767346637)), closes [ING-4956](https://wetransform.atlassian.net/browse/ING-4956)
+* **mise:** first version of mise publish workflow ([b896a58](https://github.com/wetransform/gha-workflows/commit/b896a585727e456180b06f14bb0018a07f1233d7)), closes [ING-4956](https://wetransform.atlassian.net/browse/ING-4956)
+* **mise:** first version of mise release workflow ([af0a1b0](https://github.com/wetransform/gha-workflows/commit/af0a1b05f86dce19c7d8d13d46bc1a507f4365fd)), closes [ING-4956](https://wetransform.atlassian.net/browse/ING-4956)
+* **mise:** support configuring submodules for checkout ([565bcb2](https://github.com/wetransform/gha-workflows/commit/565bcb202b69816b1e62aa455bf35a6a9debb5d9)), closes [ING-4956](https://wetransform.atlassian.net/browse/ING-4956)
+* **mise:** support GH_PAT env variable if secret is present ([a789064](https://github.com/wetransform/gha-workflows/commit/a78906408875fd83c925f4ceb1b07e13515e3664)), closes [ING-4956](https://wetransform.atlassian.net/browse/ING-4956)
+* **mise:** support security scan for Docker images ([35dd8a5](https://github.com/wetransform/gha-workflows/commit/35dd8a54b13855de4af85bcaecc10c3ba07e57a6)), closes [ING-4956](https://wetransform.atlassian.net/browse/ING-4956)
+
+### Bug Fixes
+
+* **deps:** update actions/cache action to v4 ([c5f75ca](https://github.com/wetransform/gha-workflows/commit/c5f75cadd7a9da468aa6840f4f10726891a4dc99))
+* **deps:** update actions/checkout action to v5 ([b3506f3](https://github.com/wetransform/gha-workflows/commit/b3506f39604ec249b0ba4a7f342eba3cac7e03b8))
+* **deps:** update actions/create-github-app-token action to v2.1.4 ([e24be71](https://github.com/wetransform/gha-workflows/commit/e24be71dca7eac30346e4133f256d2e3c878cb32))
+* **deps:** update actions/create-github-app-token action to v2.1.4 ([1002fcd](https://github.com/wetransform/gha-workflows/commit/1002fcd4405d1123bd055c2b3a4b1478891fbddf))
+* **deps:** update cycjimmy/semantic-release-action action to v5 ([93a9961](https://github.com/wetransform/gha-workflows/commit/93a9961c6e9bf967400224089152ae6b1da89a19))
+* **deps:** update jdx/mise-action action to v3 ([53c5dfe](https://github.com/wetransform/gha-workflows/commit/53c5dfe9212dd8c446aac384fd0c70cd4d14618c))
+* **deps:** update wetransform/gha-gradle-semantic-release action to v2.1.4 ([e7efd53](https://github.com/wetransform/gha-workflows/commit/e7efd5332727c0c0c016acbd806065b07e4d34f1))
+* **mise:** fix typo in reference ([adeb57d](https://github.com/wetransform/gha-workflows/commit/adeb57db24f36e5c558ae67514a445893ca15a26)), closes [ING-4956](https://wetransform.atlassian.net/browse/ING-4956)
+
 ## [3.4.5](https://github.com/wetransform/gha-workflows/compare/v3.4.4...v3.4.5) (2025-09-12)
 
 ### Bug Fixes
