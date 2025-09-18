@@ -36,6 +36,7 @@ on:
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
+      GH_PAT:
 
 jobs:
   publish:
@@ -122,3 +123,5 @@ jobs:
         env:
           MISE_ENV: ci
           PUBLISH_VERSION: ${{ steps.version.outputs.version }}
+          # required for some builds, set if available
+          GH_PAT: ${{ secrets.GH_PAT }}
