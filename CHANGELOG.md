@@ -1,3 +1,9 @@
+## [3.6.0](https://github.com/wetransform/gha-workflows/compare/v3.5.0...v3.6.0) (2025-09-18)
+
+### Features
+
+* support private submodules ([3630390](https://github.com/wetransform/gha-workflows/commit/36303905c9cacdfe9db8392328d1c9b68783ed88)), closes [ING-4956](https://wetransform.atlassian.net/browse/ING-4956)
+
 ## [3.5.0](https://github.com/wetransform/gha-workflows/compare/v3.4.5...v3.5.0) (2025-09-18)
 
 ### Features
