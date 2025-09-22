@@ -156,7 +156,7 @@ jobs:
           MISE_ENV: ci
         with:
           dry_run: ${{ inputs.dry-run }}
-          semantic_version: 24.2.8
+          semantic_version: 24.2.9
 
           extra_plugins:
             "@semantic-release/changelog@\
