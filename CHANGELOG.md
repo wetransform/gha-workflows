@@ -1,3 +1,9 @@
+## [3.6.1](https://github.com/wetransform/gha-workflows/compare/v3.6.0...v3.6.1) (2025-09-22)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([120cfd1](https://github.com/wetransform/gha-workflows/commit/120cfd1cbc11b581cfa3b2536828acc6b06711a2))
+
 ## [3.6.0](https://github.com/wetransform/gha-workflows/compare/v3.5.0...v3.6.0) (2025-09-18)
 
 ### Features
