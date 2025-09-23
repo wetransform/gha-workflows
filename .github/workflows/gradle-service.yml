@@ -19,9 +19,10 @@ on:
         default: false
         type: boolean
       java-version:
-        description: Java version to use for build
-        required: true
+        description: Java version to use for build, ignored if the repository contains a mise.toml file
+        required: false
         type: string
+        default: '17'
       notify-failure:
         description: Notify on build failure to Slack
         default: true
@@ -145,7 +146,22 @@ jobs:
       # Build, test and create Docker image
       #
 
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
+      - name: Check for mise.toml
+        id: check_mise
+        run: |
+          if [ -f mise.toml ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup mise & tools
+        if: steps.check_mise.outputs.found == 'true'
+        uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3.2.0
+
+      - name: Setup Java
+        uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
+        if: steps.check_mise.outputs.found != 'true'
         with:
           distribution: temurin
           java-version: ${{ inputs.java-version }}
