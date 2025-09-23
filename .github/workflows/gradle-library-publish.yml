@@ -2,8 +2,8 @@ on:
   workflow_call:
     inputs:
       java-version:
-        description: Java version to use for build
-        required: true
+        description: Java version to use for build, ignored if the repository contains a mise.toml file
+        required: false
         type: string
       multi-module:
         description: If this is a multi-module project
