@@ -1,3 +1,9 @@
+## [3.7.0](https://github.com/wetransform/gha-workflows/compare/v3.6.1...v3.7.0) (2025-09-23)
+
+### Features
+
+* **gradle:** allow projects to configure Java version via mise ([9aaf93c](https://github.com/wetransform/gha-workflows/commit/9aaf93c021456b548d8381022db08f1280a66950))
+
 ## [3.6.1](https://github.com/wetransform/gha-workflows/compare/v3.6.0...v3.6.1) (2025-09-22)
 
 ### Bug Fixes
