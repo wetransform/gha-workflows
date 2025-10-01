@@ -7,6 +7,9 @@
 # - workflow uses mise environment "ci"
 # - should have a mise task named "ci:check"
 # - if an environment variable IMAGE_NAME is set by mise or the build, a security scan will be performed on the image
+# - if a file docker-bake.hcl is present, the Docker image will be built using docker bake and it should not be built by the mise task;
+#   in this case IMAGE_NAME is expected to be a name without tag and tags to build are determined automatically
+# - the docker-bake.hcl should have a target named "default", it should inherit from an empty target "docker-metadata-action"
 #
 # Variants:
 # - npm: Cache Node.js modules
