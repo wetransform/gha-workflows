@@ -76,10 +76,24 @@ jobs:
         if: ${{ hashFiles('.releaserc.yml') == '' }}
         shell: bash
         run: |
+
           VERIFY_CMD="mise run ci:verify-release"
 
           if [ "${{ inputs.variant }}" = "npm" ]; then
-            PREPARE_CMD="mise exec -- npm version --no-git-tag-version \${nextRelease.version}"
+            if [ -f package.json ]; then
+              # package.json exists in root
+              PREPARE_CMD="mise exec -- npm version --no-git-tag-version \${nextRelease.version}"
+            else
+              # Search for package.json elsewhere (excluding node_modules)
+              PKG_PATH=$(find . -type f -name package.json -not -path "*/node_modules/*" | head -n 1)
+              if [ -n "$PKG_PATH" ]; then
+                PKG_DIR=$(dirname "$PKG_PATH")
+                PREPARE_CMD="mise exec -C $PKG_DIR -- npm version --no-git-tag-version \${nextRelease.version}"
+              else
+                echo "Error: No package.json found in repository."
+                exit 1
+              fi
+            fi
             ASSETS="[CHANGELOG.md, \"**/package.json\", \"**/package-lock.json\"]"
           else
             PREPARE_CMD="mise run ci:set-version --version \${nextRelease.version}"
