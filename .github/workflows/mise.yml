@@ -209,8 +209,34 @@ jobs:
           push: ${{ inputs.publish }}
 
       #
+      # Custom test reports
+      #
+
+      - name: Extract JUnit report paths from config
+        id: extract_report_paths
+        run: |
+          if [ -f .wetf-ci.yml ]; then
+            paths=$(yq e '.test["report-paths"] | select(. != null) | join("\n")' .wetf-ci.yml)
+          else
+            paths=""
+          fi
+          echo "paths<<EOF" >> $GITHUB_OUTPUT
+          echo "$paths" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Publish test report
+        uses: mikepenz/action-junit-report@3585e9575db828022551b4231f165eb59a0e74e3 # v5.6.2
+        if: ${{ steps.extract_report_paths.outputs.paths != '' && always() }}
+        with:
+          report_paths: ${{ steps.extract_report_paths.outputs.paths }}
+          require_tests: ${{ !inputs.publish }} # for publish we may not have tests
+          annotate_only: true
+          detailed_summary: true
+          fail_on_failure: true # in case of critical security vulnerabilities, also required for Slack notification if only tests fail
+
+      #
       # Security scans
-      # Currently only supported for Docker image, env variable IMAGE_NAME must be set by mise or the build
+      # Env variable IMAGE_NAME must be set by mise or the build to scan a Docker image
       #
 
       # Determine image name to scan
