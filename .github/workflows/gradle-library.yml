@@ -141,7 +141,7 @@ jobs:
 
       - name: Setup mise & tools
         if: steps.check_mise.outputs.found == 'true'
-        uses: jdx/mise-action@156251fcc627ac4e26cb0f93dd47d1d4979abf24 # v3.3.0
+        uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
 
       - name: Setup Java
         uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
