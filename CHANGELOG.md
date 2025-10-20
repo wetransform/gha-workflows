@@ -1,3 +1,23 @@
+## [3.8.0](https://github.com/wetransform/gha-workflows/compare/v3.7.0...v3.8.0) (2025-10-20)
+
+### Features
+
+* **mise:** add support for custom test report locations ([c494805](https://github.com/wetransform/gha-workflows/commit/c4948054aed9f668360e4ba37654e653eee05eec))
+* **mise:** support npm project that resides in subfolder ([399fb2b](https://github.com/wetransform/gha-workflows/commit/399fb2bcc6619678d01575da5d72fb4f7dc58e47))
+* **mise:** support using a Docker bake configuration ([328745c](https://github.com/wetransform/gha-workflows/commit/328745c85496900f364150482a17b01595e40ae5))
+
+### Bug Fixes
+
+* **deps:** update actions/cache action to v4.3.0 ([e21e7cc](https://github.com/wetransform/gha-workflows/commit/e21e7cc7e5077d807157d13717200a2760c696fd))
+* **deps:** update actions/setup-node action to v6 ([51c44bc](https://github.com/wetransform/gha-workflows/commit/51c44bc0286f382cd4dfbe39e6017f1897fddffe))
+* **deps:** update all non-major dependencies ([2004017](https://github.com/wetransform/gha-workflows/commit/2004017ee190183b79356e1a92039c9f14d3e80e))
+* **deps:** update all non-major dependencies ([2654e0a](https://github.com/wetransform/gha-workflows/commit/2654e0a451a3503a8c8de4ec9bd28d19fd27be1e))
+* **deps:** update dependency semantic-release to v25 ([6cf742a](https://github.com/wetransform/gha-workflows/commit/6cf742a19321ed2adfd8275d98573206f6bd18b5))
+* **deps:** update gradle/actions action to v5 ([485b14f](https://github.com/wetransform/gha-workflows/commit/485b14f3474bd88f170fec678f4cf71a2ac4bd25))
+* **deps:** update jdx/mise-action action to v3.3.0 ([151ce9f](https://github.com/wetransform/gha-workflows/commit/151ce9f6cf3c71975df4775d01a8e17b5d9ca400))
+* **deps:** update jdx/mise-action action to v3.3.1 ([0cd6dcd](https://github.com/wetransform/gha-workflows/commit/0cd6dcd6133a91c9f55a72375fc99c38b4efb21e))
+* **deps:** update mikepenz/action-junit-report action to v6 ([208f401](https://github.com/wetransform/gha-workflows/commit/208f4011504cf7867930e2487f7514709f60ae79))
+
 ## [3.7.0](https://github.com/wetransform/gha-workflows/compare/v3.6.1...v3.7.0) (2025-09-23)
 
 ### Features
