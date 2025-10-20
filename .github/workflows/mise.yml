@@ -225,7 +225,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Publish test report
-        uses: mikepenz/action-junit-report@3585e9575db828022551b4231f165eb59a0e74e3 # v5.6.2
+        uses: mikepenz/action-junit-report@5b7ee5a21e8674b695313d769f3cbdfd5d4d53a4 # v6.0.0
         if: ${{ steps.extract_report_paths.outputs.paths != '' && always() }}
         with:
           report_paths: ${{ steps.extract_report_paths.outputs.paths }}
@@ -275,7 +275,7 @@ jobs:
 
         # https://github.com/marketplace/actions/junit-report-action
       - name: Publish scan report
-        uses: mikepenz/action-junit-report@3585e9575db828022551b4231f165eb59a0e74e3 # v5.6.2
+        uses: mikepenz/action-junit-report@5b7ee5a21e8674b695313d769f3cbdfd5d4d53a4 # v6.0.0
         if: ${{ !inputs.skip-scan && always() }} # always run even if the previous step fails
         with:
           report_paths: "trivy-gha-scan/*.xml"
