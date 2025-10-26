@@ -100,7 +100,7 @@ jobs:
     steps:
       - name: Merge SBOM artifacts
         if: ${{ inputs.remove-individual-artifacts }}
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact/merge@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: SBOM (CycloneDX) [all-individual-results]
           pattern: SBOM (CycloneDX) * # name used by gha-trivy action
@@ -108,7 +108,7 @@ jobs:
 
       - name: Merge HTML report artifacts
         if: ${{ inputs.remove-individual-artifacts }}
-        uses: actions/upload-artifact/merge@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact/merge@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: Vulnerability report (HTML)
           pattern: Vulnerability report (HTML)* # name used by gha-trivy action
@@ -116,7 +116,7 @@ jobs:
 
       - name: Download all SBOM artifacts
         if: ${{ inputs.merge-sboms }}
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           path: sboms
           pattern: SBOM (CycloneDX) * # name used by gha-trivy action
@@ -167,7 +167,7 @@ jobs:
 
       - name: Upload combined SBOMs
         if: ${{ inputs.merge-sboms }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: Merged SBOMs (CycloneDX)
           path: merged/
