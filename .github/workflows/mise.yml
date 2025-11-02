@@ -124,7 +124,7 @@ jobs:
       # Setup mise & tools
       #
       - name: Setup mise & tools
-        uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
+        uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
 
       #
       # Optional login to Docker Hub
@@ -225,7 +225,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Publish test report
-        uses: mikepenz/action-junit-report@5b7ee5a21e8674b695313d769f3cbdfd5d4d53a4 # v6.0.0
+        uses: mikepenz/action-junit-report@e08919a3b1fb83a78393dfb775a9c37f17d8eea6 # v6.0.1
         if: ${{ steps.extract_report_paths.outputs.paths != '' && always() }}
         with:
           report_paths: ${{ steps.extract_report_paths.outputs.paths }}
@@ -275,7 +275,7 @@ jobs:
 
         # https://github.com/marketplace/actions/junit-report-action
       - name: Publish scan report
-        uses: mikepenz/action-junit-report@5b7ee5a21e8674b695313d769f3cbdfd5d4d53a4 # v6.0.0
+        uses: mikepenz/action-junit-report@e08919a3b1fb83a78393dfb775a9c37f17d8eea6 # v6.0.1
         if: ${{ !inputs.skip-scan && always() }} # always run even if the previous step fails
         with:
           report_paths: "trivy-gha-scan/*.xml"
