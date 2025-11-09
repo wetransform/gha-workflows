@@ -181,7 +181,7 @@ jobs:
       - name: Docker metadata
         id: meta
         if: steps.check_docker_bake.outputs.found == 'true'
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 # v5.9.0
         with:
           images: |
             ${{ env.IMAGE_NAME }}
@@ -258,7 +258,7 @@ jobs:
 
       - name: Vulnerability scan (repo)
         if: ${{ !inputs.skip-scan }}
-        uses: wetransform/gha-trivy@314d7180e7198c35b302e178ae299a14a1a73c36 # v2.4.0
+        uses: wetransform/gha-trivy@30ed72bb9e9b7130ea30ea43b3b7082a7b39b832 # v2.5.0
         with:
           junit-test-output: "trivy-gha-scan/repo.xml" # added to unit test report
           report-retention-days: 30
@@ -266,7 +266,7 @@ jobs:
 
       - name: Vulnerability scan (image)
         if: ${{ !inputs.skip-scan && env.SCAN_IMAGE }}
-        uses: wetransform/gha-trivy@314d7180e7198c35b302e178ae299a14a1a73c36 # v2.4.0
+        uses: wetransform/gha-trivy@30ed72bb9e9b7130ea30ea43b3b7082a7b39b832 # v2.5.0
         with:
           image-ref: 'docker.io/${{ env.SCAN_IMAGE }}'
           junit-test-output: "trivy-gha-scan/image.xml" # added to unit test report
