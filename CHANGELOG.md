@@ -1,3 +1,11 @@
+## [3.8.1](https://github.com/wetransform/gha-workflows/compare/v3.8.0...v3.8.1) (2025-11-10)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([befeb57](https://github.com/wetransform/gha-workflows/commit/befeb57973197f9f237d36810f48cf848820306e))
+* **deps:** update all non-major dependencies ([e1fa87c](https://github.com/wetransform/gha-workflows/commit/e1fa87c831230b6a6125102684cf288a7018a778))
+* **deps:** update github artifact actions ([ceba342](https://github.com/wetransform/gha-workflows/commit/ceba34281a7efa99ff1f6f241c5aadbbc8730d12))
+
 ## [3.8.0](https://github.com/wetransform/gha-workflows/compare/v3.7.0...v3.8.0) (2025-10-20)
 
 ### Features
