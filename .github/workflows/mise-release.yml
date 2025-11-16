@@ -67,7 +67,7 @@ jobs:
       # Setup mise & tools
       #
       - name: Setup mise & tools
-        uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
+        uses: jdx/mise-action@9dc7d5dd454262207dea3ab5a06a3df6afc8ff26 # v3.4.1
 
       #
       # Create conventional release configuration file if not present
@@ -154,7 +154,7 @@ jobs:
       #
       - name: Release
         id: release
-        uses: cycjimmy/semantic-release-action@9cc899c47e6841430bbaedb43de1560a568dfd16 # v5.0.0
+        uses: cycjimmy/semantic-release-action@ba330626c4750c19d8299de843f05c7aa5574f62 # v5.0.2
         env:
           # Permissions needed
           #   contents: write
