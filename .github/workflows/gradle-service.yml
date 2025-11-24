@@ -157,7 +157,7 @@ jobs:
 
       - name: Setup mise & tools
         if: steps.check_mise.outputs.found == 'true'
-        uses: jdx/mise-action@9dc7d5dd454262207dea3ab5a06a3df6afc8ff26 # v3.4.1
+        uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3.5.1
 
       - name: Setup Java
         uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
@@ -199,7 +199,7 @@ jobs:
 
       - name: Determine app token for release
         if: ${{ !inputs.skip-build && inputs.publish-tasks != '' && inputs.semantic-release }}
-        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        uses: actions/create-github-app-token@7e473efe3cb98aa54f8d4bac15400b15fad77d94 # v2.2.0
         id: app-token
         with:
           app-id: ${{ secrets.WE_RELEASE_GITHUB_APP_ID }}
@@ -235,7 +235,7 @@ jobs:
 
       - name: Vulnerability scan
         if: ${{ !inputs.skip-scan }}
-        uses: wetransform/gha-trivy@30ed72bb9e9b7130ea30ea43b3b7082a7b39b832 # v2.5.0
+        uses: wetransform/gha-trivy@dafb78eaf440e1d9217b3432965692ab2fd1d204 # v2.5.1
         with:
           image-ref: 'docker.io/${{ inputs.image-tag }}'
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report
@@ -243,7 +243,7 @@ jobs:
           report-tag: ${{ inputs.image-tag }}
 
       - name: Vulnerability scan (Image 2)
-        uses: wetransform/gha-trivy@30ed72bb9e9b7130ea30ea43b3b7082a7b39b832 # v2.5.0
+        uses: wetransform/gha-trivy@dafb78eaf440e1d9217b3432965692ab2fd1d204 # v2.5.1
         if: ${{ !inputs.skip-scan && inputs.image-tag-2 != '' }}
         with:
           image-ref: 'docker.io/${{ inputs.image-tag-2 }}'
@@ -252,7 +252,7 @@ jobs:
           report-tag: ${{ inputs.image-tag-2 }}
 
       - name: Vulnerability scan (Image 3)
-        uses: wetransform/gha-trivy@30ed72bb9e9b7130ea30ea43b3b7082a7b39b832 # v2.5.0
+        uses: wetransform/gha-trivy@dafb78eaf440e1d9217b3432965692ab2fd1d204 # v2.5.1
         if: ${{ !inputs.skip-scan && inputs.image-tag-3 != '' }}
         with:
           image-ref: 'docker.io/${{ inputs.image-tag-3 }}'
