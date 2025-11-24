@@ -1,3 +1,12 @@
+## [3.8.2](https://github.com/wetransform/gha-workflows/compare/v3.8.1...v3.8.2) (2025-11-24)
+
+### Bug Fixes
+
+* **deps:** update actions/checkout action to v6 ([4ba2efc](https://github.com/wetransform/gha-workflows/commit/4ba2efcce91254df90ec5cce3ab630e5cc975862))
+* **deps:** update all non-major dependencies ([89da46d](https://github.com/wetransform/gha-workflows/commit/89da46d5a4c115c09c3a9ac14df07033fd65cab9))
+* **deps:** update all non-major dependencies ([1af128c](https://github.com/wetransform/gha-workflows/commit/1af128c0a3e2e68804047baae705fe6c38b6d311))
+* **deps:** update cycjimmy/semantic-release-action action to v6 ([7292370](https://github.com/wetransform/gha-workflows/commit/7292370f023fd8480dea1f29e48e65302cbe5783))
+
 ## [3.8.1](https://github.com/wetransform/gha-workflows/compare/v3.8.0...v3.8.1) (2025-11-10)
 
 ### Bug Fixes
