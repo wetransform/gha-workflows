@@ -1,3 +1,15 @@
+## [3.8.3](https://github.com/wetransform/gha-workflows/compare/v3.8.2...v3.8.3) (2025-12-15)
+
+### Bug Fixes
+
+* **deps:** update actions/cache action to v5 ([7dc3fe7](https://github.com/wetransform/gha-workflows/commit/7dc3fe7bcb1e28e9eb84de2c13c361b702d0013e))
+* **deps:** update all non-major dependencies ([8233a98](https://github.com/wetransform/gha-workflows/commit/8233a9870241fd5a08e0982050ea1f26adc7e23b))
+* **deps:** update all non-major dependencies ([8214c99](https://github.com/wetransform/gha-workflows/commit/8214c99ff151cfdcd8ec5d8f33e00cb1c403613b))
+* **deps:** update dependency cyclonedx/cyclonedx-cli to v0.29.2 ([3352bfb](https://github.com/wetransform/gha-workflows/commit/3352bfbddb73b6018d8f911b597d824c2eb4a479))
+* **deps:** update github artifact actions ([d9bf1bf](https://github.com/wetransform/gha-workflows/commit/d9bf1bfcab252aed9a1f6c8e25880d61957d8864))
+* fix lint errors and apply style conventions ([f6a4407](https://github.com/wetransform/gha-workflows/commit/f6a440777c8a3e8eba018f620eeb81eb93f1c6c2))
+* resolve shellcheck issues ([eefd088](https://github.com/wetransform/gha-workflows/commit/eefd088afaa1c307bf22b721024ea7820daecc85))
+
 ## [3.8.2](https://github.com/wetransform/gha-workflows/compare/v3.8.1...v3.8.2) (2025-11-24)
 
 ### Bug Fixes
