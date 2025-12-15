@@ -121,11 +121,13 @@ jobs:
             # add them as environment variables for use in subsequent steps.
             # Keys prefixed with "BASE64_" will be decoded from base64 and the
             # prefix will be removed. E.g., "BASE64_KEY=value" becomes "KEY=value".
+            IFS=$'\n'
             for i in $env_vars; do
-              if [[ $i == BASE64_* ]]; then i=$(echo $i | sed 's/^BASE64_//g' | sed 's/=.*//g')=$(echo ${i#*=} | base64 -di | base64 -di); fi
-              echo ::add-mask::${i#*=}
-              printf '%s\n' "$i" >> $GITHUB_ENV
+              if [[ "$i" == BASE64_* ]]; then i="$(echo "$i" | sed 's/^BASE64_//g' | sed 's/=.*//g')=$(echo "${i#*=}" | base64 -di | base64 -di)"; fi
+              echo "::add-mask::${i#*=}"
+              printf '%s\n' "$i" >> "$GITHUB_ENV"
             done
+            unset IFS
           fi
 
       #
