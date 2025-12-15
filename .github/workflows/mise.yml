@@ -96,10 +96,10 @@ jobs:
             REF="refs/heads/${DEFAULT_BRANCH}"
             VERSION="$DEFAULT_VERSION"
           fi
-          echo "ref=$REF" >> $GITHUB_OUTPUT
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "ref=$REF" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-          echo "PUBLISH_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "PUBLISH_VERSION=$VERSION" >> "$GITHUB_ENV"
 
       #
       # Checkout source code
@@ -220,9 +220,11 @@ jobs:
           else
             paths=""
           fi
-          echo "paths<<EOF" >> $GITHUB_OUTPUT
-          echo "$paths" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          {
+            echo "paths<<EOF"
+            echo "$paths"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Publish test report
         uses: mikepenz/action-junit-report@e08919a3b1fb83a78393dfb775a9c37f17d8eea6 # v6.0.1
@@ -250,7 +252,7 @@ jobs:
           else
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
           fi
-          echo "SCAN_IMAGE=$IMAGE_NAME" >> $GITHUB_ENV
+          echo "SCAN_IMAGE=$IMAGE_NAME" >> "$GITHUB_ENV"
 
       - name: Make sure scan result folder exists
         if: ${{ !inputs.skip-scan }}

@@ -149,8 +149,8 @@ jobs:
         run: |
           mkdir -p merged
 
-          # Find all JSON files and store them in an array
-          files=($(find "sboms" -name "*.json"))
+          # Find all JSON files and store them in an array safely
+          mapfile -d '' -t files < <(find "sboms" -name "*.json" -print0)
 
           # Merge all files
           cyclonedx-cli merge --input-files "${files[@]}" --output-file merged/sbom.json
