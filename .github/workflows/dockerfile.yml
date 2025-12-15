@@ -24,7 +24,7 @@ on:
       checkout-ref:
         description: Custom ref to check out
         type: string
-        default: ''
+        default: ""
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
@@ -72,7 +72,7 @@ jobs:
       # Report build failure to Slack
       #
 
-        # https://github.com/marketplace/actions/slack-notify-build
+      # https://github.com/marketplace/actions/slack-notify-build
       - name: Notify slack fail
         if: ${{ inputs.notify-failure && failure() }}
         env:

@@ -8,7 +8,7 @@ on:
       publish-tasks:
         description: Gradle tasks to run for publishing the project
         required: false
-        default: ''
+        default: ""
         type: string
       semantic-release:
         description: State if a release should be created using semantic-release if applicable
@@ -22,7 +22,7 @@ on:
         description: Java version to use for build, ignored if the repository contains a mise.toml file
         required: false
         type: string
-        default: '17'
+        default: "17"
       notify-failure:
         description: Notify on build failure to Slack
         default: true
@@ -37,12 +37,12 @@ on:
         type: boolean
       submodules:
         # see https://github.com/actions/checkout
-        default: 'false'
+        default: "false"
         type: string
       java-options:
         description: Custom JAVA_TOOL_OPTIONS
         type: string
-        default: ''
+        default: ""
       image-tag:
         description: Image tag to scan after build
         required: true
@@ -50,11 +50,11 @@ on:
       image-tag-2:
         description: Additional image tag to scan after build
         type: string
-        default: ''
+        default: ""
       image-tag-3:
         description: Additional image tag to scan after build
         type: string
-        default: ''
+        default: ""
       multi-module:
         description: If this is a multi-module project
         type: boolean
@@ -66,7 +66,7 @@ on:
       checkout-ref:
         description: Custom ref to check out
         type: string
-        default: ''
+        default: ""
     outputs:
       release-published:
         description: If a release was created
@@ -237,7 +237,7 @@ jobs:
         if: ${{ !inputs.skip-scan }}
         uses: wetransform/gha-trivy@dafb78eaf440e1d9217b3432965692ab2fd1d204 # v2.5.1
         with:
-          image-ref: 'docker.io/${{ inputs.image-tag }}'
+          image-ref: "docker.io/${{ inputs.image-tag }}"
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report
           report-retention-days: 30
           report-tag: ${{ inputs.image-tag }}
@@ -246,7 +246,7 @@ jobs:
         uses: wetransform/gha-trivy@dafb78eaf440e1d9217b3432965692ab2fd1d204 # v2.5.1
         if: ${{ !inputs.skip-scan && inputs.image-tag-2 != '' }}
         with:
-          image-ref: 'docker.io/${{ inputs.image-tag-2 }}'
+          image-ref: "docker.io/${{ inputs.image-tag-2 }}"
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy-2.xml' || 'build/test-results/trivy-2.xml' }}" # added to unit test report
           report-retention-days: 30
           report-tag: ${{ inputs.image-tag-2 }}
@@ -255,7 +255,7 @@ jobs:
         uses: wetransform/gha-trivy@dafb78eaf440e1d9217b3432965692ab2fd1d204 # v2.5.1
         if: ${{ !inputs.skip-scan && inputs.image-tag-3 != '' }}
         with:
-          image-ref: 'docker.io/${{ inputs.image-tag-3 }}'
+          image-ref: "docker.io/${{ inputs.image-tag-3 }}"
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy-3.xml' || 'build/test-results/trivy-3.xml' }}" # added to unit test report
           report-retention-days: 30
           report-tag: ${{ inputs.image-tag-3 }}
@@ -264,7 +264,7 @@ jobs:
       # Report on unit tests and critical vulnerabilities
       #
 
-        # https://github.com/marketplace/actions/junit-report-action
+      # https://github.com/marketplace/actions/junit-report-action
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@e08919a3b1fb83a78393dfb775a9c37f17d8eea6 # v6.0.1
         if: always() # always run even if the previous step fails
@@ -283,7 +283,7 @@ jobs:
       # Report build failure to Slack
       #
 
-        # https://github.com/marketplace/actions/slack-notify-build
+      # https://github.com/marketplace/actions/slack-notify-build
       - name: Notify slack fail
         if: ${{ inputs.notify-failure && failure() }}
         env:

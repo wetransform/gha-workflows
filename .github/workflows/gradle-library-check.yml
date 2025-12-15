@@ -13,19 +13,19 @@ on:
         description: Custom Gradle tasks to run
         required: false
         type: string
-        default: ''
+        default: ""
       expect-tests:
         description: If JUnit test results are expected
         default: true
         type: boolean
       submodules:
         # see https://github.com/actions/checkout
-        default: 'false'
+        default: "false"
         type: string
       checkout-ref:
         description: Custom ref to check out
         type: string
-        default: ''
+        default: ""
       skip-scan:
         description: If security scan and associated tasks should be skipped (e.g. in case no Gradle lock files are configured to be generated)
         type: boolean
@@ -33,7 +33,7 @@ on:
       upload-artifact-path:
         description: Path for artifact to upload (to reuse in another job)
         type: string
-        default: ''
+        default: ""
       upload-artifact-name:
         description: Name for artifact to upload (to reuse in another job)
         type: string

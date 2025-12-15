@@ -1,15 +1,15 @@
 on:
   workflow_call:
     inputs:
-      commmand:
+      command:
         description: Custom command to run for the build
-        default: ''
+        default: ""
         required: false
         type: string
       pre-build-command:
         description: Custom command to run before the build
         type: string
-        default: ''
+        default: ""
       java-version:
         description: Java version to use for build
         required: true

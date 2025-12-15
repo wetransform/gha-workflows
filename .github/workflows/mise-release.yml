@@ -75,6 +75,8 @@ jobs:
       - name: Create release configuration file
         if: ${{ hashFiles('.releaserc.yml') == '' }}
         shell: bash
+        env:
+          GITHUB_REF_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
 
           VERIFY_CMD="mise run ci:verify-release"
@@ -102,7 +104,7 @@ jobs:
 
           cat <<EOF > .releaserc.yml
           ---
-          branches: ${{ github.head_ref || github.ref_name }}
+          branches: ${GITHUB_REF_NAME}
 
           plugins:
             - - "@semantic-release/commit-analyzer"
@@ -172,8 +174,7 @@ jobs:
           dry_run: ${{ inputs.dry-run }}
           semantic_version: 25.0.2
 
-          extra_plugins:
-            "@semantic-release/changelog@\
+          extra_plugins: "@semantic-release/changelog@\
             ${{ env.SEMANTIC_RELEASE_CHANGELOG_VERSION }} \
             @semantic-release/exec@\
             ${{ env.SEMANTIC_RELEASE_EXEC_VERSION }} \

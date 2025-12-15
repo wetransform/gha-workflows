@@ -13,24 +13,24 @@ on:
         description: Custom Gradle tasks to run for building and verification
         required: false
         type: string
-        default: ''
+        default: ""
       publish-tasks:
         description: Custom Gradle tasks to run for publishing
         required: false
         type: string
-        default: ''
+        default: ""
       expect-tests:
         description: If JUnit test results are expected
         default: true
         type: boolean
       submodules:
         # see https://github.com/actions/checkout
-        default: 'false'
+        default: "false"
         type: string
       checkout-ref:
         description: Custom ref to check out
         type: string
-        default: ''
+        default: ""
       semantic-release:
         description: State if a release should be created using semantic-release if applicable
         default: false
@@ -46,7 +46,7 @@ on:
       upload-artifact-path:
         description: Path for artifact to upload (to reuse in another job)
         type: string
-        default: ''
+        default: ""
       upload-artifact-name:
         description: Name for artifact to upload (to reuse in another job)
         type: string
