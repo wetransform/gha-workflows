@@ -5,12 +5,12 @@ on:
         description: Custom Gradle tasks to run for building and verification
         required: false
         type: string
-        default: ''
+        default: ""
       publish-tasks:
         description: Custom Gradle tasks to run for publishing
         required: false
         type: string
-        default: ''
+        default: ""
       java-version:
         description: Java version to use for build, ignored if the repository contains a mise.toml file
         required: false
@@ -22,11 +22,11 @@ on:
       image-tag-2:
         description: Additional image tag to scan after build
         type: string
-        default: ''
+        default: ""
       image-tag-3:
         description: Additional image tag to scan after build
         type: string
-        default: ''
+        default: ""
       multi-module:
         description: If this is a multi-module project
         type: boolean
@@ -37,12 +37,12 @@ on:
         type: boolean
       submodules:
         # see https://github.com/actions/checkout
-        default: 'false'
+        default: "false"
         type: string
       checkout-ref:
         description: Custom ref to check out
         type: string
-        default: ''
+        default: ""
       semantic-release:
         description: State if a release should be created using semantic-release if applicable
         default: false

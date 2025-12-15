@@ -8,7 +8,7 @@ on:
       publish-tasks:
         description: Gradle tasks to run for publishing the project
         required: false
-        default: ''
+        default: ""
         type: string
       semantic-release:
         description: State if a release should be created using semantic-release if applicable
@@ -22,7 +22,7 @@ on:
         description: Java version to use for build, ignored if the repository contains a mise.toml file
         required: false
         type: string
-        default: '17'
+        default: "17"
       notify-failure:
         description: Notify on build failure to Slack
         default: true
@@ -41,20 +41,20 @@ on:
         type: boolean
       submodules:
         # see https://github.com/actions/checkout
-        default: 'false'
+        default: "false"
         type: string
       pre-build-command:
         description: Custom command to run before the build
         type: string
-        default: ''
+        default: ""
       java-options:
         description: Custom JAVA_TOOL_OPTIONS
         type: string
-        default: ''
+        default: ""
       upload-artifact-path:
         description: Path for artifact to upload (to reuse in another job)
         type: string
-        default: ''
+        default: ""
       upload-artifact-name:
         description: Name for artifact to upload (to reuse in another job)
         type: string
@@ -70,7 +70,7 @@ on:
       checkout-ref:
         description: Custom ref to check out
         type: string
-        default: ''
+        default: ""
     outputs:
       release-published:
         description: If a release was created
@@ -256,12 +256,11 @@ jobs:
           # ORG_GRADLE_PROJECT_dockerHubEmail: ${{ secrets.DOCKER_HUB_EMAIL }}
           # ORG_GRADLE_PROJECT_dockerHost: "unix:///var/run/docker.sock"
 
-
       #
       # Report on unit tests and critical vulnerabilities
       #
 
-        # https://github.com/marketplace/actions/junit-report-action
+      # https://github.com/marketplace/actions/junit-report-action
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@e08919a3b1fb83a78393dfb775a9c37f17d8eea6 # v6.0.1
         if: always() # always run even if the previous step fails
@@ -292,7 +291,7 @@ jobs:
       # Report build failure to Slack
       #
 
-        # https://github.com/marketplace/actions/slack-notify-build
+      # https://github.com/marketplace/actions/slack-notify-build
       - name: Notify slack fail
         if: ${{ inputs.notify-failure && failure() }}
         env:

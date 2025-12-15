@@ -43,7 +43,7 @@ on:
         default: false
       submodules:
         # see https://github.com/actions/checkout
-        default: 'false'
+        default: "false"
         type: string
     secrets:
       DOCKER_HUB_USERNAME:

@@ -16,7 +16,7 @@ on:
       checkout-ref:
         description: Custom ref to check out
         type: string
-        default: ''
+        default: ""
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
