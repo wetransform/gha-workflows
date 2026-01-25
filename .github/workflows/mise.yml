@@ -106,7 +106,7 @@ jobs:
       #
       - name: Checkout specific ref
         if: ${{ inputs.publish }}
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ steps.version.outputs.ref }}
           submodules: ${{ inputs.submodules }}
@@ -114,7 +114,7 @@ jobs:
           token: ${{ inputs.submodules != 'false' && secrets.GH_PAT || github.token }}
       - name: Checkout code
         if: ${{ !inputs.publish }}
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: ${{ inputs.submodules }}
           # provide a token in case submodules are enabled and private (secret is expected to be present)
