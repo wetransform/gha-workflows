@@ -106,7 +106,7 @@ jobs:
       #
       - name: Checkout specific ref
         if: ${{ inputs.publish }}
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ steps.version.outputs.ref }}
           submodules: ${{ inputs.submodules }}
@@ -114,7 +114,7 @@ jobs:
           token: ${{ inputs.submodules != 'false' && secrets.GH_PAT || github.token }}
       - name: Checkout code
         if: ${{ !inputs.publish }}
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: ${{ inputs.submodules }}
           # provide a token in case submodules are enabled and private (secret is expected to be present)
@@ -131,7 +131,7 @@ jobs:
       #
       - name: Login to DockerHub
         if: env.DOCKER_HUB_USERNAME
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
@@ -143,7 +143,7 @@ jobs:
       #
       - name: Cache Node.js modules
         if: ${{ inputs.variant == 'npm' }}
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -227,7 +227,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Publish test report
-        uses: mikepenz/action-junit-report@a294a61c909bd8a4b563024a2faa28897fd53ebc # v6.1.0
+        uses: mikepenz/action-junit-report@74626db7353a25a20a72816467ebf035f674c5f8 # v6.2.0
         if: ${{ steps.extract_report_paths.outputs.paths != '' && always() }}
         with:
           report_paths: ${{ steps.extract_report_paths.outputs.paths }}
@@ -277,7 +277,7 @@ jobs:
 
         # https://github.com/marketplace/actions/junit-report-action
       - name: Publish scan report
-        uses: mikepenz/action-junit-report@a294a61c909bd8a4b563024a2faa28897fd53ebc # v6.1.0
+        uses: mikepenz/action-junit-report@74626db7353a25a20a72816467ebf035f674c5f8 # v6.2.0
         if: ${{ !inputs.skip-scan && always() }} # always run even if the previous step fails
         with:
           report_paths: "trivy-gha-scan/*.xml"
