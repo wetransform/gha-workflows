@@ -1,3 +1,23 @@
+## [4.0.0](https://github.com/wetransform/gha-workflows/compare/v3.8.3...v4.0.0) (2026-02-05)
+
+### ⚠ BREAKING CHANGES
+
+* **gradle:** Behavior of skip-build parameter for gradle-library.yml
+and gradle-service.yml workflows changed.
+
+### Features
+
+* **gradle:** allow skipping build check for publish/release ([6804e39](https://github.com/wetransform/gha-workflows/commit/6804e39cf3102e725b47d5d92c05667b04a937ea))
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([2bc0db9](https://github.com/wetransform/gha-workflows/commit/2bc0db91211d2f5b05b0a87916e20c146703f420))
+* **deps:** update all non-major dependencies ([58d9c44](https://github.com/wetransform/gha-workflows/commit/58d9c4464525d18dd2d5496e427755ace5f056e9))
+* **deps:** update all non-major dependencies ([f7f77d7](https://github.com/wetransform/gha-workflows/commit/f7f77d7ed739fb0c92fdb2a60375932a7dd53a3f))
+* **deps:** update dependency wetransform/hk-config to v2 ([368a215](https://github.com/wetransform/gha-workflows/commit/368a215e1d69779eefd1dcd4818f29499222168e))
+* **deps:** update jdx/mise-action action to v3.6.0 ([f7fe36d](https://github.com/wetransform/gha-workflows/commit/f7fe36d822cae44409f4198e3a8b6450dceb9ee2))
+* **deps:** update mikepenz/action-junit-report action to v6.1.0 ([2943946](https://github.com/wetransform/gha-workflows/commit/294394674cfd047c9e00b3ba7ff5d9e7fd0b609a))
+
 ## [3.8.3](https://github.com/wetransform/gha-workflows/compare/v3.8.2...v3.8.3) (2025-12-15)
 
 ### Bug Fixes
