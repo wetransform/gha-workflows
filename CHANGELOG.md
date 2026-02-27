@@ -1,3 +1,14 @@
+## [4.1.0](https://github.com/wetransform/gha-workflows/compare/v4.0.0...v4.1.0) (2026-02-27)
+
+### Features
+
+* add secret scanning workflow ([4c99591](https://github.com/wetransform/gha-workflows/commit/4c995914f6f85040040577211cf69303ca1307e7)), closes [ING-5087](https://wetransform.atlassian.net/browse/ING-5087)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([b385013](https://github.com/wetransform/gha-workflows/commit/b38501319201f39a39e4f1671a86f8402ad04b50))
+* **deps:** update gradle/actions action to v5.0.2 ([6e75c3c](https://github.com/wetransform/gha-workflows/commit/6e75c3c35b18da23426badbedb7d8371674525e2))
+
 ## [4.0.0](https://github.com/wetransform/gha-workflows/compare/v3.8.3...v4.0.0) (2026-02-05)
 
 ### ⚠ BREAKING CHANGES
