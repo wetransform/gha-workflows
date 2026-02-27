@@ -227,7 +227,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Publish test report
-        uses: mikepenz/action-junit-report@74626db7353a25a20a72816467ebf035f674c5f8 # v6.2.0
+        uses: mikepenz/action-junit-report@5e05ac00ad0604dfb7e313ae412aa3284f4906d6 # v6.3.0
         if: ${{ steps.extract_report_paths.outputs.paths != '' && always() }}
         with:
           report_paths: ${{ steps.extract_report_paths.outputs.paths }}
@@ -277,7 +277,7 @@ jobs:
 
         # https://github.com/marketplace/actions/junit-report-action
       - name: Publish scan report
-        uses: mikepenz/action-junit-report@74626db7353a25a20a72816467ebf035f674c5f8 # v6.2.0
+        uses: mikepenz/action-junit-report@5e05ac00ad0604dfb7e313ae412aa3284f4906d6 # v6.3.0
         if: ${{ !inputs.skip-scan && always() }} # always run even if the previous step fails
         with:
           report_paths: "trivy-gha-scan/*.xml"
