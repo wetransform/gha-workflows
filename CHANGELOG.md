@@ -1,3 +1,12 @@
+## [4.1.1](https://github.com/wetransform/gha-workflows/compare/v4.1.0...v4.1.1) (2026-03-03)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([04b14da](https://github.com/wetransform/gha-workflows/commit/04b14da044547d39278729a0af9a8161b7423603))
+* **deps:** update github artifact actions ([658ba4a](https://github.com/wetransform/gha-workflows/commit/658ba4a6a8a4920bcba8f8a3ba37360b83d8cdfd))
+* **deps:** update wetransform/gha-trivy action to v2.5.2 ([3ba4c16](https://github.com/wetransform/gha-workflows/commit/3ba4c16c6690858ff5572b67ffb86ec9434c6acf))
+* link to report in slack message on more than 10 secrets ([7221012](https://github.com/wetransform/gha-workflows/commit/722101203ab5d5125762480b6f4a1990e832ccf0)), closes [ING-5087](https://wetransform.atlassian.net/browse/ING-5087)
+
 ## [4.1.0](https://github.com/wetransform/gha-workflows/compare/v4.0.0...v4.1.0) (2026-02-27)
 
 ### Features
