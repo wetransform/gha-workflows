@@ -41,7 +41,7 @@ env:
   SEMANTIC_RELEASE_GIT_VERSION: 10.0.1
 
   # renovate: datasource=npm depName=conventional-changelog-conventionalcommits
-  CONVENTIONAL_CHANGELOG_CONVENTIONALCOMMITS_VERSION: 9.2.0
+  CONVENTIONAL_CHANGELOG_CONVENTIONALCOMMITS_VERSION: 9.3.0
 
 jobs:
   release:
@@ -67,7 +67,7 @@ jobs:
       # Setup mise & tools
       #
       - name: Setup mise & tools
-        uses: jdx/mise-action@e79ddf65a11cec7b0e882bedced08d6e976efb2d # v3.6.2
+        uses: jdx/mise-action@5228313ee0372e111a38da051671ca30fc5a96db # v3.6.3
 
       #
       # Create conventional release configuration file if not present
@@ -147,7 +147,7 @@ jobs:
           echo ">>>"
 
       - name: Install NodeJs (for semantic-release)
-        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: 24
 
