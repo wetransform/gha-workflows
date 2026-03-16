@@ -1,3 +1,17 @@
+## [4.1.2](https://github.com/wetransform/gha-workflows/compare/v4.1.1...v4.1.2) (2026-03-16)
+
+### Bug Fixes
+
+* **deps:** update actions/create-github-app-token action to v3 ([7de660e](https://github.com/wetransform/gha-workflows/commit/7de660ec95bb0313c658393509a68ff5dc29e2af))
+* **deps:** update actions/download-artifact action to v8.0.1 ([a3671ae](https://github.com/wetransform/gha-workflows/commit/a3671aef61abd79db3c429d9e485f04a9d649084))
+* **deps:** update all non-major dependencies ([092364a](https://github.com/wetransform/gha-workflows/commit/092364a7d6185f7d43e05f874e983847a33274b3))
+* **deps:** update docker/bake-action action to v7 ([a4988ad](https://github.com/wetransform/gha-workflows/commit/a4988ad9474be5f57f448ad6583b31a19926e1a3))
+* **deps:** update docker/build-push-action action to v7 ([a532aef](https://github.com/wetransform/gha-workflows/commit/a532aefe587df363d279f0261ced09e26e4da13b))
+* **deps:** update docker/login-action action to v4 ([70b0baf](https://github.com/wetransform/gha-workflows/commit/70b0bafb3b6db8ed316576ffe17a24f7dc341c12))
+* **deps:** update docker/metadata-action action to v6 ([c44428b](https://github.com/wetransform/gha-workflows/commit/c44428b4049bee7343f6dc0d2f7590bc2b28bf1d))
+* **deps:** update jdx/mise-action action to v4 ([e184750](https://github.com/wetransform/gha-workflows/commit/e1847502b32afa772893baa7464ce615230fa835))
+* **gradle-service:** support arbitrary paths to multi-module projects ([cb20c1c](https://github.com/wetransform/gha-workflows/commit/cb20c1c781d89f4e030545e7672eceefec3b27ef))
+
 ## [4.1.1](https://github.com/wetransform/gha-workflows/compare/v4.1.0...v4.1.1) (2026-03-03)
 
 ### Bug Fixes
