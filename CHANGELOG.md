@@ -1,3 +1,10 @@
+## [4.1.3](https://github.com/wetransform/gha-workflows/compare/v4.1.2...v4.1.3) (2026-03-20)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([72626c6](https://github.com/wetransform/gha-workflows/commit/72626c677d9690fe1eef83dde55283e7d8c15957))
+* image scan is not a deployment ([8905961](https://github.com/wetransform/gha-workflows/commit/8905961b66d080b723574377917fb9a2d55fa3e0))
+
 ## [4.1.2](https://github.com/wetransform/gha-workflows/compare/v4.1.1...v4.1.2) (2026-03-16)
 
 ### Bug Fixes
