@@ -56,7 +56,9 @@ on:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment:
+      name: ${{ inputs.environment }}
+      deployment: false
 
     strategy:
       fail-fast: false # scan all images
