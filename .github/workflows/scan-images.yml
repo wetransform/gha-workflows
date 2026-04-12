@@ -67,14 +67,14 @@ jobs:
 
     steps:
       - name: Login to Docker Hub
-        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Login to secondary registry
         if: ${{ vars.SECONDARY_REGISTRY != '' || inputs.secondaryRegistry != '' }}
-        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           registry: ${{ vars.SECONDARY_REGISTRY != '' && vars.SECONDARY_REGISTRY || inputs.secondaryRegistry }}
           username: ${{ secrets.SECONDARY_REGISTRY_USERNAME }}
@@ -101,7 +101,7 @@ jobs:
     steps:
       - name: Merge SBOM artifacts
         if: ${{ inputs.remove-individual-artifacts }}
-        uses: actions/upload-artifact/merge@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact/merge@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: SBOM (CycloneDX) [all-individual-results]
           pattern: SBOM (CycloneDX) * # name used by gha-trivy action
@@ -109,7 +109,7 @@ jobs:
 
       - name: Merge HTML report artifacts
         if: ${{ inputs.remove-individual-artifacts }}
-        uses: actions/upload-artifact/merge@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact/merge@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: Vulnerability report (HTML)
           pattern: Vulnerability report (HTML)* # name used by gha-trivy action
@@ -168,7 +168,7 @@ jobs:
 
       - name: Upload combined SBOMs
         if: ${{ inputs.merge-sboms }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: Merged SBOMs (CycloneDX)
           path: merged/
