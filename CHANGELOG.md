@@ -1,3 +1,10 @@
+## [4.1.4](https://github.com/wetransform/gha-workflows/compare/v4.1.3...v4.1.4) (2026-04-16)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([2833b29](https://github.com/wetransform/gha-workflows/commit/2833b293c4f20f6585f52f67e1d0b0fcb8e8f551))
+* **deps:** update gradle/actions action to v6 ([262f0dd](https://github.com/wetransform/gha-workflows/commit/262f0dd013d4632e60d2ace2d9f45269e686f84c))
+
 ## [4.1.3](https://github.com/wetransform/gha-workflows/compare/v4.1.2...v4.1.3) (2026-03-20)
 
 ### Bug Fixes
