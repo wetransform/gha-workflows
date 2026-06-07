@@ -106,7 +106,7 @@ jobs:
       #
       - name: Checkout specific ref
         if: ${{ inputs.publish }}
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ steps.version.outputs.ref }}
           submodules: ${{ inputs.submodules }}
@@ -114,7 +114,7 @@ jobs:
           token: ${{ inputs.submodules != 'false' && secrets.GH_PAT || github.token }}
       - name: Checkout code
         if: ${{ !inputs.publish }}
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           submodules: ${{ inputs.submodules }}
           # provide a token in case submodules are enabled and private (secret is expected to be present)
@@ -124,7 +124,7 @@ jobs:
       # Setup mise & tools
       #
       - name: Setup mise & tools
-        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+        uses: jdx/mise-action@dba19683ed58901619b14f395a24841710cb4925 # v4.1.0
 
       #
       # Optional login to Docker Hub
