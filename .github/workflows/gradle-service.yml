@@ -217,6 +217,17 @@ jobs:
           release-dryrun: ${{ inputs.semantic-release-dryrun }}
           github-token: ${{ steps.app-token.outputs.token }}
         env:
+          # Skip hk-managed git hooks (installed by the mise postinstall hook via mise-action)
+          # for the release commit/push - hk's stash requires git config user.name, which is
+          # not configured in CI (semantic-release provides the identity via GIT_* env vars,
+          # which libgit2-based hk does not evaluate)
+          # HK=0 is hk's documented shim-level escape hatch (see hk docs, "getting started"):
+          # it takes effect in the installed hook script itself, before mise resolves tools or
+          # hk evaluates its config - unlike HK_SKIP_HOOK, which requires hk to start and
+          # evaluate hk.pkl (incl. remote imports) first and would keep releases coupled to
+          # hk/hk-config health
+          HK: "0"
+
           # For Gradle execution
           ORG_GRADLE_PROJECT_wetfArtifactoryUser: ${{ secrets.WETF_ARTIFACTORY_USER }}
           ORG_GRADLE_PROJECT_wetfArtifactoryPassword: ${{ secrets.WETF_ARTIFACTORY_PASSWORD }}
