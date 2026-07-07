@@ -1,3 +1,17 @@
+## [4.1.5](https://github.com/wetransform/gha-workflows/compare/v4.1.4...v4.1.5) (2026-07-07)
+
+### Bug Fixes
+
+* **deps:** update actions/cache action to v5.0.5 ([353d1fe](https://github.com/wetransform/gha-workflows/commit/353d1fefa03b5f08d1573ffbae0cc6d1a83c7c31))
+* **deps:** update actions/setup-node action to v6.4.0 ([a565486](https://github.com/wetransform/gha-workflows/commit/a565486045834d771cfaca1748128d1822cb1092))
+* **deps:** update all non-major dependencies ([9b65b03](https://github.com/wetransform/gha-workflows/commit/9b65b03ad07782cc52fa1638e864004d7d0345a0))
+* **deps:** update all non-major dependencies ([4257cdc](https://github.com/wetransform/gha-workflows/commit/4257cdce9b9fcadafb114340bd12060b9442219d))
+* **deps:** update all non-major dependencies ([3878f18](https://github.com/wetransform/gha-workflows/commit/3878f18c8b541fc05d7c87ef17005d17bb13ca35))
+* **deps:** update dependency cyclonedx/cyclonedx-cli to v0.31.0 ([cb66e40](https://github.com/wetransform/gha-workflows/commit/cb66e40d80df28e79d229b51046bad76bd3bface))
+* **deps:** update mikepenz/action-junit-report action to v6.4.1 ([c9346da](https://github.com/wetransform/gha-workflows/commit/c9346da856ef0ac82165bdc89661b4bd86cd9362))
+* evaluate hk config with the official pkl CLI ([1bbfd96](https://github.com/wetransform/gha-workflows/commit/1bbfd9698daa9b3467153df038115207d4930e63))
+* skip hk git hooks when semantic-release commits and pushes ([b5be89d](https://github.com/wetransform/gha-workflows/commit/b5be89d7fb29a8f910d365d6f3745075f372e64a))
+
 ## [4.1.4](https://github.com/wetransform/gha-workflows/compare/v4.1.3...v4.1.4) (2026-04-16)
 
 ### Bug Fixes
