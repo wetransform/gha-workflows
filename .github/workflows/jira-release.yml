@@ -129,16 +129,19 @@ jobs:
           echo "Scanning commit bodies in range: ${RANGE}"
 
           # %b = commit body only (subject excluded) -> matches the footer convention.
-          # A bad range fails the step; grep exiting 1 (no matches) must not.
+          # A bad range fails the step; grep exiting 1 (no matches) must not. Run grep on
+          # its own so only its status is tolerated, and keep sort under set -e so a real
+          # sort/redirection failure still fails the step.
           git log "${RANGE}" --pretty=format:'%b' > commit_bodies.txt
           set +e
-          grep -Eo "\\b${PROJECT_KEY}-[0-9]+\\b" commit_bodies.txt | sort -u > jira_issues.txt
-          GREP_STATUS=${PIPESTATUS[0]}
+          grep -Eo "\\b${PROJECT_KEY}-[0-9]+\\b" commit_bodies.txt > matched_keys.txt
+          GREP_STATUS=$?
           set -e
           if [ "${GREP_STATUS}" -gt 1 ]; then
             echo "::error::Failed to scan commit bodies (grep exit ${GREP_STATUS})"
             exit "${GREP_STATUS}"
           fi
+          sort -u matched_keys.txt > jira_issues.txt
 
           COUNT="$(wc -l < jira_issues.txt | tr -d ' ')"
           echo "Found ${COUNT} referenced ${PROJECT_KEY} issue(s)."
@@ -157,6 +160,7 @@ jobs:
           PREFIX: ${{ inputs.release-name-prefix }}
           REPO_NAME: ${{ github.event.repository.name }}
           TAG_NAME: ${{ github.event.release.tag_name }}
+          PUBLISHED_AT: ${{ github.event.release.published_at }}
         run: |
           set -euo pipefail
 
@@ -179,7 +183,12 @@ jobs:
             VERSION_NUMBER="${VERSION_NUMBER#v}"
           fi
           VERSION_NAME="${PREFIX}: ${VERSION_NUMBER}"
-          RELEASE_DATE="$(date -u +%Y-%m-%d)"
+
+          # Use the release publish date (deterministic across re-runs); fall back to today.
+          RELEASE_DATE="${PUBLISHED_AT%%T*}"
+          if [ -z "${RELEASE_DATE}" ]; then
+            RELEASE_DATE="$(date -u +%Y-%m-%d)"
+          fi
 
           #
           # Resolve numeric project id (POST /version expects projectId, not the deprecated key)
