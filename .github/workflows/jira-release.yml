@@ -1,0 +1,275 @@
+#
+# Jira release sync
+#
+# On creation of a GitHub release, creates (or reuses) a Jira "Fix Version" for the
+# release and adds it to the `fixVersions` field of every Jira issue referenced in the
+# commits contained in the release.
+#
+# Conventions:
+# - Triggered from a caller workflow on `release: [published]` (the release-creating
+#   workflows use an app token, so the `release` event actually fires).
+# - Only issue keys of a single Jira project are considered (input `jira-project-key`,
+#   org-wide default "ING", overridable per repository). This bounds false positives
+#   like "UTF-8" or "SHA-1".
+# - Issue keys are read from the commit message *body* (after the subject line), matching
+#   the footer convention for ticket references.
+# - Version creation is idempotent: an existing version with the same name is reused, so
+#   re-runs of the release event do not fail or create duplicates.
+#
+
+on:
+  workflow_call:
+    inputs:
+      jira-project-key:
+        description: Jira project key whose issues are synced (e.g. "ING")
+        required: true
+        type: string
+      release-name-prefix:
+        description: 'Prefix for the Jira version name, e.g. "my-service" -> "my-service: 1.2.3". Defaults to the repository name.'
+        required: false
+        # The static default is empty because workflow_call input defaults cannot use the
+        # github context. An empty value is resolved to the repository name at runtime in
+        # the "Sync Jira fix version" step.
+        default: ""
+        type: string
+      jira-base-url:
+        description: Base URL of the Jira instance
+        required: false
+        default: https://wetransform.atlassian.net
+        type: string
+    secrets:
+      JIRA_EMAIL:
+        required: true
+      JIRA_API_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: Sync Jira fix version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          # full history + tags required to diff between releases
+          fetch-depth: 0
+
+      #
+      # Determine the tag of the current release and of the previous published release,
+      # so we can collect exactly the commits contained in this release.
+      #
+      - name: Determine release range
+        id: range
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURRENT_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+
+          # Non-draft release tags, newest first (order follows created_at)
+          mapfile -t TAGS < <(gh api "repos/${GITHUB_REPOSITORY}/releases?per_page=100" \
+            --jq '.[] | select(.draft==false) | .tag_name')
+
+          PREVIOUS_TAG=""
+          for i in "${!TAGS[@]}"; do
+            if [ "${TAGS[$i]}" = "${CURRENT_TAG}" ]; then
+              PREVIOUS_TAG="${TAGS[$((i + 1))]:-}"
+              break
+            fi
+          done
+
+          # The candidate from release ordering may not lie on the current tag's history
+          # (backports, prereleases, releases from another line). In that case the commit
+          # range would be wrong, so fall back to the nearest ancestor tag.
+          if [ -n "${PREVIOUS_TAG}" ] \
+            && ! git merge-base --is-ancestor "${PREVIOUS_TAG}" "${CURRENT_TAG}" 2>/dev/null; then
+            echo "Previous tag ${PREVIOUS_TAG} is not an ancestor of ${CURRENT_TAG}; using ancestry instead."
+            PREVIOUS_TAG=""
+          fi
+
+          # Fallback: nearest reachable tag by ancestry
+          if [ -z "${PREVIOUS_TAG}" ]; then
+            PREVIOUS_TAG="$(git describe --tags --abbrev=0 "${CURRENT_TAG}^" 2>/dev/null || echo "")"
+          fi
+
+          echo "Current tag:  ${CURRENT_TAG}"
+          echo "Previous tag: ${PREVIOUS_TAG:-<none>}"
+          echo "current=${CURRENT_TAG}" >> "$GITHUB_OUTPUT"
+          echo "previous=${PREVIOUS_TAG}" >> "$GITHUB_OUTPUT"
+
+      #
+      # Extract the referenced Jira issue keys from the commit bodies in the release range,
+      # filtered to the configured project key.
+      #
+      - name: Extract Jira issue keys
+        id: keys
+        env:
+          CURRENT_TAG: ${{ steps.range.outputs.current }}
+          PREVIOUS_TAG: ${{ steps.range.outputs.previous }}
+          PROJECT_KEY: ${{ inputs.jira-project-key }}
+        run: |
+          set -euo pipefail
+
+          # Validate the project key early so an invalid config fails clearly instead of
+          # producing an odd regex.
+          if ! printf '%s' "${PROJECT_KEY}" | grep -Eq '^[A-Z][A-Z0-9_]*$'; then
+            echo "::error::Invalid jira-project-key '${PROJECT_KEY}' (expected e.g. ING)"
+            exit 1
+          fi
+
+          if [ -n "${PREVIOUS_TAG}" ]; then
+            RANGE="${PREVIOUS_TAG}..${CURRENT_TAG}"
+          else
+            RANGE="${CURRENT_TAG}"
+          fi
+          echo "Scanning commit bodies in range: ${RANGE}"
+
+          # %b = commit body only (subject excluded) -> matches the footer convention.
+          # A bad range fails the step; grep exiting 1 (no matches) must not.
+          git log "${RANGE}" --pretty=format:'%b' > commit_bodies.txt
+          set +e
+          grep -Eo "\\b${PROJECT_KEY}-[0-9]+\\b" commit_bodies.txt | sort -u > jira_issues.txt
+          GREP_STATUS=${PIPESTATUS[0]}
+          set -e
+          if [ "${GREP_STATUS}" -gt 1 ]; then
+            echo "::error::Failed to scan commit bodies (grep exit ${GREP_STATUS})"
+            exit "${GREP_STATUS}"
+          fi
+
+          COUNT="$(wc -l < jira_issues.txt | tr -d ' ')"
+          echo "Found ${COUNT} referenced ${PROJECT_KEY} issue(s)."
+          echo "count=${COUNT}" >> "$GITHUB_OUTPUT"
+
+      #
+      # Create (or reuse) the Jira fix version and add it to every referenced issue.
+      #
+      - name: Sync Jira fix version
+        if: steps.keys.outputs.count != '0'
+        env:
+          JIRA_BASE_URL: ${{ inputs.jira-base-url }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          PROJECT_KEY: ${{ inputs.jira-project-key }}
+          PREFIX: ${{ inputs.release-name-prefix }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+
+          AUTH=(--user "${JIRA_EMAIL}:${JIRA_API_TOKEN}")
+          JSON_HEADERS=(--header 'Accept: application/json' --header 'Content-Type: application/json')
+
+          # curl helper: prints "<body>\n<http_code>"; fails the step on network error only
+          call() {
+            curl -sS -w '\n%{http_code}' "${AUTH[@]}" "$@"
+          }
+
+          # Prefix defaults to the repository name so versions are distinguishable across
+          # repositories that share a Jira project.
+          PREFIX="${PREFIX:-$REPO_NAME}"
+
+          # Strip a leading "v" from the tag so the version matches the convention
+          # "<prefix>: x.y.z" (e.g. tag "v2.6.1" -> "my-service: 2.6.1").
+          VERSION_NUMBER="${TAG_NAME}"
+          if [[ "${VERSION_NUMBER}" =~ ^v[0-9] ]]; then
+            VERSION_NUMBER="${VERSION_NUMBER#v}"
+          fi
+          VERSION_NAME="${PREFIX}: ${VERSION_NUMBER}"
+          RELEASE_DATE="$(date -u +%Y-%m-%d)"
+
+          #
+          # Resolve numeric project id (POST /version expects projectId, not the deprecated key)
+          #
+          RESP="$(call --header 'Accept: application/json' \
+            --url "${JIRA_BASE_URL}/rest/api/3/project/${PROJECT_KEY}")"
+          CODE="$(printf '%s' "${RESP}" | tail -n1)"
+          BODY="$(printf '%s' "${RESP}" | sed '$d')"
+          if [ "${CODE}" != "200" ]; then
+            echo "::error::Failed to resolve Jira project '${PROJECT_KEY}' (HTTP ${CODE}): ${BODY}"
+            exit 1
+          fi
+          PROJECT_ID="$(printf '%s' "${BODY}" | jq -r '.id')"
+
+          #
+          # Create-or-get the fix version (idempotent)
+          #
+          # Looks up the id of the version named VERSION_NAME, printing it (or nothing).
+          find_version_id() {
+            local resp code body
+            resp="$(call --header 'Accept: application/json' \
+              --url "${JIRA_BASE_URL}/rest/api/3/project/${PROJECT_KEY}/versions")"
+            code="$(printf '%s' "${resp}" | tail -n1)"
+            body="$(printf '%s' "${resp}" | sed '$d')"
+            if [ "${code}" != "200" ]; then
+              echo "::error::Failed to list versions for '${PROJECT_KEY}' (HTTP ${code}): ${body}" >&2
+              return 1
+            fi
+            printf '%s' "${body}" | jq -r --arg n "${VERSION_NAME}" \
+              'map(select(.name == $n)) | first | .id // empty'
+          }
+
+          VERSION_ID="$(find_version_id)"
+
+          if [ -n "${VERSION_ID}" ]; then
+            echo "Reusing existing fix version '${VERSION_NAME}' (id ${VERSION_ID})."
+          else
+            PAYLOAD="$(jq -n \
+              --arg name "${VERSION_NAME}" \
+              --arg pid "${PROJECT_ID}" \
+              --arg date "${RELEASE_DATE}" \
+              '{name: $name, projectId: ($pid | tonumber), releaseDate: $date, released: true}')"
+            RESP="$(call "${JSON_HEADERS[@]}" -X POST \
+              --url "${JIRA_BASE_URL}/rest/api/3/version" --data "${PAYLOAD}")"
+            CODE="$(printf '%s' "${RESP}" | tail -n1)"
+            BODY="$(printf '%s' "${RESP}" | sed '$d')"
+            if [ "${CODE}" = "201" ]; then
+              VERSION_ID="$(printf '%s' "${BODY}" | jq -r '.id // empty')"
+              echo "Created fix version '${VERSION_NAME}' (id ${VERSION_ID})."
+            elif [ "${CODE}" = "400" ]; then
+              # Create race: another run created the version between our list and create.
+              echo "Create returned 400; re-listing to reuse a concurrently created version."
+              VERSION_ID="$(find_version_id)"
+              if [ -n "${VERSION_ID}" ]; then
+                echo "Reusing fix version '${VERSION_NAME}' (id ${VERSION_ID})."
+              fi
+            fi
+            if [ -z "${VERSION_ID}" ]; then
+              echo "::error::Failed to create fix version '${VERSION_NAME}' (HTTP ${CODE}): ${BODY}"
+              exit 1
+            fi
+          fi
+
+          #
+          # Add the fix version to each referenced issue; collect results, fail only on hard errors
+          #
+          {
+            echo "## Jira release sync"
+            echo ""
+            echo "Fix version **${VERSION_NAME}** (project \`${PROJECT_KEY}\`)"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          HARD_FAILURE=0
+          PAYLOAD="$(jq -n --arg id "${VERSION_ID}" \
+            '{update: {fixVersions: [{add: {id: $id}}]}}')"
+
+          while IFS= read -r ISSUE_KEY; do
+            [ -n "${ISSUE_KEY}" ] || continue
+            CODE="$(curl -sS -o /dev/null -w '%{http_code}' "${AUTH[@]}" "${JSON_HEADERS[@]}" \
+              -X PUT --url "${JIRA_BASE_URL}/rest/api/3/issue/${ISSUE_KEY}" --data "${PAYLOAD}")"
+            case "${CODE}" in
+              204) echo "- ✅ \`${ISSUE_KEY}\`" >> "$GITHUB_STEP_SUMMARY" ;;
+              404) echo "- ⚠️ \`${ISSUE_KEY}\` — issue not found (skipped)" >> "$GITHUB_STEP_SUMMARY" ;;
+              *)   echo "- ❌ \`${ISSUE_KEY}\` — HTTP ${CODE}" >> "$GITHUB_STEP_SUMMARY"
+                   HARD_FAILURE=1 ;;
+            esac
+          done < jira_issues.txt
+
+          if [ "${HARD_FAILURE}" != "0" ]; then
+            echo "::error::One or more issues could not be updated with the fix version."
+            exit 1
+          fi
