@@ -132,18 +132,19 @@ jobs:
           # A bad range fails the step; grep exiting 1 (no matches) must not. Run grep on
           # its own so only its status is tolerated, and keep sort under set -e so a real
           # sort/redirection failure still fails the step.
-          git log "${RANGE}" --pretty=format:'%b' > commit_bodies.txt
+          # Intermediate files live in RUNNER_TEMP so they never clash with repo contents.
+          git log "${RANGE}" --pretty=format:'%b' > "${RUNNER_TEMP}/commit_bodies.txt"
           set +e
-          grep -Eo "\\b${PROJECT_KEY}-[0-9]+\\b" commit_bodies.txt > matched_keys.txt
+          grep -Eo "\\b${PROJECT_KEY}-[0-9]+\\b" "${RUNNER_TEMP}/commit_bodies.txt" > "${RUNNER_TEMP}/matched_keys.txt"
           GREP_STATUS=$?
           set -e
           if [ "${GREP_STATUS}" -gt 1 ]; then
             echo "::error::Failed to scan commit bodies (grep exit ${GREP_STATUS})"
             exit "${GREP_STATUS}"
           fi
-          sort -u matched_keys.txt > jira_issues.txt
+          sort -u "${RUNNER_TEMP}/matched_keys.txt" > "${RUNNER_TEMP}/jira_issues.txt"
 
-          COUNT="$(wc -l < jira_issues.txt | tr -d ' ')"
+          COUNT="$(wc -l < "${RUNNER_TEMP}/jira_issues.txt" | tr -d ' ')"
           echo "Found ${COUNT} referenced ${PROJECT_KEY} issue(s)."
           echo "count=${COUNT}" >> "$GITHUB_OUTPUT"
 
@@ -268,15 +269,17 @@ jobs:
 
           while IFS= read -r ISSUE_KEY; do
             [ -n "${ISSUE_KEY}" ] || continue
-            CODE="$(curl -sS -o /dev/null -w '%{http_code}' "${AUTH[@]}" "${JSON_HEADERS[@]}" \
+            CODE="$(curl -sS -o "${RUNNER_TEMP}/issue_resp.json" -w '%{http_code}' "${AUTH[@]}" "${JSON_HEADERS[@]}" \
               -X PUT --url "${JIRA_BASE_URL}/rest/api/3/issue/${ISSUE_KEY}" --data "${PAYLOAD}")"
             case "${CODE}" in
               204) echo "- ✅ \`${ISSUE_KEY}\`" >> "$GITHUB_STEP_SUMMARY" ;;
               404) echo "- ⚠️ \`${ISSUE_KEY}\` — issue not found (skipped)" >> "$GITHUB_STEP_SUMMARY" ;;
-              *)   echo "- ❌ \`${ISSUE_KEY}\` — HTTP ${CODE}" >> "$GITHUB_STEP_SUMMARY"
+              *)   # surface Jira's error body so permission/screen issues are actionable
+                   echo "::error::Failed to update ${ISSUE_KEY} (HTTP ${CODE}): $(cat "${RUNNER_TEMP}/issue_resp.json")"
+                   echo "- ❌ \`${ISSUE_KEY}\` — HTTP ${CODE}" >> "$GITHUB_STEP_SUMMARY"
                    HARD_FAILURE=1 ;;
             esac
-          done < jira_issues.txt
+          done < "${RUNNER_TEMP}/jira_issues.txt"
 
           if [ "${HARD_FAILURE}" != "0" ]; then
             echo "::error::One or more issues could not be updated with the fix version."
