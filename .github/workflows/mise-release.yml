@@ -67,7 +67,7 @@ jobs:
       # Setup mise & tools
       #
       - name: Setup mise & tools
-        uses: jdx/mise-action@dba19683ed58901619b14f395a24841710cb4925 # v4.1.0
+        uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
 
       #
       # Create conventional release configuration file if not present
@@ -182,7 +182,7 @@ jobs:
           HK: "0"
         with:
           dry_run: ${{ inputs.dry-run }}
-          semantic_version: 25.0.3
+          semantic_version: 25.0.5
 
           extra_plugins: "@semantic-release/changelog@\
             ${{ env.SEMANTIC_RELEASE_CHANGELOG_VERSION }} \

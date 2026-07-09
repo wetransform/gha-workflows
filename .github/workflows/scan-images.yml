@@ -67,14 +67,14 @@ jobs:
 
     steps:
       - name: Login to Docker Hub
-        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
+        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Login to secondary registry
         if: ${{ vars.SECONDARY_REGISTRY != '' || inputs.secondaryRegistry != '' }}
-        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
+        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
         with:
           registry: ${{ vars.SECONDARY_REGISTRY != '' && vars.SECONDARY_REGISTRY || inputs.secondaryRegistry }}
           username: ${{ secrets.SECONDARY_REGISTRY_USERNAME }}
@@ -87,7 +87,7 @@ jobs:
           docker pull ${{ matrix.image }}
 
       - name: Vulnerability scan
-        uses: wetransform/gha-trivy@706acc9132d4c9f1b09b3613fd6b4fa904e52bf3 # v2.5.2
+        uses: wetransform/gha-trivy@3f3d2d0281a4fc67981251663de80edd07fdd2c5 # v2.6.0
         with:
           image-ref: ${{ matrix.image }}
           create-test-report: ${{ inputs.create-test-report }}
@@ -177,7 +177,7 @@ jobs:
       # Scan merged SBOM for an overview, but trivy fails for mixed OS dependencies, so disabled by default
       - name: Scan merged SBOM
         if: ${{ inputs.merge-sboms && inputs.scan-merged-sbom }}
-        uses: wetransform/gha-trivy@706acc9132d4c9f1b09b3613fd6b4fa904e52bf3 # v2.5.2
+        uses: wetransform/gha-trivy@3f3d2d0281a4fc67981251663de80edd07fdd2c5 # v2.6.0
         with:
           scan-ref: merged/sbom.json
           create-test-report: false
