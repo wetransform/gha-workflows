@@ -271,7 +271,7 @@ jobs:
 
       - name: Vulnerability scan (repo)
         if: ${{ !inputs.skip-scan }}
-        uses: wetransform/gha-trivy@3f3d2d0281a4fc67981251663de80edd07fdd2c5 # v2.6.0
+        uses: wetransform/gha-trivy@43c9b715bc1afe1bc3984b09aeac07233c9911e3 # v2.7.0
         with:
           junit-test-output: "trivy-gha-scan/repo.xml" # added to unit test report
           report-retention-days: 30
@@ -279,7 +279,7 @@ jobs:
 
       - name: Vulnerability scan (image)
         if: ${{ !inputs.skip-scan && env.SCAN_IMAGE }}
-        uses: wetransform/gha-trivy@3f3d2d0281a4fc67981251663de80edd07fdd2c5 # v2.6.0
+        uses: wetransform/gha-trivy@43c9b715bc1afe1bc3984b09aeac07233c9911e3 # v2.7.0
         with:
           image-ref: "docker.io/${{ env.SCAN_IMAGE }}"
           junit-test-output: "trivy-gha-scan/image.xml" # added to unit test report
