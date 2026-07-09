@@ -1,3 +1,12 @@
+## [4.1.6](https://github.com/wetransform/gha-workflows/compare/v4.1.5...v4.1.6) (2026-07-09)
+
+### Bug Fixes
+
+* **deps:** update actions/cache action to v6 ([c707212](https://github.com/wetransform/gha-workflows/commit/c7072125095df700fad08effb72aef06e0cf3fe1))
+* **deps:** update actions/checkout action to v7 ([1a82953](https://github.com/wetransform/gha-workflows/commit/1a8295356e26bf5aa50de03e26b6e78b683250d7))
+* **deps:** update all non-major dependencies ([c2042b6](https://github.com/wetransform/gha-workflows/commit/c2042b6f13b863104d06e7d614535de51a583707))
+* **deps:** update dependency conventional-changelog-conventionalcommits to v10 ([961fa4f](https://github.com/wetransform/gha-workflows/commit/961fa4fdc2299d05c2986b5e4c7507efd8cd586d))
+
 ## [4.1.5](https://github.com/wetransform/gha-workflows/compare/v4.1.4...v4.1.5) (2026-07-07)
 
 ### Bug Fixes
