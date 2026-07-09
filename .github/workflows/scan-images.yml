@@ -95,7 +95,7 @@ jobs:
           docker pull ${{ matrix.image }}
 
       - name: Vulnerability scan
-        uses: wetransform/gha-trivy@3f3d2d0281a4fc67981251663de80edd07fdd2c5 # v2.6.0
+        uses: wetransform/gha-trivy@43c9b715bc1afe1bc3984b09aeac07233c9911e3 # v2.7.0
         with:
           image-ref: ${{ matrix.image }}
           create-test-report: ${{ inputs.create-test-report }}
@@ -185,7 +185,7 @@ jobs:
       # Scan merged SBOM for an overview, but trivy fails for mixed OS dependencies, so disabled by default
       - name: Scan merged SBOM
         if: ${{ inputs.merge-sboms && inputs.scan-merged-sbom }}
-        uses: wetransform/gha-trivy@3f3d2d0281a4fc67981251663de80edd07fdd2c5 # v2.6.0
+        uses: wetransform/gha-trivy@43c9b715bc1afe1bc3984b09aeac07233c9911e3 # v2.7.0
         with:
           scan-ref: merged/sbom.json
           create-test-report: false
