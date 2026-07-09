@@ -1,3 +1,9 @@
+## [4.2.1](https://github.com/wetransform/gha-workflows/compare/v4.2.0...v4.2.1) (2026-07-09)
+
+### Bug Fixes
+
+* **deps:** update wetransform/gha-trivy action to v2.7.0 ([06a154d](https://github.com/wetransform/gha-workflows/commit/06a154d3c46194b1ff8d70bc61e9c1fa384c92f7))
+
 ## [4.2.0](https://github.com/wetransform/gha-workflows/compare/v4.1.6...v4.2.0) (2026-07-09)
 
 ### Features
