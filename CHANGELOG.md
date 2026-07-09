@@ -1,3 +1,9 @@
+## [4.2.0](https://github.com/wetransform/gha-workflows/compare/v4.1.6...v4.2.0) (2026-07-09)
+
+### Features
+
+* log in to Docker Hardened Images ([c64dd65](https://github.com/wetransform/gha-workflows/commit/c64dd657ef651bc618ad7c282174b1cf21e50984))
+
 ## [4.1.6](https://github.com/wetransform/gha-workflows/compare/v4.1.5...v4.1.6) (2026-07-09)
 
 ### Bug Fixes
