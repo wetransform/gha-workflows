@@ -102,6 +102,24 @@ jobs:
             ASSETS="[CHANGELOG.md]"
           fi
 
+          # Optional GitHub-release assets, declared by the consuming repo in
+          # .wetf-ci.yml as:
+          #   release:
+          #     assets:
+          #       - path: <glob>
+          # These files must be produced during prepareCmd (see PREPARE_CMD).
+          # yq (mikefarah) is preinstalled on ubuntu-latest, as already relied
+          # on by mise.yml for test.report-paths.
+          GITHUB_PLUGIN='- "@semantic-release/github"'
+          if [ -f .wetf-ci.yml ]; then
+            asset_flow=$(yq e '.release.assets // [] | .[].path' .wetf-ci.yml \
+              | while IFS= read -r p; do [ -n "$p" ] && printf '{path: "%s"}, ' "$p"; done)
+            asset_flow="${asset_flow%, }"
+            if [ -n "$asset_flow" ]; then
+              GITHUB_PLUGIN="- [\"@semantic-release/github\", {assets: [${asset_flow}]}]"
+            fi
+          fi
+
           cat <<EOF > .releaserc.yml
           ---
           branches: ${GITHUB_REF_NAME}
@@ -138,7 +156,7 @@ jobs:
               - assets: ${ASSETS}
                 # important to not skip ci, so publishing is triggered for created tag
                 message: "chore(release): \${nextRelease.version}\n\n\${nextRelease.notes}"
-            - "@semantic-release/github"
+            ${GITHUB_PLUGIN}
           EOF
 
           # Print for verification/debugging
