@@ -41,7 +41,12 @@ env:
   SEMANTIC_RELEASE_GIT_VERSION: 10.0.1
 
   # renovate: datasource=npm depName=conventional-changelog-conventionalcommits
-  CONVENTIONAL_CHANGELOG_CONVENTIONALCOMMITS_VERSION: 10.2.1
+  # Held at 9.x: v10 targets conventional-changelog-writer v9, but semantic-release 25.x
+  # (commit-analyzer 13 / release-notes-generator 14) render with writer v8, so v10 produces
+  # empty release notes (only the version header). Renovate is constrained to <10 in the
+  # shared renovate-config. Lift once the semantic-release ecosystem supports v10:
+  # https://github.com/semantic-release/release-notes-generator/issues/992
+  CONVENTIONAL_CHANGELOG_CONVENTIONALCOMMITS_VERSION: 9.3.1
 
 jobs:
   release:
