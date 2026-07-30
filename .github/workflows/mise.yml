@@ -27,7 +27,7 @@ on:
         type: boolean
       variant:
         description: Workflow variant to use (leave empty or use one of 'npm')
-        required: true
+        default: ""
         type: string
       parallel:
         description: Run mise tasks in parallel (true) or sequentially (false)

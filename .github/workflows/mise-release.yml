@@ -17,7 +17,7 @@ on:
     inputs:
       variant:
         description: Workflow variant to use (leave empty or use one of 'npm')
-        required: true
+        default: ""
         type: string
       dry-run:
         description: If the release should be a dry run (no actual release creation)
