@@ -1,3 +1,12 @@
+## [4.2.2](https://github.com/wetransform/gha-workflows/compare/v4.2.1...v4.2.2) (2026-07-30)
+
+### Bug Fixes
+
+* **deps:** update actions/setup-node action to v7 ([798c67f](https://github.com/wetransform/gha-workflows/commit/798c67f0ae0094d9a4d61f796e7d6fd27f0022be))
+* **deps:** update all non-major dependencies ([58d29c3](https://github.com/wetransform/gha-workflows/commit/58d29c32564bb3e417e8fb2a876c48057f2ac1a9))
+* **mise:** configuring variant should not be required ([3455cae](https://github.com/wetransform/gha-workflows/commit/3455cae627594a79003528479374ad19b7b37672))
+* **mise:** use client-id instead of deprecated app-id ([c5fe756](https://github.com/wetransform/gha-workflows/commit/c5fe756a889a4fb0b628bb1116421487dc5cf3d1))
+
 ## [4.2.1](https://github.com/wetransform/gha-workflows/compare/v4.2.0...v4.2.1) (2026-07-09)
 
 ### Bug Fixes
