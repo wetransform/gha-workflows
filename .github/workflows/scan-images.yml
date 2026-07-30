@@ -67,14 +67,14 @@ jobs:
 
     steps:
       - name: Login to Docker Hub
-        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       # Docker Hardened Images share the same Docker Hub credentials
       - name: Login to Docker Hardened Images
-        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: dhi.io
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -82,7 +82,7 @@ jobs:
 
       - name: Login to secondary registry
         if: ${{ vars.SECONDARY_REGISTRY != '' || inputs.secondaryRegistry != '' }}
-        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ${{ vars.SECONDARY_REGISTRY != '' && vars.SECONDARY_REGISTRY || inputs.secondaryRegistry }}
           username: ${{ secrets.SECONDARY_REGISTRY_USERNAME }}
@@ -136,7 +136,7 @@ jobs:
         uses: jaxxstorm/action-install-gh-release@cd6b2b78ad38bdd294341cda064ec0692b06215b # v1.14.0
         with:
           repo: CycloneDX/cyclonedx-cli
-          tag: v0.32.0 # optional, otherwise use latest
+          tag: v0.33.1 # optional, otherwise use latest
 
           # extension-matching: disable # disable extension matching because artifacts are binaries
 
