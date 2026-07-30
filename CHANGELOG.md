@@ -1,3 +1,9 @@
+## [4.3.0](https://github.com/wetransform/gha-workflows/compare/v4.2.2...v4.3.0) (2026-07-30)
+
+### Features
+
+* **mise-release:** attach release assets from .wetf-ci.yml ([0fc3726](https://github.com/wetransform/gha-workflows/commit/0fc37262fa171a215ca5f1e26806ab5fbfbc6883))
+
 ## [4.2.2](https://github.com/wetransform/gha-workflows/compare/v4.2.1...v4.2.2) (2026-07-30)
 
 ### Bug Fixes
