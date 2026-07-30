@@ -1,3 +1,10 @@
+## [4.3.1](https://github.com/wetransform/gha-workflows/compare/v4.3.0...v4.3.1) (2026-07-30)
+
+### Bug Fixes
+
+* **deps:** update dependency wetransform/hk-config to v2.5.0 ([f1c2a39](https://github.com/wetransform/gha-workflows/commit/f1c2a395fb5c19a67ca26c37470cc36937eabe73))
+* **mise-release:** pin conventional-changelog-conventionalcommits to 9.x ([aea6782](https://github.com/wetransform/gha-workflows/commit/aea6782ecb21e92be4e5c54c13c3483ee4ccf8a9))
+
 ## [4.3.0](https://github.com/wetransform/gha-workflows/compare/v4.2.2...v4.3.0) (2026-07-30)
 
 ### Features
