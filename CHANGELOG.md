@@ -1,3 +1,18 @@
+## [4.4.0](https://github.com/wetransform/gha-workflows/compare/v4.3.1...v4.4.0) (2026-08-12)
+
+### Features
+
+* upload HTML test reports as artifact in mise workflow ([8bef91e](https://github.com/wetransform/gha-workflows/commit/8bef91e85752e95aaf5cd159010bce432216d0ab))
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([cc4f5e1](https://github.com/wetransform/gha-workflows/commit/cc4f5e1ebab175c9347561c6630a95454a8c752d))
+* **deps:** update all non-major dependencies ([f201699](https://github.com/wetransform/gha-workflows/commit/f20169971c91dbb5c99b854f4669ee8d85cec37f))
+* **deps:** update semantic-release monorepo ([f72ff87](https://github.com/wetransform/gha-workflows/commit/f72ff87c143639bdd9c3d3ca7972ad368c8ed9f3))
+* **deps:** update wetransform/gha-trivy action to v3 ([9eb8ddb](https://github.com/wetransform/gha-workflows/commit/9eb8ddb394ddea96697e9e527e6069b79da65f99))
+* expand configured report path globs without word splitting ([20c3381](https://github.com/wetransform/gha-workflows/commit/20c33819442675e660cd8a69e2186003e9418564))
+* publish JUnit test report also when mise task fails ([c722407](https://github.com/wetransform/gha-workflows/commit/c722407fdd559026b43038318d7c84dd9f73867a))
+
 ## [4.3.1](https://github.com/wetransform/gha-workflows/compare/v4.3.0...v4.3.1) (2026-07-30)
 
 ### Bug Fixes
