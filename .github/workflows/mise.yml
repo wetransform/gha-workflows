@@ -263,12 +263,15 @@ jobs:
         env:
           XML_PATHS: ${{ steps.extract_report_paths.outputs.paths }}
         run: |
-          shopt -s nullglob globstar
+          shopt -s globstar
 
           declare -A candidates=()
           while IFS= read -r pattern; do
             [ -z "$pattern" ] && continue
-            for file in $pattern; do
+            # expand the pattern without word splitting, so patterns may contain spaces and
+            # a pattern that matches nothing does not leak into the candidates as literal
+            mapfile -t files < <(compgen -G "$pattern" || true)
+            for file in "${files[@]}"; do
               dir=$(dirname "$file")
               # HTML report may reside next to the XML reports
               candidates["$dir"]=1
