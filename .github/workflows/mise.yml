@@ -284,8 +284,10 @@ jobs:
           # only keep candidates that actually contain an HTML report
           html_paths=()
           for candidate in "${!candidates[@]}"; do
-            reports=("$candidate"/**/*.html)
-            [ ${#reports[@]} -eq 0 ] || html_paths+=("$candidate")
+            [ -d "$candidate" ] || continue
+            if [ -n "$(find "$candidate" -type f -name '*.html' -print -quit)" ]; then
+              html_paths+=("$candidate")
+            fi
           done
 
           paths=""
