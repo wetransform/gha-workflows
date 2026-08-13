@@ -1,3 +1,14 @@
+## [4.5.0](https://github.com/wetransform/gha-workflows/compare/v4.4.0...v4.5.0) (2026-08-13)
+
+### Features
+
+* **mise-release:** support release.commit-assets in .wetf-ci.yml ([47d4e14](https://github.com/wetransform/gha-workflows/commit/47d4e1404238660814bc651c308dbaa89455567c))
+* **mise:** add traceable <branch>-<date>-<sha> Docker tag ([cb7810a](https://github.com/wetransform/gha-workflows/commit/cb7810ab0d73105d3392a3611a47a2eebc063e3e))
+
+### Bug Fixes
+
+* **deps:** update dependency jdx/mise to v2026.8.5 ([7d9c5ad](https://github.com/wetransform/gha-workflows/commit/7d9c5add339d18051fa9096fdc17406f186d67bd))
+
 ## [4.4.0](https://github.com/wetransform/gha-workflows/compare/v4.3.1...v4.4.0) (2026-08-12)
 
 ### Features
