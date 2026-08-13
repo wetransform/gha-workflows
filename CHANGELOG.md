@@ -1,3 +1,9 @@
+## [4.6.0](https://github.com/wetransform/gha-workflows/compare/v4.5.0...v4.6.0) (2026-08-13)
+
+### Features
+
+* **dockerfile:** support submodules configuration ([65d9e32](https://github.com/wetransform/gha-workflows/commit/65d9e3293f74291e72249d9e914c10de7e6986ba))
+
 ## [4.5.0](https://github.com/wetransform/gha-workflows/compare/v4.4.0...v4.5.0) (2026-08-13)
 
 ### Features
