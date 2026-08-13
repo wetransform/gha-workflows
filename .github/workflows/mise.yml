@@ -7,6 +7,7 @@
 # - if an environment variable IMAGE_NAME is set by mise or the build, a security scan will be performed on the image
 # - if a file docker-bake.hcl is present, the Docker image will be built using docker bake and it should not be built by the mise task;
 #   in this case IMAGE_NAME is expected to be a name without tag and tags to build are determined automatically
+#   (for branch builds this includes an immutable tag <branch>-<commit date as yyyyMMdd>-<short commit sha>)
 # - the docker-bake.hcl should have a target named "default", it should inherit from an empty target "docker-metadata-action"
 # - JUnit XML reports to publish can be configured in .wetf-ci.yml as test.report-paths (list of globs);
 #   HTML reports found next to them (or in the Gradle location build/reports/tests) are uploaded as artifact
@@ -209,6 +210,11 @@ jobs:
             type=semver,pattern=v{{major}}
             # Use tag for branch name
             type=ref,event=branch
+            # Immutable, traceable tag for branch builds: <branch>-<commit date>-<short sha>
+            # Disabled for tag/PR refs ({{branch}} is empty there) and for a publish
+            # dispatched with an explicit version (that checks out a tag ref, so the
+            # workflow context's sha/commit date would not match the built code)
+            type=raw,value={{branch}}-{{commit_date 'YYYYMMDD'}}-{{sha}},enable=${{ startsWith(github.ref, 'refs/heads/') && !github.event.inputs.version }}
 
       - name: Build Docker image including metadata labels
         if: steps.check_docker_bake.outputs.found == 'true'
