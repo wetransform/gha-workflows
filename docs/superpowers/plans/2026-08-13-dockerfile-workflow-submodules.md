@@ -1,10 +1,12 @@
 # Dockerfile Workflow Submodules Support — Implementation Plan
 
+> **Status:** Executed. Completed in commit `3cdd187` (`feat(dockerfile): support submodules configuration`).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Let callers of the Dockerfile reusable workflows check out git submodules, including private ones, by adding a `submodules` input and an optional `GH_PAT` secret.
 
-**Architecture:** Copy the pattern already used by `gradle-library.yml`, `gradle-service.yml` and `mise.yml` verbatim: a string `submodules` input forwarded to `actions/checkout`, plus a conditional `token:` expression that swaps in `GH_PAT` only when submodules are enabled. The two wrapper workflows declare the same input and secret and pass them straight through. One extra hardening line, `persist-credentials: false`, keeps the PAT out of the Docker build context.
+**Architecture:** Copy the pattern already used by `gradle-library.yml`, `gradle-service.yml` and `mise.yml` verbatim: a string `submodules` input forwarded to `actions/checkout`, plus a conditional `token:` expression that swaps in `GH_PAT` only when submodules are enabled. The two wrapper workflows declare the same input and secret and pass them straight through. `dockerfile.yml` also sets `persist-credentials: false`, so the PAT (or default `GITHUB_TOKEN`) stays out of the Docker build context; `gradle-library.yml` and `gradle-service.yml` already carry that same setting, but for an unrelated reason (it clashes with the semantic-release action), and `mise.yml` remains the outlier that still lacks it.
 
 **Tech Stack:** GitHub Actions reusable workflows (YAML), `actions/checkout` v7, validated by `actionlint` 1.7.12 and Prettier 3.9.6, both run via the repo's `hk` pre-commit hook.
 
@@ -12,7 +14,7 @@
 
 ## Global Constraints
 
-- The `submodules` input is **type `string`**, default the quoted string `"false"` — not a boolean. The `!= 'false'` comparison in the token expression depends on this.
+- The `submodules` input is **type `string`**, default the quoted string `"false"` — not a boolean. A boolean would lose the `"recursive"` option that string inputs support, and would diverge from every other workflow in this repository, which all use a string.
 - `GH_PAT` is **always optional** — never add `required: true` to it, in any of the three files. `dockerfile-publish.yml` marks its other secrets required; `GH_PAT` must not follow suit.
 - Do **not** change the pinned `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1` SHA or any other action pin.
 - Comment lines are copied verbatim from the snippets below, including the `# see https://github.com/actions/checkout` line above the input.
@@ -64,7 +66,7 @@ The exact commands and their expected output below were verified against a scrat
 
 ---
 
-- [ ] **Step 1: Confirm the starting point is green**
+- [x] **Step 1: Confirm the starting point is green**
 
 Run:
 
@@ -76,7 +78,7 @@ Expected: exit 0, no output. If there are pre-existing errors in unrelated workf
 
 ---
 
-- [ ] **Step 2: Write the failing test — declare and forward in `dockerfile-build.yml`**
+- [x] **Step 2: Write the failing test — declare and forward in `dockerfile-build.yml`**
 
 Edit `.github/workflows/dockerfile-build.yml`. Declare the input and the secret:
 
@@ -121,7 +123,7 @@ Leave the existing `# secrets: inherit` comment block above `secrets:` in place.
 
 ---
 
-- [ ] **Step 3: Write the failing test — declare and forward in `dockerfile-publish.yml`**
+- [x] **Step 3: Write the failing test — declare and forward in `dockerfile-publish.yml`**
 
 Edit `.github/workflows/dockerfile-publish.yml`. This file marks its secrets `required: true`; `GH_PAT` does **not** get that, and it sits between `DOCKER_HUB_PASSWORD` and `SLACK_NOTIFICATIONS_BOT_TOKEN`:
 
@@ -169,7 +171,7 @@ jobs:
 
 ---
 
-- [ ] **Step 4: Run actionlint to verify it fails**
+- [x] **Step 4: Run actionlint to verify it fails**
 
 Run:
 
@@ -192,7 +194,7 @@ If you instead see errors of the form `property "submodules" is not defined in o
 
 ---
 
-- [ ] **Step 5: Implement — declare the input and secret in `dockerfile.yml`**
+- [x] **Step 5: Implement — declare the input and secret in `dockerfile.yml`**
 
 Edit `.github/workflows/dockerfile.yml`. Add `submodules` after `checkout-ref`, and `GH_PAT` between `DOCKER_HUB_PASSWORD` and `SLACK_NOTIFICATIONS_BOT_TOKEN` — the same ordering `mise.yml` uses:
 
@@ -218,7 +220,7 @@ on:
 
 ---
 
-- [ ] **Step 6: Implement — wire the checkout step in `dockerfile.yml`**
+- [x] **Step 6: Implement — wire the checkout step in `dockerfile.yml`**
 
 The checkout step is the first step of the `run` job and currently has only `ref:` under `with:`. Add four lines:
 
@@ -246,7 +248,7 @@ Three things worth understanding rather than pattern-matching:
 
 ---
 
-- [ ] **Step 7: Run actionlint to verify it passes**
+- [x] **Step 7: Run actionlint to verify it passes**
 
 Run:
 
@@ -258,7 +260,7 @@ Expected: exit 0, no output. The four errors from Step 4 are gone.
 
 ---
 
-- [ ] **Step 8: Run Prettier**
+- [x] **Step 8: Run Prettier**
 
 Run:
 
@@ -272,7 +274,7 @@ If it reports style issues, fix them by re-running the same command with `--writ
 
 ---
 
-- [ ] **Step 9: Review the diff against the constraints**
+- [x] **Step 9: Review the diff against the constraints**
 
 Run:
 
@@ -290,7 +292,7 @@ Check each of these against the diff — they are the things most likely to be s
 
 ---
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add .github/workflows/dockerfile.yml .github/workflows/dockerfile-build.yml .github/workflows/dockerfile-publish.yml

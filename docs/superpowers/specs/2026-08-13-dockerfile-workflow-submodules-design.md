@@ -18,6 +18,11 @@ Three files:
 The other workflows that lack submodules support (`play-service.*`, `sbt-library.*`,
 `mise-release.yml`, `scan-for-secrets.yml`) are deliberately out of scope for this change.
 
+`mise.yml` already has the `submodules`/`GH_PAT` pattern but does not set
+`persist-credentials: false`. It builds Docker images from the checked-out workspace, so
+the same PAT-in-build-context exposure this spec argues against is live there today.
+Fixing that is a follow-up and is deliberately out of scope for this change.
+
 ## Approach
 
 Mirror the pattern already used by `gradle-library.yml`, `gradle-service.yml` and
@@ -85,7 +90,11 @@ an empty token.
 ### `persist-credentials: false`
 
 This line is new relative to the current `dockerfile.yml`, which leaves the setting at its
-default of `true`.
+default of `true`. It is not a new idea in this repository, though: `gradle-library.yml`
+and `gradle-service.yml` already set `persist-credentials: false`, for an unrelated reason
+— it clashes with the semantic-release action's git operations. `dockerfile.yml` sets it
+for the Docker-build-context reason below. `mise.yml` is the outlier that still lacks it,
+despite already forwarding a `GH_PAT` for submodules; see Scope.
 
 Once a `GH_PAT` is passed to `actions/checkout`, the default behaviour writes that token
 into `.git/config` in the workspace. The workspace is also the Docker build context, so a
@@ -127,14 +136,21 @@ credentials are no longer left in the workspace after checkout. Nothing in `dock
 runs git afterwards, so this affects only what a build could theoretically read out of
 `.git/config`.
 
+That said, this covers only the workflow itself, not a consumer's `Dockerfile`. If a
+caller's `Dockerfile` currently relies on the persisted `.git/config` credential to run
+`git fetch` or `git submodule` commands during the build, that build will now fail. This
+break is desirable — it is exactly the credential exposure this change closes — but it is
+a real, undocumented-until-now behaviour change, and it ships under a minor version bump.
+
 ## Verification
 
 This repository has no test harness for its workflows. Verification is:
 
 1. Run the repository's git hooks over the changed files: `mise x -- hk run pre-commit`.
    This runs Prettier, which reformats and validates the YAML.
-2. Inspect the hook output to see whether an `actionlint` step ran on the three workflows.
-   If it did not, run `actionlint` on them directly.
+2. `actionlint` is a core step in `wetransform/hk-config`, so it also runs as part of that
+   hook. Its glob covers `.github/workflows/*.yml` and excludes only `tf-*`, so it checks
+   all three changed workflows.
 3. Confirm the token expression by inspection against `gradle-service.yml` and `mise.yml`,
    from which it is copied verbatim.
 
