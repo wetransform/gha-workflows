@@ -17,9 +17,14 @@ on:
         description: Custom ref to check out
         type: string
         default: ""
+      submodules:
+        # see https://github.com/actions/checkout
+        default: "false"
+        type: string
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
+      GH_PAT:
 
 jobs:
   build:
@@ -29,6 +34,7 @@ jobs:
       tag: ${{ inputs.tag }}
       context: ${{ inputs.context }}
       checkout-ref: ${{ inputs.checkout-ref }}
+      submodules: ${{ inputs.submodules }}
       push: false
       notify-failure: false
     # secrets: inherit
@@ -37,3 +43,4 @@ jobs:
     secrets:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      GH_PAT: ${{ secrets.GH_PAT }}

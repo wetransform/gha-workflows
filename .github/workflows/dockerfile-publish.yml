@@ -17,11 +17,16 @@ on:
         description: Custom ref to check out
         type: string
         default: ""
+      submodules:
+        # see https://github.com/actions/checkout
+        default: "false"
+        type: string
     secrets:
       DOCKER_HUB_USERNAME:
         required: true
       DOCKER_HUB_PASSWORD:
         required: true
+      GH_PAT:
       SLACK_NOTIFICATIONS_BOT_TOKEN:
         required: true
 
@@ -33,6 +38,7 @@ jobs:
       tag: ${{ inputs.tag }}
       context: ${{ inputs.context }}
       checkout-ref: ${{ inputs.checkout-ref }}
+      submodules: ${{ inputs.submodules }}
       push: true
       notify-failure: true
     # secrets: inherit
@@ -41,4 +47,5 @@ jobs:
     secrets:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      GH_PAT: ${{ secrets.GH_PAT }}
       SLACK_NOTIFICATIONS_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
