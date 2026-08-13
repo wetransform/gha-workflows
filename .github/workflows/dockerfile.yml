@@ -43,7 +43,7 @@ jobs:
         with:
           ref: ${{ inputs.checkout-ref }}
           submodules: ${{ inputs.submodules }}
-          # do not persist credentials so a submodule PAT does not end up in
+          # so no checkout credential (PAT or GITHUB_TOKEN) ends up in
           # .git/config inside the Docker build context
           persist-credentials: false
           # provide a token in case submodules are enabled and private (secret is expected to be present)
