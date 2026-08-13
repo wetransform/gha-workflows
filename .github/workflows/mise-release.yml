@@ -7,6 +7,12 @@
 # - workflow uses mise environment "ci"
 # - should have a mise task named "ci:verify-release" (this can be an empty task if no verification is needed)
 # - should have a mise task named "ci:set-version" with argument "--version" that sets the version of the project to the given version (not required for variants: npm)
+# - files to attach to the GitHub release can be configured in .wetf-ci.yml as release.assets
+#   (list of objects with a "path" glob); they must be produced during the release preparation
+# - additional files to include in the release commit can be configured in .wetf-ci.yml as
+#   release.commit-assets (list of globs); CHANGELOG.md is always included - use this for files
+#   updated by the "ci:set-version" task
+# - both options only apply if the repository does not provide its own .releaserc.yml
 #
 # Variants:
 # - npm: Set version via "npm version" (task "ci:set-version" not required), adds package.json and package-lock.json files to release assets
@@ -101,11 +107,25 @@ jobs:
                 exit 1
               fi
             fi
-            ASSETS="[CHANGELOG.md, \"**/package.json\", \"**/package-lock.json\"]"
+            ASSET_LIST="CHANGELOG.md, \"**/package.json\", \"**/package-lock.json\""
           else
             PREPARE_CMD="mise run ci:set-version --version \${nextRelease.version}"
-            ASSETS="[CHANGELOG.md]"
+            ASSET_LIST="CHANGELOG.md"
           fi
+
+          # Optional additional files to include in the release commit, declared
+          # by the consuming repo in .wetf-ci.yml as:
+          #   release:
+          #     commit-assets:
+          #       - <glob>
+          # Typically files updated by the "ci:set-version" task. Added on top of
+          # CHANGELOG.md and any variant defaults.
+          if [ -f .wetf-ci.yml ]; then
+            extra_commit_assets=$(yq e '.release["commit-assets"] // [] | .[]' .wetf-ci.yml \
+              | while IFS= read -r p; do [ -n "$p" ] && printf ', "%s"' "$p"; done)
+            ASSET_LIST="${ASSET_LIST}${extra_commit_assets}"
+          fi
+          ASSETS="[${ASSET_LIST}]"
 
           # Optional GitHub-release assets, declared by the consuming repo in
           # .wetf-ci.yml as:
