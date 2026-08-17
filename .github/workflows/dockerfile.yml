@@ -89,6 +89,7 @@ jobs:
           image-ref: "${{ inputs.image }}:${{ inputs.tag }}"
           create-test-report: true
           report-retention-days: 30
+          report-tag: "${{ inputs.image }}:${{ inputs.tag }}"
 
       #
       # Report build failure to Slack
