@@ -1,3 +1,11 @@
+## [4.6.1](https://github.com/wetransform/gha-workflows/compare/v4.6.0...v4.6.1) (2026-08-17)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([cf9e871](https://github.com/wetransform/gha-workflows/commit/cf9e871ba003d4fa7a59b1cde27c381227f1c730))
+* **deps:** update jdx/mise-action action to v4.2.5 ([9a8018a](https://github.com/wetransform/gha-workflows/commit/9a8018a557bc44317e6dd9deec6e34d8cb6ff450))
+* **dockerfile:** prevent conflict for vulnerability scans on multiple images ([3128b39](https://github.com/wetransform/gha-workflows/commit/3128b39e6fc1e68a7e10ecd412f58b3e9bea8c84))
+
 ## [4.6.0](https://github.com/wetransform/gha-workflows/compare/v4.5.0...v4.6.0) (2026-08-13)
 
 ### Features
