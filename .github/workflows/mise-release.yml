@@ -107,7 +107,11 @@ jobs:
                 exit 1
               fi
             fi
-            ASSET_LIST="CHANGELOG.md, \"**/package.json\", \"**/package-lock.json\""
+            # @semantic-release/git matches assets against `git ls-files -m -o` (which includes
+            # ignored files) and adds them with `git add --force`, bypassing .gitignore, so
+            # node_modules (e.g. installed by ci:verify-release) must be excluded explicitly;
+            # a negated glob only applies within the same array entry
+            ASSET_LIST="CHANGELOG.md, [\"**/package.json\", \"!**/node_modules/**\"], [\"**/package-lock.json\", \"!**/node_modules/**\"]"
           else
             PREPARE_CMD="mise run ci:set-version --version \${nextRelease.version}"
             ASSET_LIST="CHANGELOG.md"
