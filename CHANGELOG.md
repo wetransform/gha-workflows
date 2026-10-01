@@ -1,3 +1,15 @@
+## [4.6.2](https://github.com/wetransform/gha-workflows/compare/v4.6.1...v4.6.2) (2026-10-01)
+
+### Bug Fixes
+
+* **deps:** update actions/setup-java action to v6 ([1cc29a5](https://github.com/wetransform/gha-workflows/commit/1cc29a5b2dd18dea9b31b0b90edec8c08b296970))
+* **deps:** update all non-major dependencies ([3ecc8f5](https://github.com/wetransform/gha-workflows/commit/3ecc8f5e376ae18355366f530ad0ad64b0bcbe91))
+* **deps:** update all non-major dependencies ([1544632](https://github.com/wetransform/gha-workflows/commit/1544632ef270384b26bd9c4963482caf1e5e6010))
+* **deps:** update all non-major dependencies ([1391248](https://github.com/wetransform/gha-workflows/commit/139124873078109bd83fbf84f5c19276dd52384a))
+* **deps:** update dependency jdx/mise to v2026.9.14 ([5b4b0a4](https://github.com/wetransform/gha-workflows/commit/5b4b0a4769445c3b06f6860e763d22f2047fc6e5))
+* **deps:** update jdx/mise-action action to v5 ([f36e2bb](https://github.com/wetransform/gha-workflows/commit/f36e2bbf065918d5f8462ed7c4bae0184b8cd12a))
+* **mise-release:** exclude node_modules from npm release commit assets ([d79d087](https://github.com/wetransform/gha-workflows/commit/d79d087d26de3ea7b32490e350f15d35290452e0))
+
 ## [4.6.1](https://github.com/wetransform/gha-workflows/compare/v4.6.0...v4.6.1) (2026-08-17)
 
 ### Bug Fixes
