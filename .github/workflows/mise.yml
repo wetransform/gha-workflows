@@ -127,7 +127,7 @@ jobs:
       # Setup mise & tools
       #
       - name: Setup mise & tools
-        uses: jdx/mise-action@7a4e45a543138629540c9a1616d08632b893e492 # v5.0.1
+        uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
 
       #
       # Optional login to Docker Hub
@@ -250,7 +250,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Publish test report
-        uses: mikepenz/action-junit-report@a9170d5795813c01ab4901ffb045b52bab4ab09d # v6.5.0
+        uses: mikepenz/action-junit-report@6ef3fdcfcd5f0b5d14df3e659ef19b8c6820f93d # v6.6.1
         if: ${{ !cancelled() && steps.extract_report_paths.outputs.paths != '' }}
         with:
           report_paths: ${{ steps.extract_report_paths.outputs.paths }}
@@ -311,7 +311,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Upload HTML test reports
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: ${{ !cancelled() && steps.html_report_paths.outputs.paths != '' }}
         with:
           name: Test reports
@@ -360,7 +360,7 @@ jobs:
 
         # https://github.com/marketplace/actions/junit-report-action
       - name: Publish scan report
-        uses: mikepenz/action-junit-report@a9170d5795813c01ab4901ffb045b52bab4ab09d # v6.5.0
+        uses: mikepenz/action-junit-report@6ef3fdcfcd5f0b5d14df3e659ef19b8c6820f93d # v6.6.1
         if: ${{ !inputs.skip-scan && always() }} # always run even if the previous step fails
         with:
           report_paths: "trivy-gha-scan/*.xml"

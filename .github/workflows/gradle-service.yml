@@ -170,7 +170,7 @@ jobs:
 
       - name: Setup mise & tools
         if: steps.check_mise.outputs.found == 'true'
-        uses: jdx/mise-action@7a4e45a543138629540c9a1616d08632b893e492 # v5.0.1
+        uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
 
       - name: Setup Java
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
@@ -180,7 +180,7 @@ jobs:
           java-version: ${{ inputs.java-version }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
 
       - name: Build and test with Gradle
         if: ${{ !inputs.skip-build }}
@@ -195,7 +195,7 @@ jobs:
         run: ./gradlew ${{ inputs.build-tasks }}
 
       - name: Upload Gradle test reports
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: ${{ !inputs.skip-build && always() }}
         with:
           name: Gradle test reports
@@ -290,7 +290,7 @@ jobs:
 
       # https://github.com/marketplace/actions/junit-report-action
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@a9170d5795813c01ab4901ffb045b52bab4ab09d # v6.5.0
+        uses: mikepenz/action-junit-report@6ef3fdcfcd5f0b5d14df3e659ef19b8c6820f93d # v6.6.1
         if: always() # always run even if the previous step fails
         with:
           report_paths: "${{ inputs.multi-module && '**/build/test-results/**/*.xml' || 'build/test-results/**/*.xml' }}"
