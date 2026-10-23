@@ -1,3 +1,16 @@
+## [4.7.0](https://github.com/wetransform/gha-workflows/compare/v4.6.2...v4.7.0) (2026-10-23)
+
+### Features
+
+* pass partial release options to gradle release ([2ecd38f](https://github.com/wetransform/gha-workflows/commit/2ecd38f8987866b13967a2fcfe91aefcc42eea54))
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([3ee23d4](https://github.com/wetransform/gha-workflows/commit/3ee23d4e88dfe2b394d0fca817b7ddd7585dafaa))
+* **deps:** update all non-major dependencies ([4ff9e9c](https://github.com/wetransform/gha-workflows/commit/4ff9e9c07519271cd3b66db101f052bd0687e83b))
+* **deps:** update cycjimmy/semantic-release-action action to v7 ([0a4269b](https://github.com/wetransform/gha-workflows/commit/0a4269b7c78739f8e75dde1f70270b999f725c72))
+* **deps:** update cycjimmy/semantic-release-action action to v8 ([5dea5d5](https://github.com/wetransform/gha-workflows/commit/5dea5d57cabe51e071553a77ec18fce8ece319ef))
+
 ## [4.6.2](https://github.com/wetransform/gha-workflows/compare/v4.6.1...v4.6.2) (2026-10-01)
 
 ### Bug Fixes
