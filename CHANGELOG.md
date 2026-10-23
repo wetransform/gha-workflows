@@ -1,3 +1,9 @@
+## [4.7.1](https://github.com/wetransform/gha-workflows/compare/v4.7.0...v4.7.1) (2026-10-23)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([62726aa](https://github.com/wetransform/gha-workflows/commit/62726aa4afb0a5cde2b538375db56efecbc4e0f0))
+
 ## [4.7.0](https://github.com/wetransform/gha-workflows/compare/v4.6.2...v4.7.0) (2026-10-23)
 
 ### Features
