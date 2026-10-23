@@ -18,6 +18,10 @@ on:
         description: If semantic release should do a dryrun
         default: false
         type: boolean
+      partial-release-readd:
+        description: For a partial release from a non-default branch, re-add the reverted changes on the default branch (see gha-gradle-semantic-release)
+        default: true
+        type: boolean
       java-version:
         description: Java version to use for build, ignored if the repository contains a mise.toml file
         required: false
@@ -221,11 +225,12 @@ jobs:
       - name: Publish/release with Gradle
         id: gradle-release
         if: ${{ inputs.publish-tasks != '' }}
-        uses: wetransform/gha-gradle-semantic-release@b850cb643505ddeca75afa1a0479f570248f207f # v2.1.5
+        uses: wetransform/gha-gradle-semantic-release@5087175a8ce013fe6d6666e592c476593cd8c659 # v2.2.0
         with:
           publish-tasks: ${{ inputs.publish-tasks }}
           release: ${{ inputs.semantic-release }}
           release-dryrun: ${{ inputs.semantic-release-dryrun }}
+          partial-release-readd: ${{ inputs.partial-release-readd }}
           github-token: ${{ steps.app-token.outputs.token }}
         env:
           # Skip hk-managed git hooks (installed by the mise postinstall hook via mise-action)
