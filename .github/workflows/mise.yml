@@ -14,7 +14,7 @@
 #   HTML reports found next to them (or in the Gradle location build/reports/tests) are uploaded as artifact
 #
 # Variants:
-# - npm: Cache Node.js modules
+# - npm: Cache Node.js modules (~/.npm); with cache-node-modules also node_modules (see NODE_MODULES_CACHE_HIT)
 #
 
 on:
@@ -52,6 +52,10 @@ on:
         description: Notify on build failure to Slack
         default: true
         type: boolean
+      cache-node-modules:
+        description: "npm variant only: cache node_modules (keyed on OS, Node.js version and package-lock.json) and set NODE_MODULES_CACHE_HIT=true on an exact hit, so mise tasks can skip npm ci (npm ci always deletes node_modules)"
+        type: boolean
+        default: false
       skip-scan:
         description: If security scan and associated tasks should be skipped
         type: boolean
@@ -164,6 +168,38 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      #
+      # npm (opt-in): Cache node_modules
+      # The install itself happens in the mise task; on an exact cache hit
+      # NODE_MODULES_CACHE_HIT=true is set so the task can skip npm ci, e.g.
+      #   [ "$NODE_MODULES_CACHE_HIT" = "true" ] || npm ci
+      #
+      - name: Determine Node.js version
+        if: ${{ inputs.variant == 'npm' && inputs.cache-node-modules }}
+        id: node_version
+        run: echo "version=$(node --version 2>/dev/null || echo unknown)" >> "$GITHUB_OUTPUT"
+        env:
+          MISE_ENV: ci
+
+      - name: Cache node_modules
+        if: ${{ inputs.variant == 'npm' && inputs.cache-node-modules }}
+        id: cache_node_modules
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: node_modules
+          # no restore-keys: a partial match is useless as npm ci deletes node_modules
+          key: ${{ runner.os }}-node-modules-${{ steps.node_version.outputs.version }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Report node_modules cache status
+        if: ${{ inputs.variant == 'npm' && inputs.cache-node-modules }}
+        env:
+          CACHE_HIT: ${{ steps.cache_node_modules.outputs.cache-hit == 'true' }}
+          NODE_VERSION: ${{ steps.node_version.outputs.version }}
+        run: |
+          echo "NODE_MODULES_CACHE_HIT=${CACHE_HIT}" >> "$GITHUB_ENV"
+          echo "### node_modules cache" >> "$GITHUB_STEP_SUMMARY"
+          echo "Exact cache hit: \`${CACHE_HIT}\` (Node.js ${NODE_VERSION})" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Run mise task
         id: run_task

@@ -27,6 +27,10 @@ on:
         required: false
         default: false
         type: boolean
+      cache-node-modules:
+        description: "npm variant only: cache node_modules (keyed on OS, Node.js version and package-lock.json) and set NODE_MODULES_CACHE_HIT=true on an exact hit, so mise tasks can skip npm ci (npm ci always deletes node_modules)"
+        type: boolean
+        default: false
       skip-scan:
         description: If security scan and associated tasks should be skipped
         type: boolean
@@ -49,6 +53,7 @@ jobs:
       variant: ${{ inputs.variant }}
       parallel: ${{ inputs.parallel }}
       notify-failure: false
+      cache-node-modules: ${{ inputs.cache-node-modules }}
       skip-scan: ${{ inputs.skip-scan }}
       submodules: ${{ inputs.submodules }}
     # secrets: inherit
