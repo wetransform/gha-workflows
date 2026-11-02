@@ -9,6 +9,7 @@
 #   in this case IMAGE_NAME is expected to be a name without tag and tags to build are determined automatically
 #   (for branch builds this includes an immutable tag <branch>-<commit date as yyyyMMdd>-<short commit sha>)
 # - the docker-bake.hcl should have a target named "default", it should inherit from an empty target "docker-metadata-action"
+# - the repository vulnerability scan runs in the parallel job scan-repo (skipped together with the image scan via skip-scan)
 # - JUnit XML reports to publish can be configured in .wetf-ci.yml as test.report-paths (list of globs);
 #   HTML reports found next to them (or in the Gradle location build/reports/tests) are uploaded as artifact
 #
@@ -341,13 +342,7 @@ jobs:
         if: ${{ !inputs.skip-scan }}
         run: mkdir -p trivy-gha-scan
 
-      - name: Vulnerability scan (repo)
-        if: ${{ !inputs.skip-scan }}
-        uses: wetransform/gha-trivy@665879c84961b500cb2570c3c1703b0abc5222f2 # v3.0.0
-        with:
-          junit-test-output: "trivy-gha-scan/repo.xml" # added to unit test report
-          report-retention-days: 30
-          report-tag: repository
+      # the repository scan runs in the parallel job scan-repo
 
       - name: Vulnerability scan (image)
         if: ${{ !inputs.skip-scan && env.SCAN_IMAGE }}
@@ -363,7 +358,7 @@ jobs:
         uses: mikepenz/action-junit-report@6ef3fdcfcd5f0b5d14df3e659ef19b8c6820f93d # v6.6.1
         if: ${{ !inputs.skip-scan && always() }} # always run even if the previous step fails
         with:
-          report_paths: "trivy-gha-scan/*.xml"
+          report_paths: "trivy-gha-scan/image.xml"
           require_tests: false # there may be no vulnerabilities found, then there is no file
 
           # Workaround for check that is additionally created being associated
@@ -375,6 +370,80 @@ jobs:
 
       #
       # Report build failure to Slack
+      # https://github.com/marketplace/actions/slack-notify-build
+      #
+      - name: Notify slack fail
+        if: ${{ inputs.notify-failure && failure() }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@3665186a8c1a022b28a1dbe0954e73aa9081ea9e # v1.6.0
+        with:
+          channel: build-failures
+          status: FAILED
+          color: danger
+
+  #
+  # Repository vulnerability scan, runs in parallel to the main job
+  # (it only needs the checked out sources, not the build result)
+  #
+  scan-repo:
+    if: ${{ !inputs.skip-scan }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # same ref as checked out by the run job
+      - name: Determine ref to checkout
+        if: ${{ inputs.publish }}
+        id: version
+        run: |
+          DEFAULT_BRANCH="${{ inputs.default-branch }}"
+
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && -n "${{ github.event.inputs.version }}" ]]; then
+            REF="refs/tags/v${{ github.event.inputs.version }}"
+          elif [[ "${GITHUB_REF}" == refs/tags/v* || "${GITHUB_REF}" == refs/heads/* ]]; then
+            REF="${GITHUB_REF}"
+          else
+            # fallback
+            REF="refs/heads/${DEFAULT_BRANCH}"
+          fi
+          echo "ref=$REF" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.version.outputs.ref }}
+          submodules: ${{ inputs.submodules }}
+          # provide a token in case submodules are enabled and private (secret is expected to be present)
+          token: ${{ inputs.submodules != 'false' && secrets.GH_PAT || github.token }}
+
+      - name: Make sure scan result folder exists
+        run: mkdir -p trivy-gha-scan
+
+      - name: Vulnerability scan (repo)
+        uses: wetransform/gha-trivy@665879c84961b500cb2570c3c1703b0abc5222f2 # v3.0.0
+        with:
+          junit-test-output: "trivy-gha-scan/repo.xml"
+          report-retention-days: 30
+          report-tag: repository
+
+        # https://github.com/marketplace/actions/junit-report-action
+      - name: Publish scan report
+        uses: mikepenz/action-junit-report@6ef3fdcfcd5f0b5d14df3e659ef19b8c6820f93d # v6.6.1
+        if: ${{ always() }} # always run even if the previous step fails
+        with:
+          report_paths: "trivy-gha-scan/repo.xml"
+          check_name: Repository scan report
+          require_tests: false # there may be no vulnerabilities found, then there is no file
+
+          # Workaround for check that is additionally created being associated
+          # to the wrong workflow/run. Instead not additional check is created.
+          # See https://github.com/mikepenz/action-junit-report/issues/40
+          annotate_only: true
+          detailed_summary: true
+          fail_on_failure: true # in case of critical security vulnerabilities, also required for Slack notification
+
+      #
+      # Report scan failure to Slack
       # https://github.com/marketplace/actions/slack-notify-build
       #
       - name: Notify slack fail
