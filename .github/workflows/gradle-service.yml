@@ -174,7 +174,7 @@ jobs:
 
       - name: Setup mise & tools
         if: steps.check_mise.outputs.found == 'true'
-        uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5.2.5
+        uses: jdx/mise-action@f5be966e4a917d54244728e6a5fdcd1d93a35e6c # v5.2.6
 
       - name: Setup Java
         uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
@@ -264,7 +264,7 @@ jobs:
 
       - name: Vulnerability scan
         if: ${{ !inputs.skip-scan }}
-        uses: wetransform/gha-trivy@665879c84961b500cb2570c3c1703b0abc5222f2 # v3.0.0
+        uses: wetransform/gha-trivy@de7803d3d2135ab8ec9093b50a76db298df095be # v3.0.1
         with:
           image-ref: "docker.io/${{ inputs.image-tag }}"
           junit-test-output: "${{ inputs.multi-module && 'trivy-gha-scan/build/test-results/trivy.xml' || 'build/test-results/trivy.xml' }}" # added to unit test report
@@ -272,7 +272,7 @@ jobs:
           report-tag: ${{ inputs.image-tag }}
 
       - name: Vulnerability scan (Image 2)
-        uses: wetransform/gha-trivy@665879c84961b500cb2570c3c1703b0abc5222f2 # v3.0.0
+        uses: wetransform/gha-trivy@de7803d3d2135ab8ec9093b50a76db298df095be # v3.0.1
         if: ${{ !inputs.skip-scan && inputs.image-tag-2 != '' }}
         with:
           image-ref: "docker.io/${{ inputs.image-tag-2 }}"
@@ -281,7 +281,7 @@ jobs:
           report-tag: ${{ inputs.image-tag-2 }}
 
       - name: Vulnerability scan (Image 3)
-        uses: wetransform/gha-trivy@665879c84961b500cb2570c3c1703b0abc5222f2 # v3.0.0
+        uses: wetransform/gha-trivy@de7803d3d2135ab8ec9093b50a76db298df095be # v3.0.1
         if: ${{ !inputs.skip-scan && inputs.image-tag-3 != '' }}
         with:
           image-ref: "docker.io/${{ inputs.image-tag-3 }}"
@@ -295,7 +295,7 @@ jobs:
 
       # https://github.com/marketplace/actions/junit-report-action
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@8a133bfa3ecb0ea9024c1e2ae788b4c25f6cdb9d # v6.6.2
+        uses: mikepenz/action-junit-report@4a26df3e2ae132254ba12a53f65a388d0961e786 # v6.7.0
         if: always() # always run even if the previous step fails
         with:
           report_paths: "${{ inputs.multi-module && '**/build/test-results/**/*.xml' || 'build/test-results/**/*.xml' }}"

@@ -84,7 +84,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Vulnerability check
-        uses: wetransform/gha-trivy@665879c84961b500cb2570c3c1703b0abc5222f2 # v3.0.0
+        uses: wetransform/gha-trivy@de7803d3d2135ab8ec9093b50a76db298df095be # v3.0.1
         with:
           image-ref: "${{ inputs.image }}:${{ inputs.tag }}"
           create-test-report: true
