@@ -42,6 +42,9 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           token: ${{ steps.app-token.outputs.token }}
+          # full history is required for semantic-release, a shallow clone can cause
+          # pushing the release notes ref to fail with "missing necessary objects"
+          fetch-depth: 0
           # Note: special permissions for push to protected branch required
           # Credentials required for semantic-release-github-actions-tags
           # persist-credentials: false
