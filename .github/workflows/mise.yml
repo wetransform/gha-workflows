@@ -127,7 +127,7 @@ jobs:
       # Setup mise & tools
       #
       - name: Setup mise & tools
-        uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5.2.5
+        uses: jdx/mise-action@f5be966e4a917d54244728e6a5fdcd1d93a35e6c # v5.2.6
 
       #
       # Optional login to Docker Hub
@@ -250,7 +250,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Publish test report
-        uses: mikepenz/action-junit-report@8a133bfa3ecb0ea9024c1e2ae788b4c25f6cdb9d # v6.6.2
+        uses: mikepenz/action-junit-report@4a26df3e2ae132254ba12a53f65a388d0961e786 # v6.7.0
         if: ${{ !cancelled() && steps.extract_report_paths.outputs.paths != '' }}
         with:
           report_paths: ${{ steps.extract_report_paths.outputs.paths }}
@@ -343,7 +343,7 @@ jobs:
 
       - name: Vulnerability scan (repo)
         if: ${{ !inputs.skip-scan }}
-        uses: wetransform/gha-trivy@665879c84961b500cb2570c3c1703b0abc5222f2 # v3.0.0
+        uses: wetransform/gha-trivy@de7803d3d2135ab8ec9093b50a76db298df095be # v3.0.1
         with:
           junit-test-output: "trivy-gha-scan/repo.xml" # added to unit test report
           report-retention-days: 30
@@ -351,7 +351,7 @@ jobs:
 
       - name: Vulnerability scan (image)
         if: ${{ !inputs.skip-scan && env.SCAN_IMAGE }}
-        uses: wetransform/gha-trivy@665879c84961b500cb2570c3c1703b0abc5222f2 # v3.0.0
+        uses: wetransform/gha-trivy@de7803d3d2135ab8ec9093b50a76db298df095be # v3.0.1
         with:
           image-ref: "docker.io/${{ env.SCAN_IMAGE }}"
           junit-test-output: "trivy-gha-scan/image.xml" # added to unit test report
@@ -360,7 +360,7 @@ jobs:
 
         # https://github.com/marketplace/actions/junit-report-action
       - name: Publish scan report
-        uses: mikepenz/action-junit-report@8a133bfa3ecb0ea9024c1e2ae788b4c25f6cdb9d # v6.6.2
+        uses: mikepenz/action-junit-report@4a26df3e2ae132254ba12a53f65a388d0961e786 # v6.7.0
         if: ${{ !inputs.skip-scan && always() }} # always run even if the previous step fails
         with:
           report_paths: "trivy-gha-scan/*.xml"
