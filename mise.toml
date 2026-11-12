@@ -1,7 +1,7 @@
 [tools]
 # git hooks
 hk = "1.58.1"
-pkl = "0.32.2"
+pkl = "0.33.0"
 
 [env]
 # Evaluate hk.pkl with the official pkl CLI instead of hk's embedded pklr evaluator,
