@@ -7,7 +7,7 @@
 # - if an environment variable IMAGE_NAME is set by mise or the build, a security scan will be performed on the image
 # - if a file docker-bake.hcl is present, the Docker image will be built using docker bake and it should not be built by the mise task;
 #   in this case IMAGE_NAME is expected to be a name without tag and tags to build are determined automatically
-#   (for branch builds this includes an immutable tag <branch>-<commit date as yyyyMMdd>-<short commit sha>)
+#   (for branch builds this includes a traceable tag <branch>-<commit date as yyyyMMdd>T<commit time as HHmmss, UTC>-<short commit sha>)
 # - the docker-bake.hcl should have a target named "default", it should inherit from an empty target "docker-metadata-action"
 # - JUnit XML reports to publish can be configured in .wetf-ci.yml as test.report-paths (list of globs);
 #   HTML reports found next to them (or in the Gradle location build/reports/tests) are uploaded as artifact
@@ -193,6 +193,28 @@ jobs:
             echo "found=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # Details for the <branch>-<date>T<time>-<sha> tag, taken from the checked out commit
+      # (committer date in UTC; the workflow context may provide the author date instead)
+      - name: Determine branch tag details
+        id: branch_tag_info
+        if: steps.check_docker_bake.outputs.found == 'true' && startsWith(github.ref, 'refs/heads/') && !github.event.inputs.version
+        run: |
+          timestamp=$(TZ=UTC git show -s --format=%cd --date=format-local:%Y%m%dT%H%M%S HEAD) || timestamp=""
+          sha=$(git rev-parse HEAD) || sha=""
+          sha=${sha:0:7}
+          echo "timestamp=$timestamp" >> "$GITHUB_OUTPUT"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          if [[ ! "$timestamp" =~ ^[0-9]{8}T[0-9]{6}$ || ! "$sha" =~ ^[0-9a-f]{7}$ ]]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Could not determine commit details via git, skipping <branch>-<date>T<time>-<sha> image tag"
+          # Docker tags are limited to 128 characters, the tag adds 24 characters to the branch name
+          elif [ "${#GITHUB_REF_NAME}" -le 104 ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Branch name too long, skipping <branch>-<date>T<time>-<sha> image tag"
+          fi
+
       - name: Docker metadata
         id: meta
         if: steps.check_docker_bake.outputs.found == 'true'
@@ -210,11 +232,11 @@ jobs:
             type=semver,pattern=v{{major}}
             # Use tag for branch name
             type=ref,event=branch
-            # Immutable, traceable tag for branch builds: <branch>-<commit date>-<short sha>
-            # Disabled for tag/PR refs ({{branch}} is empty there) and for a publish
-            # dispatched with an explicit version (that checks out a tag ref, so the
-            # workflow context's sha/commit date would not match the built code)
-            type=raw,value={{branch}}-{{commit_date 'YYYYMMDD'}}-{{sha}},enable=${{ startsWith(github.ref, 'refs/heads/') && !github.event.inputs.version }}
+            # Traceable tag for branch builds: <branch>-<commit date>T<commit time, UTC>-<short sha>
+            # Disabled for tag/PR refs ({{branch}} is empty there), for a publish dispatched
+            # with an explicit version (that checks out a tag ref, not the branch) and for
+            # too long branch names (see step "Determine branch tag details")
+            type=raw,value={{branch}}-${{ steps.branch_tag_info.outputs.timestamp }}-${{ steps.branch_tag_info.outputs.sha }},enable=${{ steps.branch_tag_info.outputs.enabled == 'true' }}
 
       - name: Build Docker image including metadata labels
         if: steps.check_docker_bake.outputs.found == 'true'
