@@ -47,11 +47,15 @@ dash-separated field, ambiguous with numeric branch suffixes) and `.` (reads lik
 ### Tag expression (both workflows)
 
 ```
-type=raw,value={{branch}}-{{commit_date 'YYYYMMDD'}}T{{commit_date 'HHmmss'}}-{{sha}}
+type=raw,value={{branch}}-{{commit_date 'YYYYMMDD[T]HHmmss'}}-{{sha}}
 ```
 
-Two `commit_date` expressions instead of one format with a literal `T`, so we don't depend on
-how the formatter escapes letters. (Builder's call to verify UTC is the default timezone.)
+Revised after review: timestamp and short sha are taken from the checked out commit in a
+shell step (`git show -s --format=%cd`, committer date, UTC) and passed into a `type=raw` value,
+because metadata-action's `commit_date` uses the push payload's commit timestamp, which may be
+the author date (rebased commits would get older tags). The same step skips the tag for branch
+names longer than 104 characters (Docker tag limit 128). The Renovate rule additionally sets
+`"separateMajorMinor": false`.
 
 ### `mise.yml`
 
@@ -63,8 +67,8 @@ explicit version).
 
 - New boolean input `branch-tag` (default `true`), passed through by `dockerfile-build.yml`
   and `dockerfile-publish.yml`.
-- The existing `docker/metadata-action` step gets a `tags:` config with the expression above,
-  enabled only if `branch-tag` is true, the ref is a branch (`refs/heads/`), and `checkout-ref`
+- A separate `docker/metadata-action` step renders the expression above (the existing step only
+  provides labels; giving it explicit tags would change its version label). It runs only if `branch-tag` is true, the ref is a branch (`refs/heads/`), and `checkout-ref`
   is empty (a custom checkout ref means the workflow context's sha/date would not match the
   built code — same reasoning as mise's explicit-version case).
 - `build-push-action` `tags:` = the caller's `<image>:<tag>` plus the metadata-action tags.
@@ -89,8 +93,8 @@ Document a `packageRules` entry for consumers, e.g.:
 
 ## Constraints
 
-- Docker tag charset `[A-Za-z0-9_.-]`, max 128 chars; branch names with `/` are sanitized by
-  metadata-action (builder to confirm behavior and note it in the README).
+- Docker tag charset `[A-Za-z0-9_.-]`, max 128 chars; `{{branch}}` turns `/` into `-`
+  (verified in the metadata-action README; note it in the README).
 - Commit date is the committer date of the built commit — monotonic enough for dev use, not
   strictly push order.
 
