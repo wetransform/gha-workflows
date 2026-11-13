@@ -1,3 +1,14 @@
+## [4.8.0](https://github.com/wetransform/gha-workflows/compare/v4.7.2...v4.8.0) (2026-11-13)
+
+### Features
+
+* **dockerfile:** add traceable <branch>-<date>T<time>-<sha> image tag ([9ac34c9](https://github.com/wetransform/gha-workflows/commit/9ac34c905b9ec466bdb08a179ee672a97446cc47))
+* **mise:** add commit time to traceable branch image tag ([50039c2](https://github.com/wetransform/gha-workflows/commit/50039c2ba188dbf50cba7e96466f918c15b4d8ff))
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([c9dfaf0](https://github.com/wetransform/gha-workflows/commit/c9dfaf0fbd7b046b25b470bb354a22822793e108))
+
 ## [4.7.2](https://github.com/wetransform/gha-workflows/compare/v4.7.1...v4.7.2) (2026-11-03)
 
 ### Bug Fixes
