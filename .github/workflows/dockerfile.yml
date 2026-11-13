@@ -29,6 +29,10 @@ on:
         # see https://github.com/actions/checkout
         default: "false"
         type: string
+      branch-tag:
+        description: Also tag branch builds as <branch>-<YYYYMMDD>T<HHmmss>-<sha>
+        type: boolean
+        default: true
     secrets:
       DOCKER_HUB_USERNAME:
       DOCKER_HUB_PASSWORD:
@@ -55,6 +59,40 @@ jobs:
         with:
           images: ${{ inputs.image }}
 
+      # Traceable tag for branch builds: <branch>-<commit date>T<commit time, UTC>-<short sha>
+      # Skipped for tag/PR refs ({{branch}} is empty there), for a custom checkout-ref
+      # (not necessarily the branch the workflow runs for) and for too long branch names
+      # Details for the <branch>-<date>T<time>-<sha> tag, taken from the checked out commit
+      # (committer date in UTC; the workflow context may provide the author date instead)
+      - name: Determine branch tag details
+        id: branch_tag_info
+        if: ${{ inputs.branch-tag && startsWith(github.ref, 'refs/heads/') && inputs.checkout-ref == '' }}
+        run: |
+          timestamp=$(TZ=UTC git show -s --format=%cd --date=format-local:%Y%m%dT%H%M%S HEAD) || timestamp=""
+          sha=$(git rev-parse HEAD) || sha=""
+          sha=${sha:0:7}
+          echo "timestamp=$timestamp" >> "$GITHUB_OUTPUT"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          if [[ ! "$timestamp" =~ ^[0-9]{8}T[0-9]{6}$ || ! "$sha" =~ ^[0-9a-f]{7}$ ]]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Could not determine commit details via git, skipping <branch>-<date>T<time>-<sha> image tag"
+          # Docker tags are limited to 128 characters, the tag adds 24 characters to the branch name
+          elif [ "${#GITHUB_REF_NAME}" -le 104 ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Branch name too long, skipping <branch>-<date>T<time>-<sha> image tag"
+          fi
+
+      - name: Docker branch tag
+        id: branch_tag
+        if: steps.branch_tag_info.outputs.enabled == 'true'
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ${{ inputs.image }}
+          tags: |
+            type=raw,value={{branch}}-${{ steps.branch_tag_info.outputs.timestamp }}-${{ steps.branch_tag_info.outputs.sha }}
+
       - name: Login to DockerHub
         if: env.DOCKER_HUB_USERNAME
         uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
@@ -80,7 +118,9 @@ jobs:
         with:
           context: ${{ inputs.context }}
           push: ${{ inputs.push }}
-          tags: "${{ inputs.image }}:${{ inputs.tag }}"
+          tags: |
+            ${{ inputs.image }}:${{ inputs.tag }}
+            ${{ steps.branch_tag.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Vulnerability check

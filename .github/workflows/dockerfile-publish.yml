@@ -21,6 +21,10 @@ on:
         # see https://github.com/actions/checkout
         default: "false"
         type: string
+      branch-tag:
+        description: Also tag branch builds as <branch>-<YYYYMMDD>T<HHmmss>-<sha>
+        type: boolean
+        default: true
     secrets:
       DOCKER_HUB_USERNAME:
         required: true
@@ -39,6 +43,7 @@ jobs:
       context: ${{ inputs.context }}
       checkout-ref: ${{ inputs.checkout-ref }}
       submodules: ${{ inputs.submodules }}
+      branch-tag: ${{ inputs.branch-tag }}
       push: true
       notify-failure: true
     # secrets: inherit
