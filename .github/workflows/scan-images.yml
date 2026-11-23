@@ -66,6 +66,19 @@ jobs:
         image: ${{ fromJson(inputs.images) }}
 
     steps:
+      # Pulled images and the vulnerability scans (several GB of scanner databases)
+      # can exhaust the disk of GitHub-hosted runners, so remove preinstalled tooling that is not needed.
+      - name: Free disk space
+        if: runner.environment == 'github-hosted' && runner.os == 'Linux'
+        continue-on-error: true # only an optimisation, must not fail the job
+        shell: bash
+        run: |
+          echo "Disk usage before cleanup:"
+          df -h /
+          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
+          echo "Disk usage after cleanup:"
+          df -h /
+
       - name: Login to Docker Hub
         uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
         with:
