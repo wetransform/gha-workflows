@@ -1,3 +1,14 @@
+## [4.8.1](https://github.com/wetransform/gha-workflows/compare/v4.8.0...v4.8.1) (2026-11-23)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([06de53c](https://github.com/wetransform/gha-workflows/commit/06de53cae44def810684bb68782b0fc491501add))
+* **deps:** update all non-major dependencies ([658f1ef](https://github.com/wetransform/gha-workflows/commit/658f1efd42e8f59de48d82f51230d7f03a0b780e))
+* **deps:** update hk ([8ef8ead](https://github.com/wetransform/gha-workflows/commit/8ef8ead993d3ee42f4aeff0f16d853f0d23d13cc))
+* **deps:** update wetransform/gha-trivy action to v3.0.2 ([e8bd3bf](https://github.com/wetransform/gha-workflows/commit/e8bd3bf3f5102cbd8c3ae813b46a1cbfb428861b))
+* free disk space in all workflows that run vulnerability scans ([21d80e4](https://github.com/wetransform/gha-workflows/commit/21d80e4acabecddbc9423364b60e842e085379eb))
+* **gradle-service:** free disk space on GitHub-hosted runners ([b9e87eb](https://github.com/wetransform/gha-workflows/commit/b9e87eb38ed0610a2649576062a65b250474f896))
+
 ## [4.8.0](https://github.com/wetransform/gha-workflows/compare/v4.7.2...v4.8.0) (2026-11-13)
 
 ### Features
