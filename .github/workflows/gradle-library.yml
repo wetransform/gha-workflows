@@ -103,6 +103,20 @@ jobs:
       release-version: ${{ steps.gradle-release.outputs.release-version }}
 
     steps:
+      # Builds and the vulnerability scans (several GB of scanner databases)
+      # can exhaust the disk of GitHub-hosted runners, so remove preinstalled tooling that is not needed.
+      # Never done on self-hosted runners, where these directories may be in use.
+      - name: Free disk space
+        if: runner.environment == 'github-hosted' && runner.os == 'Linux'
+        continue-on-error: true # only an optimisation, must not fail the job
+        shell: bash
+        run: |
+          echo "Disk usage before cleanup:"
+          df -h /
+          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
+          echo "Disk usage after cleanup:"
+          df -h /
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

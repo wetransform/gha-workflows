@@ -70,6 +70,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Builds and the vulnerability scans (several GB of scanner databases)
+      # can exhaust the disk of GitHub-hosted runners, so remove preinstalled tooling that is not needed.
+      - name: Free disk space
+        if: runner.environment == 'github-hosted' && runner.os == 'Linux'
+        continue-on-error: true # only an optimisation, must not fail the job
+        shell: bash
+        run: |
+          echo "Disk usage before cleanup:"
+          df -h /
+          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
+          echo "Disk usage after cleanup:"
+          df -h /
+
       #
       # Determine what to check out and what version to build
       #
