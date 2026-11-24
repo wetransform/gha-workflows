@@ -1,3 +1,9 @@
+## [4.9.0](https://github.com/wetransform/gha-workflows/compare/v4.8.1...v4.9.0) (2026-11-24)
+
+### Features
+
+* **mise:** cache node_modules for the npm variant ([d494f7c](https://github.com/wetransform/gha-workflows/commit/d494f7c3829eb22902f6e06612bdd5dadaaf96cf)), closes [ING-5468](https://wetransform.atlassian.net/browse/ING-5468)
+
 ## [4.8.1](https://github.com/wetransform/gha-workflows/compare/v4.8.0...v4.8.1) (2026-11-23)
 
 ### Bug Fixes
