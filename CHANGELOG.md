@@ -1,3 +1,13 @@
+## [4.9.1](https://github.com/wetransform/gha-workflows/compare/v4.9.0...v4.9.1) (2026-11-25)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([7cf5607](https://github.com/wetransform/gha-workflows/commit/7cf5607e8d6798faafa8d7e893bcd7061929f3b0))
+
+### Performance Improvements
+
+* **workflows:** free disk space in the background ([3f6fa5f](https://github.com/wetransform/gha-workflows/commit/3f6fa5faebfe7bce345804f46bb30c1ef623d781))
+
 ## [4.9.0](https://github.com/wetransform/gha-workflows/compare/v4.8.1...v4.9.0) (2026-11-24)
 
 ### Features
