@@ -59,9 +59,10 @@ jobs:
         run: |
           echo "Disk usage before cleanup:"
           df -h /
-          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
-          echo "Disk usage after cleanup:"
-          df -h /
+          touch "$RUNNER_TEMP/disk-cleanup.started"
+          # runs in the background, "Wait for disk cleanup" waits for it before the image scans.
+          # The /dev/null redirect is required, the runner kills child processes still holding the step's stdout/stderr.
+          ( sudo rm -rf /usr/local/lib/android /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL || true; touch "$RUNNER_TEMP/disk-cleanup.done" ) >/dev/null 2>&1 &
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -121,6 +122,19 @@ jobs:
 
       - name: Make sure test-results folder exists
         run: mkdir -p ${{ inputs.junit-test-folder }}
+
+      - name: Wait for disk cleanup
+        if: runner.environment == 'github-hosted' && runner.os == 'Linux'
+        continue-on-error: true # only an optimisation, must not fail the job
+        shell: bash
+        run: |
+          # the image scans need the space freed by "Free disk space"
+          if [ -f "$RUNNER_TEMP/disk-cleanup.started" ]; then
+            for _ in $(seq 180); do [ -f "$RUNNER_TEMP/disk-cleanup.done" ] && break; sleep 1; done
+            [ -f "$RUNNER_TEMP/disk-cleanup.done" ] || echo "::warning::disk cleanup still running after 180 s"
+          fi
+          echo "Disk usage after cleanup:"
+          df -h /
 
       - name: Vulnerability scan
         uses: wetransform/gha-trivy@9b0a715a7c47998b3864ce7123fc0065fe055540 # v3.0.2
